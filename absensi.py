@@ -2,186 +2,302 @@ import random
 import datetime
 
 #header
-header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,		Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.replace(',','\t')
+header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.replace(',','\t')
 
 #misc
 ''' Auto-Assign, Status, Hari Libur, Libur Lembur is empty'''
-empty = ' '
-norm_tab = '\"1'
+ety = ' '
+n_tab = '\"1'
 
-#employee
-employee = [['1','1','1','Ape','SSI'],
-			['2','2','2','Bull','SSI'],
-			['3','3','3','Cow','SSI'],
-			['4','4','4','Dog','SSI'],
-			['5','5','5','Elk','SSI'],
-			['6','6','6','Fowl','SSI']]
-
-nopeg = [i[0] for i in employee]
-noakun = [i[1] for i in employee]
-nomor = [i[2] for i in employee]
-nama = [i[3] for i in employee]
-departemen = [i[4] for i in employee]
+#employee untuk kolom NoPeg, Akun, No., Nama, Auto-Assign, Status, Hrs C/In, Hrs C/Out, Departemen
+emp = [{'nopeg':'1','akun':'1','nomor':'1','nama':'Ape','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'},
+		{'nopeg':'2','akun':'2','nomor':'2','nama':'Bull','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'},	
+		{'nopeg':'3','akun':'3','nomor':'3','nama':'Cat','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'},
+		{'nopeg':'4','akun':'4','nomor':'4','nama':'Dog','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'},
+		{'nopeg':'5','akun':'5','nomor':'5','nama':'Elk','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'},
+		{'nopeg':'6','akun':'6','nomor':'6','nama':'Fowl','assign':' ','status':' ','hcin':' ','hcout':' ','dpt':'Animal'}]
 
 #date time
-date_start = datetime.date(2020,1,1)
-date_finish = datetime.date(2020,3,31)
-date_delta = (date_finish-date_start)
-date_list = [date_start+datetime.timedelta(days=i) for i in range(date_delta.days+1)]
-hour_in = datetime.time(8,0,0)
-hour_out = [datetime.time(16,0,0),datetime.time(13,0,0)]
-hour_off = datetime.time(0,0,0)
-cin = random.randint(7,8)
-cot = [random.randint(16,18),random.randint(15,18)]
+dt_st = datetime.date(2020,1,1)
+dt_fn = datetime.date(2020,1,10)
+dt_dlt = (dt_fn-dt_st)
+dt_ls = [dt_st+datetime.timedelta(days=i) for i in range(dt_dlt.days+1)]
+hr_in = datetime.time(8,0,0)
+hr_out = [datetime.time(16,0,0),datetime.time(13,0,0)]
+hr_off = datetime.time(0,0,0)
+sf_ls = ['Senin-Jumat','Sabtu-Minggu']
+n_tab = '\'1'
 
-#globals
-c_in = []
-c_out = []
-h_in = []
-h_out = []
-n_days = []
-w_days = []
-t_att = []
-s_shift = []
-t_real = []
-d_out = []
-cin_late = []
-cin_over = []
-cot_early = [] 
-cot_over = []
-total_over = []
-w_hour = []
-
-#date module
-def dates(a):
-	#a is a date_list
-	global c_in
-	global c_out
-	global h_in
-	global h_out
-	global n_days
-	global w_days
-	global t_att
-	global s_shift
-	global t_real
-	global d_out
-	global cin_late
-	global cin_over
-	global cot_early
-	global cot_over
-	global total_over
-	global w_hour
-	
-	for i in a:
-		if i.weekday() == 6:
-			n_days.append(' ')
-			w_days.append('\"1')
-			h_in.append(datetime.datetime.combine(i,hour_off))
-			h_out.append(datetime.datetime.combine(i,hour_off))
-			c_in.append(datetime.datetime.combine(i,hour_off))
-			c_out.append(datetime.datetime.combine(i,hour_off))
-		
-		elif i.weekday() == 5:
-			n_days.append('\"1')
-			w_days.append(' ')
-			h_in.append(datetime.datetime.combine(i,hour_in))
-			h_out.append(datetime.datetime.combine(i,hour_out[1]))
-			if cin == 8:
-				check_in = datetime.time(cin,random.randint(0,15))
-				check_out = datetime.time(cot[1],random.randint(0,59))
-			else:
-				check_in = datetime.time(cin,random.randint(45,59))
-				check_out = datetime.time(cot[0],random.randint(0,59))
-			c_in.append(datetime.datetime.combine(i,check_in))
-			c_out.append(datetime.datetime.combine(i,check_out))
-
-		else:
-			n_days.append('\"1')
-			w_days.append(' ')
-			h_in.append(datetime.datetime.combine(i,hour_in))
-			h_out.append(datetime.datetime.combine(i,hour_out[0]))
-			if cin == 8:
-				check_in = datetime.time(cin,random.randint(0,15))
-				check_out = datetime.time(cot[1],random.randint(0,59))
-			else:
-				check_in = datetime.time(cin,random.randint(45,59))
-				check_out = datetime.time(cot[0],random.randint(0,59))
-			c_in.append(datetime.datetime.combine(i,check_in))
-			c_out.append(datetime.datetime.combine(i,check_out))
-
-	#total attendance
-	for x in range(len(c_in)):
-		xx = c_out[x] - c_in[x]
-		t_att.append(xx)
-
-	#shift
-	shift_l = ['Senin-Jumat','Sabtu-Minggu']
-	for x in a:
-		if x.weekday() == 5 or 6:
-			s_shift.append(shift_l[1])
-		else:
-			s_shift.append(shift_l[0])
-
-	#normal column, real time column, & day out
-	for x in c_in:
-		if x.hour == 0:
-			t_real.append(empty)
-			d_out.append('\"True\"')
-		else:
-			t_real.append(norm_tab)
-			d_out.append(empty)
-
-	#late & overtime check in
-	for x in range(len(c_in)):
-		if h_in[x] < c_in[x]:
-			y = c_in[x] - h_in[x]
-			cin_late.append(y)
-			cin_over.append(datetime.timedelta(0,0,0))
-		elif h_in[x] > c_in[x]:
-			y = h_in[x] - c_in[x]
-			cin_late.append(datetime.timedelta(0,0,0))
-			cin_over.append(y)
-		else:
-			cin_late.append(datetime.timedelta(0,0,0))
-			cin_over.append(datetime.timedelta(0,0,0))
-
-	#early & overtime check out
-
-	for i in range(len(c_out)):
-		if h_out[i] > c_out[i]:
-			x = h_out[i] - c_out[i]
-			cot_early.append(x)
-			cot_over.append(datetime.timedelta(0,0,0))
-		elif h_out[i] > c_out[i]:
-			x = c_out[i] - h_out[i]
-			cot_early.append(datetime.timedelta(0,0,0))
-			cot_over.append(x)
-		else:
-			cot_early.append(datetime.timedelta(0,0,0))
-			cot_over.append(datetime.timedelta(0,0,0))
-
-	#total overtime
-	for i in range(len(cin_over)):
-		x = cin_over[i]+cot_over[i]
-		total_over.append(x)
-
-	#work time
-	for i in range(len(h_in)):
-		x = h_out[i] - h_in[i]
-		y = x-(cin_late[i]-cot_early[i])
-		w_hour.append(y)
-
-#hrs check in, hrs check out, & departemen value
-t_val = '\"True\"'
-
-#title
-#title='F:/abs-{}.txt'.format(date_finish)
-
-#printing result
-
+def late_in(hi,ci):
+	if ci > hi:
+		return ci-hi
+	else:
+		return datetime.timedelta(0,0,0)
+def early_out(ho,co):
+	if ho > co:
+		return ho-co
+	else:
+		return datetime.timedelta(0,0,0)
+def o_time(hi,ci,ho,co):
+	if ci > hi:
+		return datetime.timedelta(0,0,0)
+	else:
+		return hi-ci
+	if ho > co:
+		return datetime.timedelta(0,0,0)
+	else:
+		return co-ho
+	return (hi-ci)+(co-ho)
+def w_time(hi,ci,ho,co):
+	if ci>hi:
+		return ho-ci
+	elif co>ho:
+		return co-hi
+	else:
+		return ho-hi
+def t_time(a,ci,co):
+	return a+(co-ci)
+def nw_ot(hi,ci,ho,co):
+	return round((co-ci)/(ho-hi),2)
 print(header)
-for i in range(len(nama)):
-	dates(date_list)
-	for x in range(len(date_list)):
-		print (nopeg[i],noakun[i],nomor[i],nama[i],empty,date_list[i],s_shift[i],h_in[i],h_out[i],c_in[i],c_out[i],norm_tab,t_real[i],cin_late[i],cot_early[i],d_out[i],total_over[i],w_hour[i],empty,t_val,t_val,departemen[i],n_days[i],w_days[i],empty,w_hour[i],empty,empty,empty)
+
+for i in range(len(emp)):
+	for x in range(len(dt_ls)):
+		ch_in = random.randint(7,9)
+		cm_in = [random.randint(45,59),random.randint(0,15),random.randint(0,59)]
+		ch_out = [random.randint(16,18),random.randint(15,18)]
 		
+		dt_in = datetime.datetime.combine(dt_ls[x],hr_in)
+
+		if dt_ls[x].weekday() == 6:
+			wr_sf = sf_ls[1]
+			dt_out = datetime.datetime.combine(dt_ls[x],hr_out[1])
+			dh_in = datetime.datetime.combine(dt_ls[x],hr_off)
+			dh_out = datetime.datetime.combine(dt_ls[x],hr_off)
+			t_real = ety
+			dh_late = datetime.datetime.combine(dt_ls[x],hr_off)
+			dh_early = datetime.datetime.combine(dt_ls[x],hr_off)
+			day_o = n_tab
+			ov_tm = datetime.datetime.combine(dt_ls[x],hr_off)
+			wr_tm = datetime.datetime.combine(dt_ls[x],hr_off)
+			n_day = ety
+			we_tm = ety
+			ttl_a = datetime.datetime.combine(dt_ls[x],hr_off)
+			n_ot = ety
+			w_ot = ety
+			print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
+		emp[i]['akun'],
+		emp[i]['nomor'],
+		emp[i]['nama'],
+		emp[i]['assign'],
+		dt_ls[x].strftime('%Y-%m-%d'),
+		wr_sf,
+		dt_in.strftime('%H:%M'),
+		dt_out.strftime('%H:%M'),
+		dh_in.strftime('%H:%M'),
+		dh_out.strftime('%H:%M'),
+		n_tab,
+		t_real,
+		dh_late,
+		dh_early.strftime('%H:%M'),
+		day_o,
+		ov_tm.strftime('%H:%M'),
+		wr_tm.strftime('%H:%M'),
+		emp[i]['status'],
+		emp[i]['hcin'],
+		emp[i]['hcout'],
+		emp[i]['dpt'],
+		n_day,
+		we_tm,
+		ety,
+		ttl_a.strftime('%H:%M'),
+		n_ot,
+		w_ot,
+		ety,
+		ety))
+			
+		elif dt_ls[x].weekday() == 5:
+			wr_sf = sf_ls[1]
+			dt_out = datetime.datetime.combine(dt_ls[x],hr_out[1])
+			dh_out = datetime.datetime.combine(dt_ls[x],datetime.time(ch_out[1],cm_in[2]))
+			t_real = n_tab
+			if ch_in == 7:
+				tm_in = datetime.time(ch_in, cm_in[0])
+				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
+				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
+				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
+				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
+				day_o = ety
+				n_day = ety
+				we_tm = n_tab
+				n_ot = ety
+				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
+		emp[i]['akun'],
+		emp[i]['nomor'],
+		emp[i]['nama'],
+		emp[i]['assign'],
+		dt_ls[x].strftime('%Y-%m-%d'),
+		wr_sf,
+		dt_in.strftime('%H:%M'),
+		dt_out.strftime('%H:%M'),
+		dh_in.strftime('%H:%M'),
+		dh_out.strftime('%H:%M'),
+		n_tab,
+		t_real,
+		dh_late,
+		dh_early.strftime('%H:%M'),
+		day_o,
+		ov_tm.strftime('%H:%M'),
+		wr_tm.strftime('%H:%M'),
+		emp[i]['status'],
+		emp[i]['hcin'],
+		emp[i]['hcout'],
+		emp[i]['dpt'],
+		n_day,
+		we_tm,
+		ety,
+		ttl_a.strftime('%H:%M'),
+		n_ot,
+		w_ot,
+		ety,
+		ety))
+			else:
+				tm_in = datetime.time(ch_in, cm_in[1])
+				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
+				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
+				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
+				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
+				day_o = ety
+				n_day = ety
+				we_tm = n_tab
+				n_ot = ety
+				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
+		emp[i]['akun'],
+		emp[i]['nomor'],
+		emp[i]['nama'],
+		emp[i]['assign'],
+		dt_ls[x].strftime('%Y-%m-%d'),
+		wr_sf,
+		dt_in.strftime('%H:%M'),
+		dt_out.strftime('%H:%M'),
+		dh_in.strftime('%H:%M'),
+		dh_out.strftime('%H:%M'),
+		n_tab,
+		t_real,
+		dh_late,
+		dh_early.strftime('%H:%M'),
+		day_o,
+		ov_tm.strftime('%H:%M'),
+		wr_tm.strftime('%H:%M'),
+		emp[i]['status'],
+		emp[i]['hcin'],
+		emp[i]['hcout'],
+		emp[i]['dpt'],
+		n_day,
+		we_tm,
+		ety,
+		ttl_a.strftime('%H:%M'),
+		n_ot,
+		w_ot,
+		ety,
+		ety))
+	
+		else:
+			wr_sf = sf_ls[0]
+			dt_out = datetime.datetime.combine(dt_ls[x],hr_out[0])
+			dh_out = datetime.datetime.combine(dt_ls[x],datetime.time(ch_out[0],cm_in[2]))
+			t_real = n_tab
+			if ch_in == 7:
+				tm_in = datetime.time(ch_in, cm_in[0])
+				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
+				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
+				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
+				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
+				day_o = ety
+				n_day = n_tab
+				we_tm = ety
+				w_ot = ety
+				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
+		emp[i]['akun'],
+		emp[i]['nomor'],
+		emp[i]['nama'],
+		emp[i]['assign'],
+		dt_ls[x].strftime('%Y-%m-%d'),
+		wr_sf,
+		dt_in.strftime('%H:%M'),
+		dt_out.strftime('%H:%M'),
+		dh_in.strftime('%H:%M'),
+		dh_out.strftime('%H:%M'),
+		n_tab,
+		t_real,
+		dh_late,
+		dh_early.strftime('%H:%M'),
+		day_o,
+		ov_tm.strftime('%H:%M'),
+		wr_tm.strftime('%H:%M'),
+		emp[i]['status'],
+		emp[i]['hcin'],
+		emp[i]['hcout'],
+		emp[i]['dpt'],
+		n_day,
+		we_tm,
+		ety,
+		ttl_a.strftime('%H:%M'),
+		n_ot,
+		w_ot,
+		ety,
+		ety))
+		
+			else:
+				tm_in = datetime.time(ch_in, cm_in[1])
+				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
+				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
+				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
+				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
+				day_o = ety
+				n_day = n_tab
+				we_tm = ety
+				w_ot = ety
+			
+				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
+		emp[i]['akun'],
+		emp[i]['nomor'],
+		emp[i]['nama'],
+		emp[i]['assign'],
+		dt_ls[x].strftime('%Y-%m-%d'),
+		wr_sf,
+		dt_in.strftime('%H:%M'),
+		dt_out.strftime('%H:%M'),
+		dh_in.strftime('%H:%M'),
+		dh_out.strftime('%H:%M'),
+		n_tab,
+		t_real,
+		dh_late,
+		dh_early.strftime('%H:%M'),
+		day_o,
+		ov_tm.strftime('%H:%M'),
+		wr_tm.strftime('%H:%M'),
+		emp[i]['status'],
+		emp[i]['hcin'],
+		emp[i]['hcout'],
+		emp[i]['dpt'],
+		n_day,
+		we_tm,
+		ety,
+		ttl_a.strftime('%H:%M'),
+		n_ot,
+		w_ot,
+		ety,
+		ety))
