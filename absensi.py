@@ -2,7 +2,7 @@ import random
 import datetime
 
 #header
-header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.replace(',','\t')
+header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.split(',')
 
 #misc
 ''' Auto-Assign, Status, Hari Libur, Libur Lembur is empty'''
@@ -59,10 +59,19 @@ def t_time(a,ci,co):
 	return a+(co-ci)
 def nw_ot(hi,ci,ho,co):
 	return round((co-ci)/(ho-hi),2)
-print(header)
 
+
+container = []
 for i in range(len(emp)):
+	bl_con = []
 	for x in range(len(dt_ls)):
+		cl_con = {}
+		cl_con['nopeg'] = str(x)
+		cl_con['noakun'] = str(x)
+		cl_con['nomor'] = str(x)
+		cl_con['nama'] = emp[i]['nama']
+		cl_con['assign'] = ety
+		
 		ch_in = random.randint(7,9)
 		cm_in = [random.randint(45,59),random.randint(0,15),random.randint(0,59)]
 		ch_out = [random.randint(16,18),random.randint(15,18)]
@@ -75,46 +84,42 @@ for i in range(len(emp)):
 			dh_in = datetime.datetime.combine(dt_ls[x],hr_off)
 			dh_out = datetime.datetime.combine(dt_ls[x],hr_off)
 			t_real = ety
-			dh_late = datetime.datetime.combine(dt_ls[x],hr_off)
-			dh_early = datetime.datetime.combine(dt_ls[x],hr_off)
+			dh_late = ety
+			dh_early = ety
 			day_o = n_tab
-			ov_tm = datetime.datetime.combine(dt_ls[x],hr_off)
-			wr_tm = datetime.datetime.combine(dt_ls[x],hr_off)
+			ov_tm = ety
+			wr_tm = ety
 			n_day = ety
 			we_tm = ety
 			ttl_a = datetime.datetime.combine(dt_ls[x],hr_off)
 			n_ot = ety
 			w_ot = ety
-			print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
-		emp[i]['akun'],
-		emp[i]['nomor'],
-		emp[i]['nama'],
-		emp[i]['assign'],
-		dt_ls[x].strftime('%Y-%m-%d'),
-		wr_sf,
-		dt_in.strftime('%H:%M'),
-		dt_out.strftime('%H:%M'),
-		dh_in.strftime('%H:%M'),
-		dh_out.strftime('%H:%M'),
-		n_tab,
-		t_real,
-		dh_late,
-		dh_early.strftime('%H:%M'),
-		day_o,
-		ov_tm.strftime('%H:%M'),
-		wr_tm.strftime('%H:%M'),
-		emp[i]['status'],
-		emp[i]['hcin'],
-		emp[i]['hcout'],
-		emp[i]['dpt'],
-		n_day,
-		we_tm,
-		ety,
-		ttl_a.strftime('%H:%M'),
-		n_ot,
-		w_ot,
-		ety,
-		ety))
+			
+			cl_con['shift'] = wr_sf
+			cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+			cl_con['hour_on'] = dt_in.strftime('%H:%M')
+			cl_con['hour_off'] = dt_out.strftime('%H:%M')
+			cl_con['check_in'] = dh_in.strftime('%H:%M')
+			cl_con['check_out'] = dh_out.strftime('%H:%M')
+			cl_con['normal_time'] = n_tab
+			cl_con['real_time'] = t_real
+			cl_con['late'] = dh_late
+			cl_con['early'] = dh_early
+			cl_con['day_off'] = day_o
+			cl_con['overtime'] = ov_tm
+			cl_con['worktime'] = wr_tm
+			cl_con['status'] = ety
+			cl_con['man_cin'] = ety
+			cl_con['man_cout'] = ety
+			cl_con['dept'] = emp[i]['dpt']
+			cl_con['normalday'] = n_day
+			cl_con['weekday'] = we_tm
+			cl_con['holiday'] = n_tab
+			cl_con['total_att'] = ttl_a.strftime('%H:%M')
+			cl_con['normal_ot'] = n_ot
+			cl_con['week_ot'] = w_ot
+			cl_con['holi_ot'] = ety
+			bl_con.append(cl_con)
 			
 		elif dt_ls[x].weekday() == 5:
 			wr_sf = sf_ls[1]
@@ -134,36 +139,33 @@ for i in range(len(emp)):
 				n_day = ety
 				we_tm = n_tab
 				n_ot = ety
-				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
-		emp[i]['akun'],
-		emp[i]['nomor'],
-		emp[i]['nama'],
-		emp[i]['assign'],
-		dt_ls[x].strftime('%Y-%m-%d'),
-		wr_sf,
-		dt_in.strftime('%H:%M'),
-		dt_out.strftime('%H:%M'),
-		dh_in.strftime('%H:%M'),
-		dh_out.strftime('%H:%M'),
-		n_tab,
-		t_real,
-		dh_late,
-		dh_early.strftime('%H:%M'),
-		day_o,
-		ov_tm.strftime('%H:%M'),
-		wr_tm.strftime('%H:%M'),
-		emp[i]['status'],
-		emp[i]['hcin'],
-		emp[i]['hcout'],
-		emp[i]['dpt'],
-		n_day,
-		we_tm,
-		ety,
-		ttl_a.strftime('%H:%M'),
-		n_ot,
-		w_ot,
-		ety,
-		ety))
+				
+				cl_con['shift'] = wr_sf
+				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['hour_on'] = dt_in.strftime('%H:%M')
+				cl_con['hour_off'] = dt_out.strftime('%H:%M')
+				cl_con['check_in'] = dh_in.strftime('%H:%M')
+				cl_con['check_out'] = dh_out.strftime('%H:%M')
+				cl_con['normal_time'] = n_tab
+				cl_con['real_time'] = t_real
+				cl_con['late'] = dh_late.strftime('%H:%M')
+				cl_con['early'] = dh_early.strftime('%H:%M')
+				cl_con['day_off'] = day_o
+				cl_con['overtime'] = ov_tm.strftime('%H:%M')
+				cl_con['worktime'] = wr_tm.strftime('%H:%M')
+				cl_con['status'] = ety
+				cl_con['man_cin'] = ety
+				cl_con['man_cout'] = ety
+				cl_con['dept'] = emp[i]['dpt']
+				cl_con['normalday'] = n_day
+				cl_con['weekday'] = we_tm
+				cl_con['holiday'] = ety
+				cl_con['total_att'] = ttl_a.strftime('%H:%M')
+				cl_con['normal_ot'] = n_ot
+				cl_con['week_ot'] = w_ot
+				cl_con['holi_ot'] = ety
+				bl_con.append(cl_con)
+				
 			else:
 				tm_in = datetime.time(ch_in, cm_in[1])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
@@ -177,37 +179,33 @@ for i in range(len(emp)):
 				n_day = ety
 				we_tm = n_tab
 				n_ot = ety
-				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
-		emp[i]['akun'],
-		emp[i]['nomor'],
-		emp[i]['nama'],
-		emp[i]['assign'],
-		dt_ls[x].strftime('%Y-%m-%d'),
-		wr_sf,
-		dt_in.strftime('%H:%M'),
-		dt_out.strftime('%H:%M'),
-		dh_in.strftime('%H:%M'),
-		dh_out.strftime('%H:%M'),
-		n_tab,
-		t_real,
-		dh_late,
-		dh_early.strftime('%H:%M'),
-		day_o,
-		ov_tm.strftime('%H:%M'),
-		wr_tm.strftime('%H:%M'),
-		emp[i]['status'],
-		emp[i]['hcin'],
-		emp[i]['hcout'],
-		emp[i]['dpt'],
-		n_day,
-		we_tm,
-		ety,
-		ttl_a.strftime('%H:%M'),
-		n_ot,
-		w_ot,
-		ety,
-		ety))
-	
+				
+				cl_con['shift'] = wr_sf
+				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['hour_on'] = dt_in.strftime('%H:%M')
+				cl_con['hour_off'] = dt_out.strftime('%H:%M')
+				cl_con['check_in'] = dh_in.strftime('%H:%M')
+				cl_con['check_out'] = dh_out.strftime('%H:%M')
+				cl_con['normal_time'] = n_tab
+				cl_con['real_time'] = t_real
+				cl_con['late'] = dh_late.strftime('%H:%M')
+				cl_con['early'] = dh_early.strftime('%H:%M')
+				cl_con['day_off'] = day_o
+				cl_con['overtime'] = ov_tm.strftime('%H:%M')
+				cl_con['worktime'] = wr_tm.strftime('%H:%M')
+				cl_con['status'] = ety
+				cl_con['man_cin'] = ety
+				cl_con['man_cout'] = ety
+				cl_con['dept'] = emp[i]['dpt']
+				cl_con['normalday'] = n_day
+				cl_con['weekday'] = we_tm
+				cl_con['holiday'] = ety
+				cl_con['total_att'] = ttl_a.strftime('%H:%M')
+				cl_con['normal_ot'] = n_ot
+				cl_con['week_ot'] = w_ot
+				cl_con['holi_ot'] = ety
+				bl_con.append(cl_con)
+				
 		else:
 			wr_sf = sf_ls[0]
 			dt_out = datetime.datetime.combine(dt_ls[x],hr_out[0])
@@ -226,37 +224,33 @@ for i in range(len(emp)):
 				n_day = n_tab
 				we_tm = ety
 				w_ot = ety
-				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
-		emp[i]['akun'],
-		emp[i]['nomor'],
-		emp[i]['nama'],
-		emp[i]['assign'],
-		dt_ls[x].strftime('%Y-%m-%d'),
-		wr_sf,
-		dt_in.strftime('%H:%M'),
-		dt_out.strftime('%H:%M'),
-		dh_in.strftime('%H:%M'),
-		dh_out.strftime('%H:%M'),
-		n_tab,
-		t_real,
-		dh_late,
-		dh_early.strftime('%H:%M'),
-		day_o,
-		ov_tm.strftime('%H:%M'),
-		wr_tm.strftime('%H:%M'),
-		emp[i]['status'],
-		emp[i]['hcin'],
-		emp[i]['hcout'],
-		emp[i]['dpt'],
-		n_day,
-		we_tm,
-		ety,
-		ttl_a.strftime('%H:%M'),
-		n_ot,
-		w_ot,
-		ety,
-		ety))
-		
+				
+				cl_con['shift'] = wr_sf
+				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['hour_on'] = dt_in.strftime('%H:%M')
+				cl_con['hour_off'] = dt_out.strftime('%H:%M')
+				cl_con['check_in'] = dh_in.strftime('%H:%M')
+				cl_con['check_out'] = dh_out.strftime('%H:%M')
+				cl_con['normal_time'] = n_tab
+				cl_con['real_time'] = t_real
+				cl_con['late'] = dh_late.strftime('%H:%M')
+				cl_con['early'] = dh_early.strftime('%H:%M')
+				cl_con['day_off'] = day_o
+				cl_con['overtime'] = ov_tm.strftime('%H:%M')
+				cl_con['worktime'] = wr_tm.strftime('%H:%M')
+				cl_con['status'] = ety
+				cl_con['man_cin'] = ety
+				cl_con['man_cout'] = ety
+				cl_con['dept'] = emp[i]['dpt']
+				cl_con['normalday'] = n_day
+				cl_con['weekday'] = we_tm
+				cl_con['holiday'] = ety
+				cl_con['total_att'] = ttl_a.strftime('%H:%M')
+				cl_con['normal_ot'] = n_ot
+				cl_con['week_ot'] = w_ot
+				cl_con['holi_ot'] = ety
+				bl_con.append(cl_con)
+				
 			else:
 				tm_in = datetime.time(ch_in, cm_in[1])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
@@ -270,34 +264,35 @@ for i in range(len(emp)):
 				n_day = n_tab
 				we_tm = ety
 				w_ot = ety
-			
-				print('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}\t{16}\t{17}\t{18}\t{19}\t{20}\t{21}\t{22}\t{23}\t{24}\t{25}\t{26}\t{27}\t{28}\t{29}'.format(emp[i]['nopeg'],
-		emp[i]['akun'],
-		emp[i]['nomor'],
-		emp[i]['nama'],
-		emp[i]['assign'],
-		dt_ls[x].strftime('%Y-%m-%d'),
-		wr_sf,
-		dt_in.strftime('%H:%M'),
-		dt_out.strftime('%H:%M'),
-		dh_in.strftime('%H:%M'),
-		dh_out.strftime('%H:%M'),
-		n_tab,
-		t_real,
-		dh_late,
-		dh_early.strftime('%H:%M'),
-		day_o,
-		ov_tm.strftime('%H:%M'),
-		wr_tm.strftime('%H:%M'),
-		emp[i]['status'],
-		emp[i]['hcin'],
-		emp[i]['hcout'],
-		emp[i]['dpt'],
-		n_day,
-		we_tm,
-		ety,
-		ttl_a.strftime('%H:%M'),
-		n_ot,
-		w_ot,
-		ety,
-		ety))
+				
+				cl_con['shift'] = wr_sf
+				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['hour_on'] = dt_in.strftime('%H:%M')
+				cl_con['hour_off'] = dt_out.strftime('%H:%M')
+				cl_con['check_in'] = dh_in.strftime('%H:%M')
+				cl_con['check_out'] = dh_out.strftime('%H:%M')
+				cl_con['normal_time'] = n_tab
+				cl_con['real_time'] = t_real
+				cl_con['late'] = dh_late.strftime('%H:%M')
+				cl_con['early'] = dh_early.strftime('%H:%M')
+				cl_con['day_off'] = day_o
+				cl_con['overtime'] = ov_tm.strftime('%H:%M')
+				cl_con['worktime'] = wr_tm.strftime('%H:%M')
+				cl_con['status'] = ety
+				cl_con['man_cin'] = ety
+				cl_con['man_cout'] = ety
+				cl_con['dept'] = emp[i]['dpt']
+				cl_con['normalday'] = n_day
+				cl_con['weekday'] = we_tm
+				cl_con['holiday'] = ety
+				cl_con['total_att'] = ttl_a.strftime('%H:%M')
+				cl_con['normal_ot'] = n_ot
+				cl_con['week_ot'] = w_ot
+				cl_con['holi_ot'] = ety
+				bl_con.append(cl_con)
+	container.append(bl_con)
+
+
+for i in container:
+	for x in i:
+		print (x)
