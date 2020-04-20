@@ -2,8 +2,6 @@ import random
 import datetime
 import string
 from openpyxl import Workbook
-from openpyxl.compat import range
-from openpyxl.utils import get_column_letter
 
 #header
 header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.split(',')
@@ -70,7 +68,7 @@ for i in range(len(emp)):
 		cl_con = {}
 		ch_in = random.randint(7,9)
 		cm_in = [random.randint(45,59),random.randint(0,15),random.randint(0,59)]
-		ch_out = [random.randint(16,18),random.randint(15,18)]
+		ch_out = [random.randint(14,18),random.randint(13,18)]
 		
 		dt_in = datetime.datetime.combine(dt_ls[x],hr_in)
 
@@ -92,8 +90,8 @@ for i in range(len(emp)):
 			w_ot = ety
 			
 			cl_con['nopeg'] = str(i+1)
-			cl_con['noakun'] = str(i)
-			cl_con['nomor'] = str(i)
+			cl_con['noakun'] = str(i+1)
+			cl_con['nomor'] = str(i+1)
 			cl_con['nama'] = emp[i]['nama']
 			cl_con['assign'] = ety
 			cl_con['shift'] = wr_sf
@@ -131,9 +129,9 @@ for i in range(len(emp)):
 				tm_in = datetime.time(ch_in, cm_in[0])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
 				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
-				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
-				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
-				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				dh_early = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_out,dh_out)
+				ov_tm = datetime.datetime.combine(dt_ls[x],hr_off) + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = datetime.datetime.combine(dt_ls[x],hr_off) + w_time(dt_in,dh_in,dt_out,dh_out)
 				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
@@ -176,9 +174,9 @@ for i in range(len(emp)):
 				tm_in = datetime.time(ch_in, cm_in[1])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
 				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
-				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
-				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
-				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				dh_early = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_out,dh_out)
+				ov_tm = datetime.datetime.combine(dt_ls[x],hr_off) + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = datetime.datetime.combine(dt_ls[x],hr_off) + w_time(dt_in,dh_in,dt_out,dh_out)
 				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
@@ -226,9 +224,9 @@ for i in range(len(emp)):
 				tm_in = datetime.time(ch_in, cm_in[0])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
 				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
-				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
-				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
-				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				dh_early = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_out,dh_out)
+				ov_tm = datetime.datetime.combine(dt_ls[x],hr_off) + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = datetime.datetime.combine(dt_ls[x],hr_off) + w_time(dt_in,dh_in,dt_out,dh_out)
 				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
@@ -271,9 +269,9 @@ for i in range(len(emp)):
 				tm_in = datetime.time(ch_in, cm_in[1])
 				dh_in = datetime.datetime.combine(dt_ls[x],tm_in)
 				dh_late = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_in,dh_in)
-				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
-				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
-				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
+				dh_early = datetime.datetime.combine(dt_ls[x],hr_off) + late_in(dt_out,dh_out)
+				ov_tm = datetime.datetime.combine(dt_ls[x],hr_off) + o_time(dt_in,dh_in,dt_out,dh_out)
+				wr_tm = datetime.datetime.combine(dt_ls[x],hr_off) + w_time(dt_in,dh_in,dt_out,dh_out)
 				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
@@ -312,9 +310,8 @@ for i in range(len(emp)):
 				cl_con['holi_ot'] = ety
 				container.append(cl_con)
 
-for i in container:
-	print(i)
-'''column = list(string.ascii_uppercase)+['AA','AB','AC']
+
+column = list(string.ascii_uppercase)+['AA','AB','AC']
 wb = Workbook()
 ws = wb.active
 ws.title = 'Absensi'
@@ -322,15 +319,12 @@ ws.title = 'Absensi'
 for i in range(len(header)):
 	ws.cell(column=i+1,row=1, value=header[i])
 
-conz=[]
 for x in range(len(container)):
-	for y in range(len(container[x])):
-		z = list(container[x][y].values())
-		conz.append(z)
+	z=list(container[x].values())
+	for y in range(len(column)):
+		#print('{}{}'.format(column[y],str(x)))
+		ws.cell(column=y+1,row=x+2,value=(z[y]))
+		#print('{}{} = {}'.format(column[y],x,conz[x][y]))
+		
 
-for x in range(len(conz)):
-	for y in range(len(conz[x])):
-		ws.cell(column=y+1,row=x+2,value=(conz[x][y]))
-		print('{}{} = {}'.format(column[y],x,conz[x][y]))
-
-wb.save('testing.xlsx')'''
+wb.save('testing.xlsx')
