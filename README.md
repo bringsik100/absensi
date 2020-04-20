@@ -2,8 +2,8 @@
 skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi "attendance manager"
 
 # aplikasi dan modul yang dipakai
-python 3.8.2
-openpyxl 3.0.3
+-python 3.8.2
+-openpyxl 3.0.3
 
 # versi alpha 0.2.0
 
