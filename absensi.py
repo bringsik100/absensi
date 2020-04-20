@@ -1,5 +1,9 @@
 import random
 import datetime
+import string
+from openpyxl import Workbook
+from openpyxl.compat import range
+from openpyxl.utils import get_column_letter
 
 #header
 header = 'NoPeg,No. Akun,No.,Nama,Auto-Assign,Tanggal,Jam Kerja,Awal tugas,Akhir tugas,Masuk,Keluar,Normal,Waktu real,Telat,Plg Awal,Bolos,Waktu Lembur,Waktu Kerja,Status,Hrs C/In,Hrs C/Out,Departemen,NDays,Akhir Pekan,Hari Libur,Lama Hadir,NDays_OT,Lembur A.Pekan,Libur Lembur'.split(',')
@@ -39,15 +43,14 @@ def early_out(ho,co):
 	else:
 		return datetime.timedelta(0,0,0)
 def o_time(hi,ci,ho,co):
-	if ci > hi:
-		return datetime.timedelta(0,0,0)
-	else:
+	if ci < hi and co > ho:
+		return (hi-ci)+(co-ho)
+	elif ci < hi and co < ho:
 		return hi-ci
-	if ho > co:
-		return datetime.timedelta(0,0,0)
-	else:
+	elif ci > hi and co > ho:
 		return co-ho
-	return (hi-ci)+(co-ho)
+	else:
+		return datetime.timedelta(0,0,0)
 def w_time(hi,ci,ho,co):
 	if ci>hi:
 		return ho-ci
@@ -63,15 +66,8 @@ def nw_ot(hi,ci,ho,co):
 
 container = []
 for i in range(len(emp)):
-	bl_con = []
-	for x in range(len(dt_ls)):
+	for x in range(len(dt_ls)):	
 		cl_con = {}
-		cl_con['nopeg'] = str(x)
-		cl_con['noakun'] = str(x)
-		cl_con['nomor'] = str(x)
-		cl_con['nama'] = emp[i]['nama']
-		cl_con['assign'] = ety
-		
 		ch_in = random.randint(7,9)
 		cm_in = [random.randint(45,59),random.randint(0,15),random.randint(0,59)]
 		ch_out = [random.randint(16,18),random.randint(15,18)]
@@ -95,8 +91,13 @@ for i in range(len(emp)):
 			n_ot = ety
 			w_ot = ety
 			
+			cl_con['nopeg'] = str(i+1)
+			cl_con['noakun'] = str(i)
+			cl_con['nomor'] = str(i)
+			cl_con['nama'] = emp[i]['nama']
+			cl_con['assign'] = ety
 			cl_con['shift'] = wr_sf
-			cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+			cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
 			cl_con['hour_on'] = dt_in.strftime('%H:%M')
 			cl_con['hour_off'] = dt_out.strftime('%H:%M')
 			cl_con['check_in'] = dh_in.strftime('%H:%M')
@@ -119,7 +120,7 @@ for i in range(len(emp)):
 			cl_con['normal_ot'] = n_ot
 			cl_con['week_ot'] = w_ot
 			cl_con['holi_ot'] = ety
-			bl_con.append(cl_con)
+			container.append(cl_con)
 			
 		elif dt_ls[x].weekday() == 5:
 			wr_sf = sf_ls[1]
@@ -133,15 +134,20 @@ for i in range(len(emp)):
 				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
 				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
 				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
-				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
 				n_day = ety
 				we_tm = n_tab
 				n_ot = ety
 				
+				cl_con['nopeg'] = str(i+1)
+				cl_con['noakun'] = str(i+1)
+				cl_con['nomor'] = str(i+1)
+				cl_con['nama'] = emp[i]['nama']
+				cl_con['assign'] = ety
 				cl_con['shift'] = wr_sf
-				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
 				cl_con['hour_on'] = dt_in.strftime('%H:%M')
 				cl_con['hour_off'] = dt_out.strftime('%H:%M')
 				cl_con['check_in'] = dh_in.strftime('%H:%M')
@@ -164,7 +170,7 @@ for i in range(len(emp)):
 				cl_con['normal_ot'] = n_ot
 				cl_con['week_ot'] = w_ot
 				cl_con['holi_ot'] = ety
-				bl_con.append(cl_con)
+				container.append(cl_con)
 				
 			else:
 				tm_in = datetime.time(ch_in, cm_in[1])
@@ -173,15 +179,20 @@ for i in range(len(emp)):
 				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
 				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
 				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
-				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				w_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
 				n_day = ety
 				we_tm = n_tab
 				n_ot = ety
 				
+				cl_con['nopeg'] = str(i+1)
+				cl_con['noakun'] = str(i+1)
+				cl_con['nomor'] = str(i+1)
+				cl_con['nama'] = emp[i]['nama']
+				cl_con['assign'] = ety
 				cl_con['shift'] = wr_sf
-				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
 				cl_con['hour_on'] = dt_in.strftime('%H:%M')
 				cl_con['hour_off'] = dt_out.strftime('%H:%M')
 				cl_con['check_in'] = dh_in.strftime('%H:%M')
@@ -204,7 +215,7 @@ for i in range(len(emp)):
 				cl_con['normal_ot'] = n_ot
 				cl_con['week_ot'] = w_ot
 				cl_con['holi_ot'] = ety
-				bl_con.append(cl_con)
+				container.append(cl_con)
 				
 		else:
 			wr_sf = sf_ls[0]
@@ -218,15 +229,20 @@ for i in range(len(emp)):
 				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
 				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
 				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
-				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
 				n_day = n_tab
 				we_tm = ety
 				w_ot = ety
 				
+				cl_con['nopeg'] = str(i+1)
+				cl_con['noakun'] = str(i+1)
+				cl_con['nomor'] = str(i+1)
+				cl_con['nama'] = emp[i]['nama']
+				cl_con['assign'] = ety
 				cl_con['shift'] = wr_sf
-				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
 				cl_con['hour_on'] = dt_in.strftime('%H:%M')
 				cl_con['hour_off'] = dt_out.strftime('%H:%M')
 				cl_con['check_in'] = dh_in.strftime('%H:%M')
@@ -249,7 +265,7 @@ for i in range(len(emp)):
 				cl_con['normal_ot'] = n_ot
 				cl_con['week_ot'] = w_ot
 				cl_con['holi_ot'] = ety
-				bl_con.append(cl_con)
+				container.append(cl_con)
 				
 			else:
 				tm_in = datetime.time(ch_in, cm_in[1])
@@ -258,15 +274,20 @@ for i in range(len(emp)):
 				dh_early = dt_ls[x] + late_in(dt_out,dh_out)
 				ov_tm = dt_ls[x] + o_time(dt_in,dh_in,dt_out,dh_out)
 				wr_tm = dt_ls[x] + w_time(dt_in,dh_in,dt_out,dh_out)
-				ttl_a = t_time(dt_ls[x],dh_in,dh_out)
+				ttl_a = t_time(datetime.datetime.combine(dt_ls[x],hr_off),dh_in,dh_out)
 				n_ot = nw_ot(dt_in,dh_in,dt_out,dh_out)
 				day_o = ety
 				n_day = n_tab
 				we_tm = ety
 				w_ot = ety
 				
+				cl_con['nopeg'] = str(i+1)
+				cl_con['noakun'] = str(i+1)
+				cl_con['nomor'] = str(i+1)
+				cl_con['nama'] = emp[i]['nama']
+				cl_con['assign'] = ety
 				cl_con['shift'] = wr_sf
-				cl_con['date'] = dt_ls[i].strftime('%Y/%m/%d')
+				cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
 				cl_con['hour_on'] = dt_in.strftime('%H:%M')
 				cl_con['hour_off'] = dt_out.strftime('%H:%M')
 				cl_con['check_in'] = dh_in.strftime('%H:%M')
@@ -289,10 +310,27 @@ for i in range(len(emp)):
 				cl_con['normal_ot'] = n_ot
 				cl_con['week_ot'] = w_ot
 				cl_con['holi_ot'] = ety
-				bl_con.append(cl_con)
-	container.append(bl_con)
-
+				container.append(cl_con)
 
 for i in container:
-	for x in i:
-		print (x)
+	print(i)
+'''column = list(string.ascii_uppercase)+['AA','AB','AC']
+wb = Workbook()
+ws = wb.active
+ws.title = 'Absensi'
+
+for i in range(len(header)):
+	ws.cell(column=i+1,row=1, value=header[i])
+
+conz=[]
+for x in range(len(container)):
+	for y in range(len(container[x])):
+		z = list(container[x][y].values())
+		conz.append(z)
+
+for x in range(len(conz)):
+	for y in range(len(conz[x])):
+		ws.cell(column=y+1,row=x+2,value=(conz[x][y]))
+		print('{}{} = {}'.format(column[y],x,conz[x][y]))
+
+wb.save('testing.xlsx')'''
