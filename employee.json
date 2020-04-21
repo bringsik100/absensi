@@ -1,0 +1,70 @@
+{
+	"employee": [
+		{
+			"nopeg": "1",
+			"akun": "1",
+			"nomor": "1",
+			"nama": "Ape",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		},
+		{
+			"nopeg": "2",
+			"akun": "2",
+			"nomor": "2",
+			"nama": "Bull",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		},
+		{
+			"nopeg": "3",
+			"akun": "3",
+			"nomor": "3",
+			"nama": "Cat",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		},
+		{
+			"nopeg": "4",
+			"akun": "4",
+			"nomor": "4",
+			"nama": "Dog",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		},
+		{
+			"nopeg": "5",
+			"akun": "5",
+			"nomor": "5",
+			"nama": "Elk",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		},
+		{
+			"nopeg": "6",
+			"akun": "6",
+			"nomor": "6",
+			"nama": "Fowl",
+			"assign": " ",
+			"status": " ",
+			"hcin": " ",
+			"hcout": " ",
+			"dpt": "Animal"
+		}
+	]
+}

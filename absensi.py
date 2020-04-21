@@ -316,15 +316,13 @@ wb = Workbook()
 ws = wb.active
 ws.title = 'Absensi'
 
+#output to excell
 for i in range(len(header)):
 	ws.cell(column=i+1,row=1, value=header[i])
 
 for x in range(len(container)):
 	z=list(container[x].values())
 	for y in range(len(column)):
-		#print('{}{}'.format(column[y],str(x)))
 		ws.cell(column=y+1,row=x+2,value=(z[y]))
-		#print('{}{} = {}'.format(column[y],x,conz[x][y]))
-		
 
 wb.save('testing.xlsx')
