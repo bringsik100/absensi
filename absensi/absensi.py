@@ -15,8 +15,16 @@ import __main__
 from openpyxl import Workbook
 
 #FUNCTION LIST
+'''
+penjelasan variable 
 
+hi = hour in, jam masuk
+ho = hour out, jam keluar
+ci = check in
+co = check out
+'''
 def late_in(hi,ci):
+	'''late check in'''
 	'''menghitung berapa lama pegawai terlambat'''
 	if ci > hi:
 		return ci-hi
@@ -24,6 +32,7 @@ def late_in(hi,ci):
 		return datetime.timedelta(0,0,0)
 
 def early_out(ho,co):
+	'''early check out'''
 	'''menghitung berapa lama pegawai pulang lebih awal'''
 	if ho > co:
 		return ho-co
@@ -31,6 +40,7 @@ def early_out(ho,co):
 		return datetime.timedelta(0,0,0)
 
 def o_time(hi,ci,ho,co):
+	'''over time'''
 	'''menghitung lembur'''
 	if ci < hi and co > ho:
 		return (hi-ci)+(co-ho)
@@ -42,7 +52,8 @@ def o_time(hi,ci,ho,co):
 		return datetime.timedelta(0,0,0)
 
 def w_time(hi,ci,ho,co):
-	'''w_time = menghitung jam kerja minus telat dan pulang awal'''
+	'''work time'''
+	'''menghitung jam kerja minus telat dan pulang awal'''
 	if ci>hi:
 		return ho-ci
 	elif co>ho:
@@ -51,12 +62,47 @@ def w_time(hi,ci,ho,co):
 		return ho-hi
 
 def t_time(a,ci,co):
+	'''total time'''
 	'''menghitung jam kerja dari awal masuk sampai keluar'''
 	return a+(co-ci)
 
 def nw_ot(hi,ci,ho,co):
+	'''normal day and weekend day over time'''
 	'''menghitung jam lembur dalam desimal'''
 	return round((co-ci)/(ho-hi),2)
+def con_up(a):
+	'''container update'''
+	'''update dan pengisi cl_con'''
+	self.a=a
+	a['nopeg'] = str(i+1)
+	a['noakun'] = str(i+1)
+	a['nomor'] = str(i+1)
+	a['nama'] = emp[i]['nama']
+	a['assign'] = ety
+	a['shift'] = wr_sf
+	a['date'] = dt_ls[x].strftime('%Y/%m/%d')
+	a['hour_on'] = dt_in.strftime('%H:%M')
+	a['hour_off'] = dt_out.strftime('%H:%M')
+	a['check_in'] = dh_in.strftime('%H:%M')
+	a['check_out'] = dh_out.strftime('%H:%M')
+	a['normal_time'] = n_tab
+	a['real_time'] = t_real
+	a['late'] = dh_late
+	a['early'] = dh_early
+	a['day_off'] = day_o
+	a['overtime'] = ov_tm
+	a['worktime'] = wr_tm
+	a['status'] = ety
+	a['man_cin'] = ety
+	a['man_cout'] = ety
+	a['dept'] = emp[i]['dpt']
+	a['normalday'] = n_day
+	a['weekday'] = we_tm
+	a['holiday'] = n_tab
+	a['total_att'] = ttl_a.strftime('%H:%M')
+	a['normal_ot'] = n_ot
+	a['week_ot'] = w_ot
+	a['holi_ot'] = ety
 
 #VARIABLE LIST
 header = []
@@ -87,10 +133,12 @@ if __name__ == "absensi":
 		for x in range(len(i['employee'])):
 			emp.append(x)
 
-	'''looping employee'''
 	for i in range(len(emp)):
-		'''looping tanggal'''
-		for x in range(len(dt_ls)):	
+		'''looping employee'''
+		for x in range(len(dt_ls)):
+			'''looping tanggal'''
+			
+			'''cluster container'''
 			cl_con = {}
 			'''randomisasi waktu in dan out'''
 			ch_in = random.randint(7,9)
@@ -100,7 +148,7 @@ if __name__ == "absensi":
 			dt_in = datetime.datetime.combine(dt_ls[x],hr_in)
 	
 			if dt_ls[x].weekday() == 6:
-				
+				'''hari minggu'''
 				wr_sf = sf_ls[1]
 				dt_out = datetime.datetime.combine(dt_ls[x],hr_out[1])
 				dh_in = datetime.datetime.combine(dt_ls[x],hr_off)
@@ -117,38 +165,11 @@ if __name__ == "absensi":
 				n_ot = ety
 				w_ot = ety
 				
-				cl_con['nopeg'] = str(i+1)
-				cl_con['noakun'] = str(i+1)
-				cl_con['nomor'] = str(i+1)
-				cl_con['nama'] = emp[i]['nama']
-				cl_con['assign'] = ety
-				cl_con['shift'] = wr_sf
-				cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
-				cl_con['hour_on'] = dt_in.strftime('%H:%M')
-				cl_con['hour_off'] = dt_out.strftime('%H:%M')
-				cl_con['check_in'] = dh_in.strftime('%H:%M')
-				cl_con['check_out'] = dh_out.strftime('%H:%M')
-				cl_con['normal_time'] = n_tab
-				cl_con['real_time'] = t_real
-				cl_con['late'] = dh_late
-				cl_con['early'] = dh_early
-				cl_con['day_off'] = day_o
-				cl_con['overtime'] = ov_tm
-				cl_con['worktime'] = wr_tm
-				cl_con['status'] = ety
-				cl_con['man_cin'] = ety
-				cl_con['man_cout'] = ety
-				cl_con['dept'] = emp[i]['dpt']
-				cl_con['normalday'] = n_day
-				cl_con['weekday'] = we_tm
-				cl_con['holiday'] = n_tab
-				cl_con['total_att'] = ttl_a.strftime('%H:%M')
-				cl_con['normal_ot'] = n_ot
-				cl_con['week_ot'] = w_ot
-				cl_con['holi_ot'] = ety
+				con_up(cl_con)
 				container.append(cl_con)
 				
 			elif dt_ls[x].weekday() == 5:
+				'''hari rabu'''
 				wr_sf = sf_ls[1]
 				dt_out = datetime.datetime.combine(dt_ls[x],hr_out[1])
 				dh_out = datetime.datetime.combine(dt_ls[x],datetime.time(ch_out[1],cm_in[2]))
@@ -167,35 +188,7 @@ if __name__ == "absensi":
 					we_tm = n_tab
 					n_ot = ety
 					
-					cl_con['nopeg'] = str(i+1)
-					cl_con['noakun'] = str(i+1)
-					cl_con['nomor'] = str(i+1)
-					cl_con['nama'] = emp[i]['nama']
-					cl_con['assign'] = ety
-					cl_con['shift'] = wr_sf
-					cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
-					cl_con['hour_on'] = dt_in.strftime('%H:%M')
-					cl_con['hour_off'] = dt_out.strftime('%H:%M')
-					cl_con['check_in'] = dh_in.strftime('%H:%M')
-					cl_con['check_out'] = dh_out.strftime('%H:%M')
-					cl_con['normal_time'] = n_tab
-					cl_con['real_time'] = t_real
-					cl_con['late'] = dh_late.strftime('%H:%M')
-					cl_con['early'] = dh_early.strftime('%H:%M')
-					cl_con['day_off'] = day_o
-					cl_con['overtime'] = ov_tm.strftime('%H:%M')
-					cl_con['worktime'] = wr_tm.strftime('%H:%M')
-					cl_con['status'] = ety
-					cl_con['man_cin'] = ety
-					cl_con['man_cout'] = ety
-					cl_con['dept'] = emp[i]['dpt']
-					cl_con['normalday'] = n_day
-					cl_con['weekday'] = we_tm
-					cl_con['holiday'] = ety
-					cl_con['total_att'] = ttl_a.strftime('%H:%M')
-					cl_con['normal_ot'] = n_ot
-					cl_con['week_ot'] = w_ot
-					cl_con['holi_ot'] = ety
+					con_up(cl_con)
 					container.append(cl_con)
 					
 				else:
@@ -212,38 +205,11 @@ if __name__ == "absensi":
 					we_tm = n_tab
 					n_ot = ety
 					
-					cl_con['nopeg'] = str(i+1)
-					cl_con['noakun'] = str(i+1)
-					cl_con['nomor'] = str(i+1)
-					cl_con['nama'] = emp[i]['nama']
-					cl_con['assign'] = ety
-					cl_con['shift'] = wr_sf
-					cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
-					cl_con['hour_on'] = dt_in.strftime('%H:%M')
-					cl_con['hour_off'] = dt_out.strftime('%H:%M')
-					cl_con['check_in'] = dh_in.strftime('%H:%M')
-					cl_con['check_out'] = dh_out.strftime('%H:%M')
-					cl_con['normal_time'] = n_tab
-					cl_con['real_time'] = t_real
-					cl_con['late'] = dh_late.strftime('%H:%M')
-					cl_con['early'] = dh_early.strftime('%H:%M')
-					cl_con['day_off'] = day_o
-					cl_con['overtime'] = ov_tm.strftime('%H:%M')
-					cl_con['worktime'] = wr_tm.strftime('%H:%M')
-					cl_con['status'] = ety
-					cl_con['man_cin'] = ety
-					cl_con['man_cout'] = ety
-					cl_con['dept'] = emp[i]['dpt']
-					cl_con['normalday'] = n_day
-					cl_con['weekday'] = we_tm
-					cl_con['holiday'] = ety
-					cl_con['total_att'] = ttl_a.strftime('%H:%M')
-					cl_con['normal_ot'] = n_ot
-					cl_con['week_ot'] = w_ot
-					cl_con['holi_ot'] = ety
+					con_up(cl_con)
 					container.append(cl_con)
 					
 			else:
+				'''hari senin sampai jumat'''
 				wr_sf = sf_ls[0]
 				dt_out = datetime.datetime.combine(dt_ls[x],hr_out[0])
 				dh_out = datetime.datetime.combine(dt_ls[x],datetime.time(ch_out[0],cm_in[2]))
@@ -262,35 +228,7 @@ if __name__ == "absensi":
 					we_tm = ety
 					w_ot = ety
 					
-					cl_con['nopeg'] = str(i+1)
-					cl_con['noakun'] = str(i+1)
-					cl_con['nomor'] = str(i+1)
-					cl_con['nama'] = emp[i]['nama']
-					cl_con['assign'] = ety
-					cl_con['shift'] = wr_sf
-					cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
-					cl_con['hour_on'] = dt_in.strftime('%H:%M')
-					cl_con['hour_off'] = dt_out.strftime('%H:%M')
-					cl_con['check_in'] = dh_in.strftime('%H:%M')
-					cl_con['check_out'] = dh_out.strftime('%H:%M')
-					cl_con['normal_time'] = n_tab
-					cl_con['real_time'] = t_real
-					cl_con['late'] = dh_late.strftime('%H:%M')
-					cl_con['early'] = dh_early.strftime('%H:%M')
-					cl_con['day_off'] = day_o
-					cl_con['overtime'] = ov_tm.strftime('%H:%M')
-					cl_con['worktime'] = wr_tm.strftime('%H:%M')
-					cl_con['status'] = ety
-					cl_con['man_cin'] = ety
-					cl_con['man_cout'] = ety
-					cl_con['dept'] = emp[i]['dpt']
-					cl_con['normalday'] = n_day
-					cl_con['weekday'] = we_tm
-					cl_con['holiday'] = ety
-					cl_con['total_att'] = ttl_a.strftime('%H:%M')
-					cl_con['normal_ot'] = n_ot
-					cl_con['week_ot'] = w_ot
-					cl_con['holi_ot'] = ety
+					con_up(cl_con)
 					container.append(cl_con)
 					
 				else:
@@ -307,35 +245,7 @@ if __name__ == "absensi":
 					we_tm = ety
 					w_ot = ety
 					
-					cl_con['nopeg'] = str(i+1)
-					cl_con['noakun'] = str(i+1)
-					cl_con['nomor'] = str(i+1)
-					cl_con['nama'] = emp[i]['nama']
-					cl_con['assign'] = ety
-					cl_con['shift'] = wr_sf
-					cl_con['date'] = dt_ls[x].strftime('%Y/%m/%d')
-					cl_con['hour_on'] = dt_in.strftime('%H:%M')
-					cl_con['hour_off'] = dt_out.strftime('%H:%M')
-					cl_con['check_in'] = dh_in.strftime('%H:%M')
-					cl_con['check_out'] = dh_out.strftime('%H:%M')
-					cl_con['normal_time'] = n_tab
-					cl_con['real_time'] = t_real
-					cl_con['late'] = dh_late.strftime('%H:%M')
-					cl_con['early'] = dh_early.strftime('%H:%M')
-					cl_con['day_off'] = day_o
-					cl_con['overtime'] = ov_tm.strftime('%H:%M')
-					cl_con['worktime'] = wr_tm.strftime('%H:%M')
-					cl_con['status'] = ety
-					cl_con['man_cin'] = ety
-					cl_con['man_cout'] = ety
-					cl_con['dept'] = emp[i]['dpt']
-					cl_con['normalday'] = n_day
-					cl_con['weekday'] = we_tm
-					cl_con['holiday'] = ety
-					cl_con['total_att'] = ttl_a.strftime('%H:%M')
-					cl_con['normal_ot'] = n_ot
-					cl_con['week_ot'] = w_ot
-					cl_con['holi_ot'] = ety
+					con_up(cl_con)
 					container.append(cl_con)
 	
 	
