@@ -15,8 +15,8 @@ skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti
 - ganti nama
 - data pegawai kedepannya akan berformat csv atau excel atau json dan terpisah dari skrip
 - ada interaksi untuk pengguna misal :
-++ pengisian data pegawai 
-++ pilihan untuk proses pengisian absensi, bisa manual atau otomatis dengan metode acak
++ pengisian data pegawai 
++ pilihan untuk proses pengisian absensi, bisa manual atau otomatis dengan metode acak
 - GUI? 
 
 ### catatan :
