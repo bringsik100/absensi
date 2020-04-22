@@ -10,7 +10,7 @@ skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti
 ++ data dan fungsi masih tercampur dalam skrip utama
 + interaksi pengguna masih harus didalam skrip
 
--TODO :
+- TODO :
 + ganti nama
 + data pegawai kedepannya akan berformat csv atau excel atau json dan terpisah dari skrip
 + ada interaksi untuk pengguna misal :
