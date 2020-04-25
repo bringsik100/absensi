@@ -7,8 +7,9 @@ __author__ = "bringsik100"
 __version__ = "0.2.2"
 __license__ = "CC"
 
-from random import randint
-import datetime
+from random import randint as ri
+from datetime import datetime as dt
+from datetime import timedelta as td
 import string
 import json
 from openpyxl import Workbook
@@ -22,68 +23,73 @@ ci = check in
 co = check out
 '''
 
-def countf(hi,ho,ci,co):
-	zero = td(seconds=0)
+class countf:
+	'''class utama, mungkin harus dipisah di release berikut'''
 	
-	for i in [hi,ho,ci,co]:
-		if isinstance(i,td) == False:
-			i = zero
-		else:
-			continue
-	def late_in(hi,ci):
+	def __init__(self,hi,ho,ci,co):
+		self.hi = hi
+		self.ho = ho
+		self.ci = ci
+		self.co = co
+	
+		for i in [self.hi,self.ho,self.ci,self.co]:
+			if isinstance(i,td) == False:
+				i = td(seconds = 0)
+			else:
+				continue
+	
+	def late_in(self):
 		'''late check in'''
 		'''menghitung berapa lama pegawai terlambat'''
-		if ci > hi:
-			return ci-hi
+		if self.ci > self.hi:
+			return self.ci-self.hi
 		else:
-			return zero
-		return late_in
-	def early_out(ho,co):
+			return td(seconds=0)
+	
+	def early_out(self):
 		'''early check out'''
 		'''menghitung berapa lama pegawai pulang lebih awal'''
-		if ho > co:
-			return ho-co
+		if self.ho > self.co:
+			return self.ho-self.co
 		else:
-			return zero
-	return early_out
+			return td(seconds=0)
 	
-	def o_time(hi,ci,ho,co):
+	def o_time(self):
 		'''over time'''
 		'''menghitung lembur'''
-		if ci < hi and co > ho:
-			return (hi-ci)+(co-ho)
-		elif ci < hi and co < ho:
-			return hi-ci
-		elif ci > hi and co > ho:
+		if self.ci < self.hi and self.co > self.ho:
+			return (self.hi - self.ci) + (self.co - self.ho)
+		elif self.ci < self.hi and self.co < self.ho:
+			return self.hi - self.ci
+		elif self.ci > self.hi and self.co > self.ho:
 			return co-ho
 		else:
-			return zero
-	return o_time
-	
-	def w_time(hi,ci,ho,co):
+			return td(seconds=0)
+
+	def w_time(self):
 		'''work time'''
 		'''menghitung jam kerja minus telat dan pulang awal'''
-		if ci>hi:
-			return ho-ci
-		elif co>ho:
-			return co-hi
+		if self.ci > self.hi:
+			return self.ho - self.ci
+		elif self.co > self.ho:
+			return self.co - self.hi
 		else:
-			return ho-hi
-	return w_time
+			return self.ho - self.hi
 
-	def t_time(a,ci,co):
+	def t_time(self):
 		'''total time'''
 		'''menghitung jam kerja dari awal masuk sampai keluar'''
-		return a+(co-ci)
-	return t_time
-	def nw_ot(hi,ci,ho,co):
+		return (self.co - self.ci)
+	
+	def nw_ot(self):
 		'''normal day and weekend day over time'''
 		'''menghitung jam lembur dalam desimal'''
-		return round((co-ci)/(ho-hi),2)
+		return round((self.co - self.ci) / (self.ho - self.hi),2)
 
 def con_up(a):
 	'''container update'''
 	'''update dan pengisi cl_con'''
+	'''ini harus ditulis ulang agar tak terlihat kacau'''
 	a['nopeg'] = str(i+1)
 	a['noakun'] = str(i+1)
 	a['nomor'] = str(i+1)
@@ -120,10 +126,11 @@ emp = []
 container = []
 ety = ' ' #Auto-Assign, Status, Hari Libur, Libur Lembur is empty
 n_tab = '\"1'
+
 #date time
-td = datetime.timedelta
-dt_st = datetime.datetime(2020,1,1,0,0,0) #start date
-dt_fn = datetime.datetime(2020,1,10,0,0,0) #end date
+'''variable untuk jam masuk, jam pulang, check in, cheack out, jam kerja dan lain-lain'''
+dt_st = dt(2020,1,1,0,0,0) #start date
+dt_fn = dt(2020,1,10,0,0,0) #end date
 dt_dlt = (dt_fn-dt_st) #date interval
 dt_ls = [dt_st+td(days=i) for i in range(dt_dlt.days+1)] #date list
 hr_in = td(hours=8) #hour in
@@ -132,15 +139,16 @@ hr_0 = td(hours=0) # zero hour
 sf_ls = ['Senin-Jumat','Sabtu-Minggu'] #work shift list
 
 if __name__ == '__main__':
+	'''main program'''
 	
 	'''membaca header'''
-	with open('main/absensi/absensi-0.2.1/data/header.json','r') as head_data:
+	with open('data/header.json','r') as head_data:
 		i = json.load(head_data)
 		for x in i['header']:
 			header.append(x)
 
 	'''membaca employee untuk kolom NoPeg, Akun, No., Nama, Auto-Assign, Status, Hrs C/In, Hrs C/Out, Departemen'''
-	with open('main/absensi/absensi-0.2.1/data/employee.json','r') as emp_data:
+	with open('data/employee.json','r') as emp_data:
 		i = json.load(emp_data)
 		for x in range(len(i['employee'])):
 			emp.append(x)
@@ -154,13 +162,12 @@ if __name__ == '__main__':
 			cl_con = {}
 			today = dt_ls[x]
 			'''randomisasi waktu in dan out'''
-			ch_in = td(hours=random.randint(7,9))
-			cm_in = [td(minutes=random.randint(45,59))
-					,td(minutes=random.randint(0,15))
-					,td(minutes=random.randint(0,59))]
-			ch_out = [td(minutes=random.randint(14,18))
-					,td(minutes=random.randint(13,18))]
-			
+			ch_in = td(hours=ri(7,9))
+			cm_in = [td(minutes=ri(45,59))
+					,td(minutes=ri(0,15))
+					,td(minutes=ri(0,59))]
+			ch_out = [td(minutes=ri(14,18))
+					,td(minutes=ri(13,18))]
 			dt_in = today+hr_in
 	
 			if today.weekday() == 6:
@@ -184,7 +191,7 @@ if __name__ == '__main__':
 				con_up(cl_con)
 				container.append(cl_con)
 				
-			elif dt_ls[x].weekday() == 5:
+			elif today.weekday() == 5:
 				'''hari rabu'''
 				wr_sf = sf_ls[1]
 				dt_out = today+hr_out[1]
@@ -192,13 +199,14 @@ if __name__ == '__main__':
 				t_real = n_tab
 				if ch_in == 7:
 					dh_in = today + ch_in + cm_in[0]
-					rs = countf(dt_in,dt_out,dh_in,dh_out)
-					dh_late = today + rs.late_in
-					dh_early = today + rs.early
-					ov_tm = today + rs.o_time
-					wr_tm = today + rs.w_time
-					ttl_a = rs.t_time
-					w_ot = rs.nw_ot
+					#countf mulai disini 
+					rs = countf(dt_in,dt_out,dh_in,dh_out) 
+					dh_late = today + rs.late_in()
+					dh_early = today + rs.early_out()
+					ov_tm = today + rs.o_time()
+					wr_tm = today + rs.w_time()
+					ttl_a = rs.t_time()
+					w_ot = rs.nw_ot()
 					day_o = ety
 					n_day = ety
 					we_tm = n_tab
@@ -209,13 +217,14 @@ if __name__ == '__main__':
 					
 				else:
 					dh_in = today + ch_in + cm_in[1]
-					rs = countf(dt_in,dt_out,dh_in,dh_out)
-					dh_late = today + rs.late_in
-					dh_early = today + rs.early
-					ov_tm = today + rs.o_time
-					wr_tm = today + rs.w_time
-					ttl_a = rs.t_time
-					w_ot = rs.nw_ot
+					#countf mulai disini
+					rs = countf(dt_in,dt_out,dh_in,dh_out) 
+					dh_late = today + rs.late_in()
+					dh_early = today + rs.early_out()
+					ov_tm = today + rs.o_time()
+					wr_tm = today + rs.w_time()
+					ttl_a = rs.t_time()
+					w_ot = rs.nw_ot()
 					day_o = ety
 					n_day = ety
 					we_tm = n_tab
@@ -232,13 +241,14 @@ if __name__ == '__main__':
 				t_real = n_tab
 				if ch_in == 7:
 					dh_in = today + ch_in + cm_in[0]
-					rs = countf(dt_in,dt_out,dh_in,dh_out)
-					dh_late = today + rs.late_in
-					dh_early = today + rs.early
-					ov_tm = today + rs.o_time
-					wr_tm = today + rs.w_time
-					ttl_a = rs.t_time
-					w_ot = rs.nw_ot
+					#countf mulai disini
+					rs = countf(dt_in,dt_out,dh_in,dh_out) 
+					dh_late = today + rs.late_in()
+					dh_early = today + rs.early_out()
+					ov_tm = today + rs.o_time()
+					wr_tm = today + rs.w_time()
+					ttl_a = rs.t_time()
+					w_ot = rs.nw_ot()
 					day_o = ety
 					n_day = ety
 					we_tm = n_tab
@@ -249,13 +259,14 @@ if __name__ == '__main__':
 					
 				else:
 					dh_in = today + ch_in + cm_in[1]
+					#countf mulai disini
 					rs = countf(dt_in,dt_out,dh_in,dh_out)
-					dh_late = today + rs.late_in
-					dh_early = today + rs.early
-					ov_tm = today + rs.o_time
-					wr_tm = today + rs.w_time
-					ttl_a = rs.t_time
-					w_ot = rs.nw_ot
+					dh_late = today + rs.late_in()
+					dh_early = today + rs.early_out()
+					ov_tm = today + rs.o_time()
+					wr_tm = today + rs.w_time()
+					ttl_a = rs.t_time()
+					w_ot = rs.nw_ot()
 					day_o = ety
 					n_day = ety
 					we_tm = n_tab
@@ -264,13 +275,13 @@ if __name__ == '__main__':
 					con_up(cl_con)
 					container.append(cl_con)
 	
-	
+	'''proses output ke excell'''
 	column = list(string.ascii_uppercase)+['AA','AB','AC']
 	wb = Workbook()
 	ws = wb.active
 	ws.title = 'Absensi'
 	
-	#output to excell
+	#manuliskan data ke excell
 	for i in range(len(header)):
 		ws.cell(column=i+1,row=1, value=header[i])
 	
