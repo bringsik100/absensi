@@ -99,8 +99,8 @@ def con_up(a):
 	a['date'] = today.strftime('%Y/%m/%d')
 	a['hour_on'] = dt_in.strftime('%H:%M')
 	a['hour_off'] = dt_out.strftime('%H:%M')
-	a['check_in'] = dh_in.strftime('%H:%M')
-	a['check_out'] = dh_out.strftime('%H:%M')
+	a['check_in'] = dh_in
+	a['check_out'] = dh_out
 	a['normal_time'] = n_tab
 	a['real_time'] = t_real
 	a['late'] = dh_late
@@ -115,7 +115,7 @@ def con_up(a):
 	a['normalday'] = n_day
 	a['weekday'] = we_tm
 	a['holiday'] = n_tab
-	a['total_att'] = ttl_a.strftime('%H:%M')
+	a['total_att'] = (today+ttl_a).strftime('%H:%M')
 	a['normal_ot'] = n_ot
 	a['week_ot'] = w_ot
 	a['holi_ot'] = ety
@@ -135,7 +135,7 @@ dt_dlt = (dt_fn-dt_st) #date interval
 dt_ls = [dt_st+td(days=i) for i in range(dt_dlt.days+1)] #date list
 hr_in = td(hours=8) #hour in
 hr_out = [td(hours=16),td(hours=13)] #hour out. 16 PM and 13 PM
-hr_0 = td(hours=0) # zero hour
+hr_0 = td(seconds=0) # td(seconds=0) hour
 sf_ls = ['Senin-Jumat','Sabtu-Minggu'] #work shift list
 
 if __name__ == '__main__':
@@ -150,8 +150,7 @@ if __name__ == '__main__':
 	'''membaca employee untuk kolom NoPeg, Akun, No., Nama, Auto-Assign, Status, Hrs C/In, Hrs C/Out, Departemen'''
 	with open('data/employee.json','r') as emp_data:
 		i = json.load(emp_data)
-		for x in range(len(i['employee'])):
-			emp.append(x)
+		emp=list(i['employee'])
 
 	for i in range(len(emp)):
 		'''looping employee'''
@@ -174,8 +173,8 @@ if __name__ == '__main__':
 				'''hari minggu'''
 				wr_sf = sf_ls[1]
 				dt_out = today+hr_out[1]
-				dh_in = zero
-				dh_out = zero
+				dh_in = td(seconds=0)
+				dh_out = td(seconds=0)
 				t_real = ety
 				dh_late = ety
 				dh_early = ety
@@ -184,7 +183,7 @@ if __name__ == '__main__':
 				wr_tm = ety
 				n_day = ety
 				we_tm = ety
-				ttl_a = zero
+				ttl_a = td(seconds=0)
 				n_ot = ety
 				w_ot = ety
 				
