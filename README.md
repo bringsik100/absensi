@@ -2,14 +2,7 @@ absensi
 =======
 skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi "attendance manager"
 
-# versi 0.1.2-pre-alpha
-
-### masalah :
-- kode masih kotor :
-+ nama variabel, nama fungsi belum dirapikan
-+ pengulangan / repetisi dimana-mana dan amburadul
-+ data dan fungsi masih tercampur dalam skrip utama
-- interaksi pengguna masih harus didalam skrip
+# versi alpha 0.1.3
 
 ### TODO :
 - ganti nama
@@ -25,8 +18,8 @@ skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti
 - daftar fungsi disimpan di 'bin.py'
 
 ### aplikasi dan modul yang dipakai :
-- python 3.8.2
-- openpyxl 3.0.3
+- python 3.4
+- openpyxl 2.5.14
 
 ### kontak
 maaf.sedang@sibuk.com

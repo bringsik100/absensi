@@ -33,3 +33,10 @@ Version 0.1.1
 - pengulangan / repetisi dimana-mana dan amburadul
 - data dan fungsi masih tercampur dalam skrip utama
 - interaksi pengguna masih harus didalam skrip
+
+Version 0.1.2
+=============
+- 2020-04-25
+- perbaikan di menu header.json dan employee.json
+- modul countf sudah dipisahkan dari skrip 
+- skrip sudah berjalan lancar dan mampu mengeluarkan output excell
