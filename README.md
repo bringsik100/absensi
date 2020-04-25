@@ -2,7 +2,7 @@ absensi
 =======
 skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi "attendance manager"
 
-# versi alpha 0.2.1
+# versi 0.1.2-pre-alpha
 
 ### masalah :
 - kode masih kotor :
