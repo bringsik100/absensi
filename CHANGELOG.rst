@@ -31,8 +31,8 @@ Version 0.1.1
 - penulisan ulang fungsi - fungsi karena kode masih kotor :
 - nama variabel, nama fungsi belum dirapikan
 - pengulangan / repetisi dimana-mana dan amburadul
-- data dan fungsi masih tercampur dalam skrip utama
-- interaksi pengguna masih harus didalam skrip
+- data dan fungsi masih tercampur dalam modul utama
+- interaksi pengguna masih harus didalam modul
 
 Version 0.1.2
 =============
@@ -40,3 +40,6 @@ Version 0.1.2
 - perbaikan di menu header.json dan employee.json
 - modul countf sudah dipisahkan dari skrip 
 - skrip sudah berjalan lancar dan mampu mengeluarkan output excell
+- 2020-04-26
+- penambahan folder test dan modul employee, shift, dan output. tapi masih dalam tahap pengetesan
+- penambahan data shift dan holiday

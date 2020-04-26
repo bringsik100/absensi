@@ -1,25 +1,13 @@
-absensi
-=======
-skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi "attendance manager"
+absensi v-0.1.3
+===============
+modul python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi "attendance manager"
 
-# versi alpha 0.1.3
 
-### TODO :
-- ganti nama
-- data pegawai kedepannya akan berformat csv atau excel atau json dan terpisah dari skrip
-- ada interaksi untuk pengguna misal :
-+ pengisian data pegawai 
-+ pilihan untuk proses pengisian absensi, bisa manual atau otomatis dengan metode acak
-- GUI? 
+### uraian
+untuk menjalankan modul ini anda harus berada di dalam direktori "absensi-(nomor versi)/absensi", lalu ketikkan perintah "python absensi.py".
 
-### catatan :
-- daftar header disimpan di file 'header.json'
-- daftar pegawai disimpan di file 'employee.json'
-- daftar fungsi disimpan di 'bin.py'
+untuk sementara modul ini belum memiliki opsi dan output hanya dalam bentuk excel, kedepannya akan ada opsi untuk menyunting pegawai, shift, tanggal, hari libur, dan format output.
 
-### aplikasi dan modul yang dipakai :
-- python 3.4
-- openpyxl 2.5.14
+modul ini masih dalam tahap pre-alpha dan pastinya error dimana-mana, entah kapan modul ini bakal selesai karena proyek ini hanya hobi pribadi.
 
-### kontak
-maaf.sedang@sibuk.com
+kritik dan saran silahkan anda sampaikan dalam doa saja. terima kasih.
