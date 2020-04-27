@@ -7,11 +7,11 @@ class test_source_emp:
 	'''fungsi untuk membaca employee.json'''
 	def __init__(self):
 		'''membaca input'''
-		with open('data/employee.json','r') as srce:
-			self.source = json.load(srce)
-		return self.source
-		
-	def test_source_pr(self):
+		with open('test/data/employee.json','r') as srce:
+			self.read = json.load(srce)
+		return self.read
+
+	def test_print(self):
 		print(self.source)
 		
 class test_insert_emp:

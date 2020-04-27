@@ -10,19 +10,33 @@ import pytest
 from test.shift_test import test_shift_rule as ts
 from test.output_test import test_out_put as o_put
 
-class test_countf():
-	
-	def __init__(self,*args):
-		self.hour_in = hi
-		self.hour_out = ho
-		self.check_in = ci
-		self.check_out = co
+class test_datecount:
+
+	def __init__(self,date_start,date_end):
+		self.date_start = date_start
+		self.date_end = date_end
+		self.date_delta = self.date_end - self.date_start
+		self.dates = []
+		for i in range(self.date_delta.days + 1):
+			self.dates.append(self.date_start+td(days=i))
+
+	def test_misc(self):
+		self.shifts = ts.test_shift_sorc()
+		self.header = o_put.test_header()
+
+class test_timecount():
+
+	def __init__(self,hour_in,hour_out,check_in,check_out):
+		self.hour_in = hour_in
+		self.hour_out = hour_out
+		self.check_in = check_in
+		self.check_out = check_out
 		for i in [self.hour_in,self.hour_out,self.check_in,self.check_out]:
 			if isinstance(i,td) == False:
 				i = td(seconds=0)
 			else:
 				continue
-	
+
 	def test_late_in(self):
 		'''late check in'''
 		'''menghitung berapa lama pegawai terlambat'''
@@ -37,7 +51,7 @@ class test_countf():
 			return self.hour_out - self.check_out
 		else:
 			return td(seconds=0)
-	
+
 	def test_o_time(self):
 		'''over time'''
 		'''menghitung lembur'''
@@ -49,7 +63,7 @@ class test_countf():
 			return self.check_out - self.hour_out
 		else:
 			return td(seconds=0)
-	
+
 	def test_w_time(self):
 		'''work time'''
 		'''menghitung jam kerja minus telat dan pulang awal'''
@@ -72,23 +86,6 @@ class test_countf():
 			return round((self.hour_in - self.check_in)/td(hours=1),2)
 		else:
 			return " "
-
-class test_var:
-	
-	def __init__(self):
-		self.date_start = ''
-		self.date_end = ''
-		self.date_delta = ''
-		self.dates = []
-	
-	def test_time(self):
-		self.hour_in =''
-		self.hour_outur_out = ''
-		self.hour_outur_off = ''
-		
-	def test_misc(self):
-		self.shifts = ts.test_shift_sorc()
-		self.header = o_put.test_header()
 
 if __name__=='__main__':
 	main()
