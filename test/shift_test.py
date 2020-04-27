@@ -24,7 +24,7 @@ class test_shift_rule:
 
 	def test_shift_sorc(self):
 		'''membaca daftar shift dari shift.json '''
-		self.inp = 'data/shift.json'
+		return self.inp = 'data/shift.json'
 
 	def test_shift_printa(self):
 		'''menampilkan data shift dari file dan buffer ke layar'''

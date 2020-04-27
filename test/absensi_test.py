@@ -19,13 +19,6 @@ from test.output_test import test_out_put as out_p
 import pytest
 
 #FUNCTION LIST
-'''
-penjelasan variable 
-hi = hour in, jam masuk
-ho = hour out, jam keluar
-ci = check in
-co = check out
-'''
 
 def test_con_up(a):
 	'''container update'''
