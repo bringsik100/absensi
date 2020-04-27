@@ -14,6 +14,8 @@ import string
 import json
 from openpyxl import Workbook
 from test.attend_test import test_countf
+from test.employee_test import test_source_emp as empl
+from test.output_test import test_out_put as out_p
 import pytest
 
 #FUNCTION LIST
@@ -82,8 +84,7 @@ if __name__ == '__main__':
 		header = list(json.load(head_data).keys())
 
 	'''membaca employee untuk kolom NoPeg, Akun, No., Nama, Auto-Assign, Status, Hrs C/In, Hrs C/Out, Departemen'''
-	with open('data/employee.json','r') as emp_data:
-		emp = json.load(emp_data)
+	emp = empl.source
 
 	for i in range(len(emp)):
 		'''looping employee'''
@@ -201,23 +202,10 @@ if __name__ == '__main__':
 					we_tm = n_tab
 					n_ot = ety
 					
-					test_con_up(cl_con)
+			test_con_up(cl_con)
 					container.append(cl_con)
 	
 	'''proses ke excell'''
-	column = list(string.ascii_uppercase)+['AA','AB','AC']
-	wb = Workbook()
-	ws = wb.active
-	ws.title = 'Absensi'
-	
-	#output ke excell
-	for i in range(len(header)):
-		ws.cell(column=i+1,row=1, value=header[i])
-	
-	for x in range(len(container)):
-		z=list(container[x].values())
-		for y in range(len(column)):
-			ws.cell(column=y+1,row=x+2,value=(z[y]))
-	
-	wb.save('testing.xlsx')
-	wb.close()
+	exbuff = out_p(container)
+	ex_out = exbuff._excell_test('testing')
+	ex_out()
