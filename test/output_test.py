@@ -37,12 +37,12 @@ class test_out_put:
 				self.sheet.cell(column=y+1,row=x+2,value=(z[y]))
 
 		'''save ke excell'''
-		wb.save(f'{self.sheet.title}.xlsx')
+		wb.save('{}.xlsx'.format(self.sheet.title))
 
 		def _json_test(self,title):
 			'''output ke json'''
 			self.title = title
-			with open(f'{self.title}.json','w') as outj:
+			with open('{}.json'.format(self.title),'w') as outj:
 				for i in self.buffer:
 					for x in i:
 						outj.write(x)
@@ -50,7 +50,7 @@ class test_out_put:
 		def _csv_test(self,title):
 			'''output ke csv'''
 			self.title = title
-			with open(f'{self.title}.csv', 'w', dialect='excell', newline='') as csvfile:
+			with open('{}.csv'.format(self.title), 'w', dialect='excell', newline='') as csvfile:
 				x = csv.writer(csvfile, delimiter=',',quotechar='"')
 				for i in self.buffer:
 					for g in i:

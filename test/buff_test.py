@@ -32,5 +32,5 @@ buffer = {"0":"NoPeg"
 	,"28":"Libur Lembur"}
 	
 	
-	if __name__=='__main__':
-		main()
+if __name__=='__main__':
+	main()

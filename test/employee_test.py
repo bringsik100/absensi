@@ -8,7 +8,7 @@ class test_source_emp:
 	def __init__(self):
 		'''membaca input'''
 		with open('data/employee.json','r') as srce:
-			self.source = json.loads(srce)
+			self.source = json.load(srce)
 		return self.source
 		
 	def test_source_pr(self):

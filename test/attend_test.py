@@ -68,7 +68,7 @@ class test_countf():
 	def test_nw_ot(self):
 		'''normal day and weekend day over time'''
 		'''menghitung jam lembur dalam desimal'''
-		if self.test_o_time > 0 
+		if self.test_o_time > 0:
 			return round((self.hour_in - self.check_in)/td(hours=1),2)
 		else:
 			return " "
