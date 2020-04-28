@@ -15,8 +15,8 @@ class test_out_put:
 			print(i)
 
 	def test_header(self):
-		'''membaca data header dari header.json'''
-		with open('data/header.json','r') as head_data:
+		'''membaca data header dari judul.json'''
+		with open('data/judul.json','r') as head_data:
 			return list(json.load(head_data).keys())
 
 	def _excel_test(self,title):

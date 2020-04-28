@@ -14,8 +14,8 @@ from datetime import timedelta as td
 import string
 import json
 from openpyxl import Workbook
-import test.attend_test
-import test.employee_test
+import test.proses_test
+import test.pegawai_test
 from test.output_test import test_out_put as out_p
 import pytest
 
@@ -24,13 +24,14 @@ alur program
 - tanya tanggal awal
 - tanya tanggal akhir
 - proses absensi
-- pilih output
+- pilih format output
+- ulangi atau selesai
 """
 print("""
 SELAMAT DATANG DI ABTOMATIS
 MODUL PENGISI ABSENSI OTOMATIS
 """)
-
+"""salam pembuka"""
 
 print("""
 metode pengisian :
@@ -39,18 +40,21 @@ YYYY = 4 angka tahun
 MM = 2 angka bulan 
 DD = 2 angka tanggal
 """)
+"""tanya tanggal awal dan akhir"""
+
 def getd(arg):
 	x = input(arg )
 	return dt.strptime(x,'%Y-%m-%d')
+"""fungsi untuk merubah input yang berformat string menjadi datetime"""
 
 mulai = dt(2020,10,10,0) #getd(' masukkan tanggal awal absensi: ')
 akhir = dt(2020,10,20,0) #getd(' masukkan tanggal akhir absensi: ')
 
-jadwal = test.attend_test.test_datecount(mulai,akhir)
+jadwal = test.proses_test.test_datecount(mulai,akhir)
 
-waktu = test.attend_test.test_timecount
+waktu = test.proses_test.test_timecount
 
-daftar_peg = test.employee_test.test_source_emp.test_read()
+daftar_peg = test.pegawai_test.test_source_emp.test_read()
 
 def ngetes(*args):
 	for i in args:

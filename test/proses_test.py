@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Attend
+Proses
 """
 
 from random import randint as ri
 from datetime import datetime as dt
 from datetime import timedelta as td
 import pytest
-from test.shift_test import test_shift_rule as ts
+from test.jadwal_test import test_rules as ts
 from test.output_test import test_out_put as o_put
 
 class test_datecount:
