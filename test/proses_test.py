@@ -87,5 +87,54 @@ class test_timecount():
 		else:
 			return " "
 
+def proses():
+	start = test.test_datecount.start
+	end = test.test_datecount.end
+	days = test_datecount.date_delta.days
+	
+	for emp in test.pegawai_test.test_sumber.read()
+		
+		for day in range(days+1):
+			today = start + day
+			
+			if today.weekday is in holidays
+				hour_in = td(hours = 0)
+				hour_out = td(hours = 0)
+				check_in = td(hours = 0)
+				check_out = td(hours = 0)
+				thisday = test_timecount(hour_in,hour_out,check_in,check_out)
+				
+			
+			if today.weekday == 6
+				hour_in = td(hours = 0)
+				hour_out = td(hours = 0)
+				check_in = td(hours = 0)
+				check_out = td(hours = 0)
+				thisday = test_timecount(hour_in,hour_out,check_in,check_out)
+			
+			if today.weekday == 5
+				hour_in = td(hours = 8)
+				hour_out = td(hours = 13)
+				check_in = td(hours = ri(7,8)
+				,if hours == 8:
+					minutes = ri(0,15), seconds = ri(0,59)
+				else:
+					minutes = ri(0,59), seconds = ri(0,59)
+					)
+				check_out = td(hours = ri(15,17),minutes = ri(0,15), seconds = ri(0,59))
+				thisday = test_timecount(hour_in,hour_out,check_in,check_out)
+			
+			else:
+				hour_in = td(hours = 8)
+				hour_out = td(hours = 16)
+				check_in = td(hours = ri(7,8)
+				,if hours == 8:
+					minutes = ri(0,15), seconds = ri(0,59)
+				else:
+					minutes = ri(0,59), seconds = ri(0,59)
+					)
+				check_out = td(hours = ri(16,19),minutes = ri(0,15), seconds = ri(0,59))
+				thisday = test_timecount(hour_in,hour_out,check_in,check_out)
+
 if __name__=='__main__':
 	main()

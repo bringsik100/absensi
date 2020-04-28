@@ -4,7 +4,7 @@ Absensi
 """
 
 __author__ = "bringsik100"
-__version__ = "0.1.3"
+__version__ = "0.1.3b"
 __license__ = "MIT"
 
 from random import randint as ri
@@ -20,19 +20,22 @@ from test.output_test import test_out_put as out_p
 import pytest
 
 """
-alur program
+alur program\
+- salam pembuka
 - tanya tanggal awal
 - tanya tanggal akhir
 - proses absensi
 - pilih format output
 - ulangi atau selesai
 """
+
+"""salam pembuka"""
 print("""
 SELAMAT DATANG DI ABTOMATIS
 MODUL PENGISI ABSENSI OTOMATIS
 """)
-"""salam pembuka"""
 
+"""tanya tanggal awal dan akhir"""
 print("""
 metode pengisian :
 masukkan tanggal awal dan akhir dengan format YYYY-MM-DD dimana 
@@ -40,21 +43,22 @@ YYYY = 4 angka tahun
 MM = 2 angka bulan 
 DD = 2 angka tanggal
 """)
-"""tanya tanggal awal dan akhir"""
 
+"""fungsi untuk merubah input yang berformat string menjadi datetime"""
 def getd(arg):
 	x = input(arg )
 	return dt.strptime(x,'%Y-%m-%d')
-"""fungsi untuk merubah input yang berformat string menjadi datetime"""
 
+'''tanya tanggal awal dan akhir'''
 mulai = dt(2020,10,10,0) #getd(' masukkan tanggal awal absensi: ')
 akhir = dt(2020,10,20,0) #getd(' masukkan tanggal akhir absensi: ')
+
 
 jadwal = test.proses_test.test_datecount(mulai,akhir)
 
 waktu = test.proses_test.test_timecount
 
-daftar_peg = test.pegawai_test.test_source_emp.test_read()
+daftar_peg = test.pegawai_test.test_sumber.read()
 
 def ngetes(*args):
 	for i in args:
