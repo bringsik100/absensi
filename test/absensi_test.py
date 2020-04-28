@@ -51,7 +51,7 @@ def test_get_input(arg):
 def test_dates(start,end):
 	delta = end - start
 	dates = []
-	for day in range(delta.days+1)
+	for day in range(delta.days+1):
 		dates.append(start + day)
 	return dates
 
@@ -68,7 +68,7 @@ def test_late_in(hour_in,check_in):
 '''menghitung berapa lama pegawai pulang lebih awal'''
 def test_early_out(hour_out,check_out):
 	if hour_out > check_out:
-		if (hour_out - check_out) < td(minutes = 5)
+		if (hour_out - check_out) < td(minutes = 5):
 			return td(seconds=0)
 		else:
 			return hour_out - check_out
@@ -108,7 +108,7 @@ def test_overtype(hour_in,check_in):
 """fungsi untuk mengisi waktu"""
 def test_times(date,holidays):
 	"""holidays harus berupa list"""
-	if date is in holidays:
+	if date in holidays:
 		"""hari libur"""
 		schedule = "holiday"
 		hour_in = td(seconds = 0)
@@ -116,7 +116,7 @@ def test_times(date,holidays):
 		check_in = td(seconds = 0)
 		check_out = td(seconds = 0)
 		test_late_in(hour_in,check_in)
-		test_late_in(hour_in,check_in)
+		test_early_out(hour_in,check_in)
 		test_overtime(hour_in,hour_out,check_in,check_out)
 		test_worktime(hour_in,hour_out,check_in,check_out)
 		test_totaltime(check_in,check_out)
@@ -132,7 +132,7 @@ def test_times(date,holidays):
 			check_in = td(seconds = 0)
 			check_out = td(seconds = 0)
 			test_late_in(hour_in,check_in)
-			test_late_in(hour_in,check_in)
+			test_early_out(hour_in,check_in)
 			test_overtime(hour_in,hour_out,check_in,check_out)
 			test_worktime(hour_in,hour_out,check_in,check_out)
 			test_totaltime(check_in,check_out)
@@ -151,7 +151,7 @@ def test_times(date,holidays):
 				check_in + td(minutes = ri(0,59),seconds = ri(0,59))
 			check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
 			test_late_in(hour_in,check_in)
-			test_late_in(hour_in,check_in)
+			test_early_out(hour_in,check_in)
 			test_overtime(hour_in,hour_out,check_in,check_out)
 			test_worktime(hour_in,hour_out,check_in,check_out)
 			test_totaltime(check_in,check_out)
@@ -170,7 +170,7 @@ def test_times(date,holidays):
 				check_in + td(minutes = ri(0,59),seconds = ri(0,59))
 			check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
 			test_late_in(hour_in,check_in)
-			test_late_in(hour_in,check_in)
+			test_early_out(hour_in,check_in)
 			test_overtime(hour_in,hour_out,check_in,check_out)
 			test_worktime(hour_in,hour_out,check_in,check_out)
 			test_totaltime(check_in,check_out)
@@ -230,12 +230,12 @@ class test_out_put:
 
 
 """salam pembuka"""
-	print("""
-	SELAMAT DATANG DI ABTOMATIS
-	MODUL PENGISI ABSENSI OTOMATIS
-	""")
+print("""
+SELAMAT DATANG DI ABTOMATIS
+MODUL PENGISI ABSENSI OTOMATIS
+""")
 
-main()
+def main():
 	"""template data"""
 	template = {
 	"NoPeg": " ",
@@ -318,7 +318,7 @@ main()
 			data["Plg Awal"] = waktu.test_early_out
 			if waktu.check_in == 0:
 				data["Bolos"] = 'True'
-			else = 
+			else: 
 				data["Bolos"] = ' '
 			data["Waktu Lembur"] = waktu.test_overtime
 			data["Waktu Kerja"] = waktu.test_worktime
@@ -335,6 +335,7 @@ main()
 			data["Lama Hadir"] = waktu.test_totaltime
 			data["Libur Lembur"] = '0'
 		buffer.append(data)
+		print(buffer)
 
 if __name__=='__main__':
 	main()
