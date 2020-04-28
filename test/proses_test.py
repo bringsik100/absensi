@@ -1,44 +1,36 @@
-'''
-fungsi untuk create, read, write, edit, dan delete item dalam employee.json
-'''
 import json
+from datetime import datetime as dt
+from datetime import timedelta as dt
 
-'''fungsi untuk membaca pegawai.json'''
-with open('test/data/pegawai.json','r') as srce:
-	sumber = json.load(srce)
-	return sumber
-
-def test_print():
-		print(sumber)
-		
-class test_masuk:
-	'''fungsi untuk memasukkan data ke pegawai.json'''
+class test_rules:
+	'''class untuk menentukan jadwal'''
 	def __init__(self,**kwargs):
-		'''input dari user'''
-		self.nopeg = nopeg
-		self.akun = akun
-		self.nomor = nomor
-		self.nama = nama
-		self.dept = dept
-		self.buffer = {}
-		
-		'''data ditampung di buffer dan ditampilkan di layar'''
-		return self.buffer.update(self.nopeg, self.akun, self.nomor, self.nama, self.dept)
-		print(self.buffer)
-	
-	def test_print_all(self):
-		''' menampilkan data source dan buffer ke layar'''
-		print(sumber + self.buffer)
-	
-	def test_print_buff(self):
-		''' menampilkan data buffer ke layar'''
-		print(self.buffer)
-		
-	def test_write(self):
-		'''menulis isi source dan buffer ke pegawai.json'''
-		with open('data/pegawai.json','w') as srce:
-			x = json.dumps(sumber + self.buffer)
-			srce.write(x)
+		'''shift'''
+		self.kwargs = kwargs
+		self.buff={}
+		self.buff.update(self.kwargs)
 
+	def test_sumber(self):
+		'''membaca daftar jadwal dari jadwal.json '''
+		with open('test/data/jadwal.json','r') as srce:
+			return json.load(srce)
+
+	def test_printall(self):
+		'''menampilkan data shift dari file dan buffer ke layar'''
+		print(self.test_sumber() + self.buff)
+
+	def test_printbuff(self):
+		'''menampilkan data shift dari buffer ke layar'''
+		print(self.buff)
+
+	def test_write(self):
+		with open(self.test_sumber,'w') as sorc:
+			x = json.load(sorc.read())
+			y = json.dump(self.buff)
+			x = x + y
+			sorc.write(x)
+	def test_liburan(self):
+		with open('test/data/liburan.json','r') as srce:
+			json.load(srce)
 if __name__ == '__main__':
 	main()
