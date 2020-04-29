@@ -2,9 +2,53 @@
 Changelog
 =========
 
+<<<<<<< HEAD
+Version 0.0.1 
+=============
+- 2017
+- hanya skrip cepat dan kotor
+- semua harus ditambahkan ke dalam skrip
+- output hanya berupa angka random di dalam file text
+
+Version 0.0.2
+=============
+- 2018
+- output terdiri dari 4 bagan dan formatnya masih text
+
+Version 0.0.9
+=============
+- 2020-04
+- penulisan ulang
+- output sudah berupa spreadsheet
+
+Version 0.1.0
+=============
+- 2020-04
+- penulisan ulang untuk mengulangi pengulangan variabel
+
+Version 0.1.1
+=============
+- 2020-04-21
+- penulisan ulang fungsi - fungsi karena kode masih kotor :
+- nama variabel, nama fungsi belum dirapikan
+- pengulangan / repetisi dimana-mana dan amburadul
+- data dan fungsi masih tercampur dalam modul utama
+- interaksi pengguna masih harus didalam modul
+
+Version 0.1.2
+=============
+- 2020-04-25
+- perbaikan di menu header.json dan employee.json
+- modul countf sudah dipisahkan dari skrip 
+- skrip sudah berjalan lancar dan mampu mengeluarkan output excell
+- 2020-04-26
+- penambahan folder test dan modul employee, shift, dan output. tapi masih dalam tahap pengetesan
+- penambahan data shift dan holiday
+=======
 Version 0.1
 ===========
 
 - Feature A added
 - FIX: nasty bug #1729 fixed
 - add your changes here!
+>>>>>>> d3641066775f505d997ff45c67fa8079dc83a4a4

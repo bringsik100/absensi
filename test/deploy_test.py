@@ -1,11 +1,15 @@
-{
-	"NoPeg": " ",
-	"No. Akun": " ",
-	"No.": " ",
-	"Nama": " ",
+#! user/bin/python
+"""
+modul template untuk data dalam satu hari
+"""
+
+day_con={"NoPeg":" " ,# pegawai[n]['nopeg']
+	 "No. Akun": " ",# pegawai[n]['noakun']
+	 "No.": " ",# pegawai[n]['nomor']
+	 "Nama": " ",# pegawai[n]['nama']'
 	"Auto-Assign": " ",
-	"Tanggal": " ",
-	"Jam Kerja": " ",
+	"Tanggal": " ",# today
+	"Jam Kerja": " ",# today shift
 	"Awal tugas": " ",
 	"Akhir tugas": " ",
 	"Masuk": " ",
@@ -28,4 +32,6 @@
 	"NDays_OT": " ",
 	"Lembur A.Pekan": " ",
 	"Libur Lembur": " "
-	}
+}
+if __name__=='__main__':
+    main()
