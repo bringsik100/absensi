@@ -64,7 +64,7 @@ def test_late_in(hour_in,check_in,tolerance):
 """menghitung berapa lama pegawai pulang lebih awal"""
 def test_early_out(hour_out,check_out,tolerance):
 	if hour_out > check_out:
-		if (hour_out - check_out) < tolerance
+		if (hour_out - check_out) < tolerance:
 			return td(seconds=0)
 		else:
 			return hour_out - check_out
@@ -120,7 +120,7 @@ def test_process(start,end,buffer):
 	for x in range(len(employee)):
 
 		"""looping tanggal"""
-		for day in range(delta.days+1)
+		for day in range(delta.days+1):
 			
 			"""tentukan tangal"""
 			thisday = start + day
@@ -285,29 +285,29 @@ def test_json(title,buffer):
 def test_csv(title,buffer):
 	"""output ke csv"""
 	self.title = title
-		with open('{}.csv'.format(title), 'w', dialect='excell', newline='') as csvfile:
-			x = csv.writer(csvfile, delimiter=',',quotechar='"')
-			for i in buffer:
-				x.writerow(i)
+	with open('{}.csv'.format(title), 'w', dialect='excell', newline='') as csvfile:
+		x = csv.writer(csvfile, delimiter=',',quotechar='"')
+		for i in buffer:
+			x.writerow(i)
 
 def test_txt(title,buffer):
 	"""output ke text"""
-		with open('{}.txt'.format(title), 'w') as txtfile:
-			txtfile.write(buffer)
+	with open('{}.txt'.format(title), 'w') as txtfile:
+		txtfile.write(buffer)
 
 def test_option(title,func,buffer):
-		if title == None:
-			return title = dt.today.strftime('%Y-%m-%d.%H.%M.%s')
+	if title == None:
+		title = dt.today.strftime('%Y-%m-%d.%H.%M.%s')
 		
-		func(title,buffer)
+	func(title,buffer)
 
 """salam pembuka"""
-	print("""
-	SELAMAT DATANG DI ABTOMATIS
-	MODUL PENGISI ABSENSI OTOMATIS
-	""")
+print("""
+SELAMAT DATANG DI ABTOMATIS
+MODUL PENGISI ABSENSI OTOMATIS
+""")
 
-main()
+def main():
 	"""mengambil data pegawai,jadwal,judul,libur"""
 	pegawai = get_data('test/data/pegawai.json')
 	jadwal = get_data('test/data/jadwal.json')
