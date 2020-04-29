@@ -9,10 +9,17 @@
 # =============================================================================
 #
 # Add your pinned requirements so that they can be easily installed with:
+<<<<<<< HEAD
  pip install -r requirements.txt
+=======
+# pip install -r requirements.txt
+>>>>>>> d3641066775f505d997ff45c67fa8079dc83a4a4
 # Remember to also add them in setup.cfg but unpinned.
 # Example:
 # numpy==1.13.3
 # scipy==1.0
 #
+<<<<<<< HEAD
 openpyxl==3.0.3
+=======
+>>>>>>> d3641066775f505d997ff45c67fa8079dc83a4a4
