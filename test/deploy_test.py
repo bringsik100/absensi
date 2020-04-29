@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Deploy
+"""
+
+
 #! user/bin/python
 """
 modul template untuk data dalam satu hari

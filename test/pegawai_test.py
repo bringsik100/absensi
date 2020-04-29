@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Pegawai
+"""
+
+
 '''
 fungsi untuk create, read, write, edit, dan delete item dalam employee.json
 '''

@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Jadwal
+"""
+
+
 import json
 from datetime import datetime as dt
 from datetime import timedelta as dt
