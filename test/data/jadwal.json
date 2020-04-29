@@ -1,56 +1,35 @@
 {
 	"0": {
-		"name": "Senin-Jumat",
-		"hstart": {
-			"8": "0"
-		},
-		"hend": {
-			"16": "0"
-		},
-		"latetol": {
-			"0": "10"
-		},
-		"earlytol": {
-			"0": "5"
-		},
-		"chinmin": {
-			"6": "0"
-		},
-		"chinmax": {
-			"9": "0"
-		},
-		"choutmin": {
-			"15": "0"
-		},
-		"choutmax": {
-			"23": "59"
-		}
+		"name": "libur",
+		"hour start":"0:0",
+		"hour end":"0:0",
+		"late in":"0:0",
+		"early out":"0:0",
+		"checkin min":"0:0",
+		"checkin max":"0:0",
+		"checkout min":"0:0",
+		"checkout max":"0:0"
 	},
 	"1": {
-		"name": "Sabtu-Minggu",
-		"hstart": {
-			"8": "0"
+		"name": "Senin-Jumat",
+		"hour start":"8:0",
+		"hour end":"16:0",
+		"late in":"0:10",
+		"early out":"0:5",
+		"checkin min": "6:0",
+		"checkin max": "9:0",
+		"checkout min":"15:0",
+		"checkout max":"23:59"
 		},
-		"hend": {
-			"13": "0"
-		},
-		"latetol": {
-			"0": "10"
-		},
-		"earlytol": {
-			"0": "5"
-		},
-		"chinmin": {
-			"6": "0"
-		},
-		"chinmax": {
-			"9": "0"
-		},
-		"choutmin": {
-			"15": "0"
-		},
-		"choutmax": {
-			"23": "59"
+	"2": {
+		"name":"Sabtu-Minggu",
+		"hour start":"8:0",
+		"hour end":"13:0",
+		"late in":"0:10",
+		"early out":"0:5",
+		"checkin min":"6:0",
+		"checkin max":"9:0",
+		"checkout min":"15:0",
+		"checkout max":"23:59"
 		}
 	}
-}
