@@ -6,7 +6,7 @@ Absensi
 __author__ = "bringsik100"
 __version__ = "0.1.3b"
 __license__ = "MIT"
-
+#alur modul
 """
 alur program
 + import library
@@ -27,6 +27,7 @@ alur program
 """
 
 """import library"""
+#librabry
 from random import randint as ri
 import datetime as dd
 from datetime import datetime as dt
@@ -54,7 +55,7 @@ def test_dates(start,end):
 		dates.append(start + day)
 	return dates
 
-'''menghitung berapa lama pegawai terlambat'''
+"""menghitung berapa lama pegawai terlambat"""
 def test_late_in(hour_in,check_in):
 	if check_in > hour_in:
 		if (check_in - hour_in) < td(minutes = 10):
@@ -64,7 +65,7 @@ def test_late_in(hour_in,check_in):
 	else:
 		return td(seconds=0)
 
-'''menghitung berapa lama pegawai pulang lebih awal'''
+"""menghitung berapa lama pegawai pulang lebih awal"""
 def test_early_out(hour_out,check_out):
 	if hour_out > check_out:
 		if (hour_out - check_out) < td(minutes = 5):
@@ -74,7 +75,7 @@ def test_early_out(hour_out,check_out):
 	else:
 		return td(seconds=0)
 
-'''menghitung lembur'''
+"""menghitung lembur"""
 def test_overtime(hour_in,hour_out,check_in,check_out):
 	if check_in < hour_in and check_out > hour_out:
 		return (hour_in - check_in)+(check_out - hour_out)
@@ -85,7 +86,7 @@ def test_overtime(hour_in,hour_out,check_in,check_out):
 	else:
 		return td(seconds=0)
 
-'''menghitung jam kerja minus telat dan pulang awal'''
+"""menghitung jam kerja minus telat dan pulang awal"""
 def test_worktime(hour_in,hour_out,check_in,check_out):
 	if check_in > hour_in:
 		return hour_out - check_in
@@ -97,13 +98,13 @@ def test_worktime(hour_in,hour_out,check_in,check_out):
 def test_totaltime(check_in,check_out):
 	return (check_out - check_in)
 
-'''menghitung jam lembur dalam desimal'''
+"""menghitung jam lembur dalam desimal"""
 def test_overtype(hour_in,check_in):
 	if test_overtime > 0:
 		return round((hour_in - check_in)/td(hours=1),2)
 	else:
 		return " "
-
+#modul proses
 """fungsi untuk mengisi waktu"""
 def test_times(date,holidays):
 	"""holidays harus berupa list"""
@@ -177,55 +178,61 @@ def test_times(date,holidays):
 
 """fungsi ouput dengan 4 pilihan : layar, excell,  """
 class test_out_put:
-	'''fungsi untuk output'''
+	"""fungsi untuk output"""
 	def __init__(self,buffer):
-		'''buffer data dari main skrip'''
+		"""buffer data dari main skrip"""
 		self.buffer = buffer
 
 	def test_print(self):
-		'''output ke layar'''
+		"""output ke layar"""
 		for i in self.buffer:
 			print(i)
 
 	def test_header(self):
-		'''membaca data header dari judul.json'''
+		"""membaca data header dari judul.json"""
 		with open('data/judul.json','r') as head_data:
 			return list(json.load(head_data).keys())
 
 	def test_excell(self,title):
-		'''output ke excell'''
+		"""output ke excell"""
 		self.book = Workbook()
 		self.sheet = self.book.active
 		self.sheet.title = 'Absensi'
-		'''daftar kolom untuk excell ouput'''
+		"""daftar kolom untuk excell ouput"""
 		self.column = list(string.ascii_uppercase)+['AA','AB','AC']
-		'''header untuk mengisi baris pertama'''
+		"""header untuk mengisi baris pertama"""
 		for i in range(len(self.test_header)):
 			self.sheet.cell(column=i+1,row=1, value=header[i])
 
-		'''isi sheet dari buffer'''
+		"""isi sheet dari buffer"""
 		for x in range(len(self.buffer)):
 			z=list(self.buffer[x].values())
 			for y in range(len(column)):
 				self.sheet.cell(column=y+1,row=x+2,value=(z[y]))
 
-		'''save ke excell'''
+		"""save ke excell"""
 		wb.save('{}.xlsx'.format(self.sheet.title))
 
 	def test_json(self,title):
-		'''output ke json'''
+		"""output ke json"""
 		self.title = title
-		with open('{}.json'.format(self.title),'w') as outj:
+		with open('{}.json'.format(self.title),'w') as jsonfile:
 			json.dump(self.buffer)
 
-		def test_csv(self,title):
-			'''output ke csv'''
-			self.title = title
-			with open('{}.csv'.format(self.title), 'w', dialect='excell', newline='') as csvfile:
-				x = csv.writer(csvfile, delimiter=',',quotechar='"')
-				for i in self.buffer:
-					for g in i:
-						x.writerow(g)
+	def test_csv(self,title):
+		"""output ke csv"""
+		self.title = title
+		with open('{}.csv'.format(self.title), 'w', dialect='excell', newline='') as csvfile:
+			x = csv.writer(csvfile, delimiter=',',quotechar='"')
+			for i in self.buffer:
+				for g in i:
+					x.writerow(g)
+	
+	def test_text(self,title):
+		"""output ke text"""
+		self.title = title
+		with open('{}.txt'.format(self.title),'w') as txtfile:
+			txtfile.write(self.buffer)
 
 
 """salam pembuka"""
@@ -270,8 +277,8 @@ def main():
 	"""mengambil data pegawai,jadwal,judul,libur"""
 	pegawai = test_get_data('data/pegawai.json')
 	jadwal = test_get_data('data/jadwal.json')
-	judul = test_get_data('data/judul.json')
-	liburan = test_get_data('data/libur.json')
+	judul = test_get_data('data/judul.json').keys()
+	liburan = test_get_data('data/libur.json').keys()
 
 	print("""
 	metode pengisian :
@@ -281,14 +288,14 @@ def main():
 	DD = 2 angka tanggal
 	""")
 	
-	'''tanya tanggal awal dan akhir otomatis'''
+	"""tanya tanggal awal dan akhir otomatis"""
 	awal = dt(2020,10,10,0) #getd(' masukkan tanggal awal absensi: ')
 	akhir = dt(2020,10,20,0) #getd(' masukkan tanggal akhir absensi: ')
 	
-	'''tanya tanggal awal dan akhir lewat input (nonaktif)
+	"""tanya tanggal awal dan akhir lewat input (nonaktif)
 	awal = test_get_input(' masukkan tanggal awal absensi: ')
 	akhir = test_get_input(' masukkan tanggal akhir absensi: ')
-	'''
+	"""
 	buffer = []
 	"""pengisian data ke dalam buffer"""
 	"""looping pegawai"""
@@ -338,6 +345,50 @@ def main():
 			data["Libur Lembur"] = '0'
 		buffer.append(data)
 		print(buffer)
+		
+		""" pilih format output"""
+		print(
+		"""
+		pilih format output
+		 - 0 layar
+		 - 1 excell
+		 - 2 JSON
+		 - 3 CSV
+		 - 4 text
+		""")
+		opsi_format = input(": - ")
+		
+		print(
+		"""
+		beri judul output?
+		""")
+		judul_format = input(" = ")
+		
+		def test_get_format(opsi_format,judul_format,buffer):
+			if isinstance(opsi_format,int) == False:
+				return main.opsi_format
+			elif inp_format > 4:
+				return main.opsi_format
+			else:
+				pass
+			if judul_format == None:
+				judul_format = str(dt.today)
+			elif isinstance(judul_format,str) == False:
+				return str(judul_format)
+			else:
+				pass
 
+			file_output = test_out_put(buffer)
+			
+			if inp_format == 0:
+				file_output.test_print(judul_format)
+			elif inp_format == 1:
+				file_output.test_excell(judul_format)
+			elif inp_format == 2:
+				file_output.test_json(judul_format)
+			elif inp_format == 3:
+				file_output.test_csv(judul_format)
+			elif inp_format == 4:
+				file_output.test_text(judul_format)
 if __name__=='__main__':
-	main()
+main()
