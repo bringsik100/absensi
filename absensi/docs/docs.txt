@@ -1,0 +1,34 @@
+#Docs ver-0.1.2
+
+fungsi tiap-tiap modul dan data
+
+- absensi.py
+modul utama untuk menjalankan semua modul. tapi sementara cuma terhubung ke modul attend
+
+- attend.py
+modul untuk memproses menghitung terlambat, pulang cepat, lembur, dan jam kerja dalam satu hari.
+daftar modul dalam attend :
+       + countf.late_in : menghitung keterlambatan
+       + countf.early_out : menghitung bila pegawai pulang lebih awal
+       + countf.o_time : menghitung lembur
+       + countf.w_time : menghitung jam kerja dari jam masuk sampai jam keluar dikurangi waktu terlambat dan pulang cepat
+       + countf.t_time : menghitung jam kerja dari awal masuk sampai pulang
+       + countf.nw_ot : menghitung jumlah lembur dari waktu kerja dibagi jam kerja
+
+- employee.py (belum aktif)
+modul untuk menampilkan dan menyunting data pegawai
+
+- output.py (belum aktif)
+modul untuk memproses keluaran. rencananya keluaran akan ada 4 pilihan opsi (excel,csv,json,txt)
+
+- shift.py (belum aktif)
+modul untuk mengatur shift kerja tiap-tiap hari dalam satu minggu
+
+- data
+ada 4 berkas data yang ada di direktori data :
+    + employee.json : data pegawai
+    + header.json : data kepala kolom untuk mengisi baris pertama di tiap-tiap keluaran
+    + holiday.json : daftar hari libur
+    + shift.json : daftar shift kerja
+
+semua data memakai format JSON agar mudah dibaca dan disunting ulang.
