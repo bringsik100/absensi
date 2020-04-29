@@ -39,12 +39,11 @@ import pytest
 """fungsi ambil data pegawai, jadwal, judul, liburan"""
 def test_get_data(source):
 	with open(source,'r') as srce:
-		this_data = json.load(srce)
-	return this_data
+		return json.load(srce)
 
 """fungsi untuk merubah input yang berformat string menjadi datetime"""
 def test_get_input(arg):
-	x = input(arg )
+	x = input(arg)
 	return dt.strptime(x,'%Y-%m-%d')
 
 """fungsi untuk membuat daftar tanggal"""
@@ -269,10 +268,10 @@ def main():
 	"Libur Lembur": " "}
 
 	"""mengambil data pegawai,jadwal,judul,libur"""
-	pegawai = get_data('test/data/pegawai.json')
-	jadwal = get_data('test/data/jadwal.json')
-	judul = get_data('test/data/judul.json')
-	libur = get_data('test/data/libur.json')
+	pegawai = test_get_data('data/pegawai.json')
+	jadwal = test_get_data('data/jadwal.json')
+	judul = test_get_data('data/judul.json')
+	liburan = test_get_data('data/libur.json')
 
 	print("""
 	metode pengisian :
@@ -292,6 +291,7 @@ def main():
 	'''
 	buffer = []
 	"""pengisian data ke dalam buffer"""
+	"""looping pegawai"""
 	for item in range(len(pegawai)):
 		data = template
 		data["NoPeg"] = pegawai[item]['nopeg']
@@ -305,7 +305,9 @@ def main():
 		data["Departemen"] = pegawai[item]['dept']
 		data["NDays"] = '1'
 		data["Waktu real"] = '1'
+		"""looping tanggal"""
 		tanggal = test_dates(awal,akhir)
+		"""pengisian waktu"""
 		for hari in tanggal:
 			waktu = test_times(hari,libur)
 			data["Tanggal"] = hari

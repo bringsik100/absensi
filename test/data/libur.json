@@ -1,5 +1,5 @@
-{ {"2020/1/1':"New Years Day",
-   "2020/1/25":Chinese New Year",
+{"2020/1/1":"New Years Day",
+   "2020/1/25":"Chinese New Year",
    "2020/3/21":"Prophets Ascension",
    "2020/3/25":"Nyepi",
    "2020/3/26":"Nyepi",
@@ -15,6 +15,5 @@
    "2020/8/17":"Independence Day",
    "2020/8/19":"Islamic New Year",
    "2020/10/28":"Mawlid",
-   "2020/12/25":"Christmas Day:
-}
+   "2020/12/25":"Christmas Day"
 }
