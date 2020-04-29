@@ -2,7 +2,6 @@
 Changelog
 =========
 
-<<<<<<< HEAD
 Version 0.0.1 
 =============
 - 2017
@@ -44,11 +43,5 @@ Version 0.1.2
 - 2020-04-26
 - penambahan folder test dan modul employee, shift, dan output. tapi masih dalam tahap pengetesan
 - penambahan data shift dan holiday
-=======
-Version 0.1
-===========
-
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
->>>>>>> d3641066775f505d997ff45c67fa8079dc83a4a4
+- 2020-04-26
+- kemungkinan kembali lagi hanya memakai 1 skrip

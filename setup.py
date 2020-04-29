@@ -18,7 +18,6 @@ except VersionConflict:
     print("Error: version of setuptools is too old (<38.3)!")
     sys.exit(1)
 
-<<<<<<< HEAD
 setup(name='Absensi',
       version='0.1.3',
       description='skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi attendance manager',
@@ -41,8 +40,6 @@ setup(name='Absensi',
 		  'openpyxl',
       ],
       zip_safe=False)
-=======
->>>>>>> d3641066775f505d997ff45c67fa8079dc83a4a4
 
 if __name__ == "__main__":
     setup(use_pyscaffold=True)
