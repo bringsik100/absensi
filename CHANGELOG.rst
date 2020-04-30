@@ -44,4 +44,10 @@ Version 0.1.2
 - penambahan folder test dan modul employee, shift, dan output. tapi masih dalam tahap pengetesan
 - penambahan data shift dan holiday
 - 2020-04-26
-- kemungkinan kembali lagi hanya memakai 1 skrip
+- kemungkinan kembali lagi hanya memakai 1 modul
+- 2020-04-30
+- kembali pakai 1 modul tunggal
+- skrip berjalan lancar di Win XP SP3, Python 3.4, dan openpyxl 2.5
+- uji output ke terminal lancar
+- uji output ke excell lancar
+- urutan kolom di output kacau dan tidak seperti yg diharapkan
