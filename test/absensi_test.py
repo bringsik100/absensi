@@ -45,11 +45,12 @@ def test_get_data(source):
 """fungsi untuk merubah input yang berformat string dari user menjadi datetime"""
 def test_get_input(arg):
 	x = input(arg )
-	return dt.strptime(x,'%Y-%m-%d') - dt.today
+	return dt.strptime(x,'%Y-%m-%d')
 
 """fungsi untuk merubah input yang berformat string dari jadwal menjadi datetime"""
 def test_gethour(arg):
-	return dt.strptime(arg,'%H:%M')
+	x = dt.strptime(arg,'%H:%M')
+	return td(hours = x.hour, minutes = x.minute)
 
 """menghitung berapa lama pegawai terlambat"""
 def test_late_in(hour_in,check_in,tolerance):
@@ -95,9 +96,13 @@ def test_totaltime(check_in,check_out):
 	return (check_out - check_in)
 
 """menghitung jam lembur dalam desimal"""
-def test_overtype(hour_in,check_in):
-	if test_overtime > 0:
-		return round((hour_in - check_in)/td(hours=1),2)
+def test_overtype(hour_in,hour_out,check_in,check_out):
+	if check_in < hour_in and check_out > hour_out:
+		return round(((hour_in - check_in)+(check_out - hour_out))/td(hours = 1),2)
+	elif check_in < hour_in and check_out < hour_out:
+		return round((hour_in - check_in)/td(hours = 1),2)
+	elif check_in > hour_in and check_out > hour_out:
+		return round((check_out - hour_out)/td(hours = 1),2)
 	else:
 		return td(seconds=0)
 
@@ -151,7 +156,7 @@ def test_process(start,end,buffer):
 				overtime = data["Waktu Lembur"] = test_overtime(hour_in,hour_out,check_in,check_out)
 				worktime = data["Waktu Kerja"] = test_worktime(hour_in,hour_out,check_in,check_out)
 				totaltime = data["Lama Hadir"] = test_totaltime(check_in,check_out)
-				data["Libur Lembur"] = test_overtype(hour_in,check_in)
+				data["Libur Lembur"] = test_overtype(hour_in,hour_out,check_in,check_out)
 				data["NDays"] = '0'
 				data["Akhir Pekan"] = '0'
 				data["Hari Libur"] = '0'
@@ -167,10 +172,8 @@ def test_process(start,end,buffer):
 					thisday_schedule = data["Jam Kerja"] = schedule["2"]["name"]
 					hour_in = data["Awal tugas"] = test_gethour(schedule["2"]['hour start'])
 					hour_out = data["Akhir tugas"] = test_gethour(schedule["2"]['hour end'])
-					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
 					check_in = data["Masuk"] = td(seconds = 0)
 					check_out = data["Keluar"] = td(seconds = 0)
-					check_out = data["Keluar"] = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
 					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
 					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
 					overtime = data["Waktu Lembur"] = test_overtime(hour_in,hour_out,check_in,check_out)
@@ -181,7 +184,7 @@ def test_process(start,end,buffer):
 					data["Akhir Pekan"] = '0'
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
-					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
+					data["Lembur A.Pekan"] = test_overtype(hour_in,hour_out,check_in,check_out)
 					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["1"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
@@ -192,9 +195,7 @@ def test_process(start,end,buffer):
 					thisday_schedule = data["Jam Kerja"] = schedule["2"]["name"]
 					hour_in = data["Awal tugas"] = test_gethour(schedule["2"]['hour start'])
 					hour_out = data["Akhir tugas"] = test_gethour(schedule["2"]['hour end'])
-					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
-					check_in = data["Masuk"] = td(seconds = 0)
-					check_out = data["Keluar"] = td(seconds = 0)
+					check_in = data["Masuk"] = td(hours = ri(7,8))
 					check_out = data["Keluar"] = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
 					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
 					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
@@ -206,7 +207,7 @@ def test_process(start,end,buffer):
 					data["Akhir Pekan"] = '0'
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
-					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
+					data["Lembur A.Pekan"] = test_overtype(hour_in,hour_out,check_in,check_out)
 					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["2"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
@@ -216,7 +217,6 @@ def test_process(start,end,buffer):
 					thisday_schedule = data["Jam Kerja"] = schedule["1"]["name"]
 					hour_in = data["Awal tugas"] = test_gethour(schedule["1"]['hour start'])
 					hour_out = data["Akhir tugas"] = test_gethour(schedule["1"]['hour end'])
-					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
 					check_in = data["Masuk"] = td(hours = ri(7,8))
 					if check_in == td(hours=8):
 						check_in + td(minutes = ri(0,15),seconds = ri(0,59))
@@ -233,7 +233,7 @@ def test_process(start,end,buffer):
 					data["Akhir Pekan"] = '0'
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
-					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
+					data["Lembur A.Pekan"] = test_overtype(hour_in,hour_out,check_in,check_out)
 					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["1"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
@@ -307,11 +307,6 @@ MODUL PENGISI ABSENSI OTOMATIS
 """)
 
 def main():
-	"""mengambil data pegawai,jadwal,judul,libur"""
-	pegawai = test_get_data('data/pegawai.json')
-	jadwal = test_get_data('data/jadwal.json')
-	judul = test_get_data('data/judul.json')
-	libur = test_get_data('data/libur.json')
 
 	print("""
 	metode pengisian :
@@ -322,8 +317,8 @@ def main():
 	""")
 	
 	"""tanya tanggal awal dan akhir otomatis"""
-	awal = dt(2020,10,10,0) #getd(' masukkan tanggal awal absensi: ') 
-	akhir = dt(2020,10,20,0) #getd(' masukkan tanggal akhir absensi: ')
+	awal = test_get_input(' masukkan tanggal awal absensi: ') 
+	akhir = test_get_input(' masukkan tanggal akhir absensi: ')
 	hasil = []
 	
 	"""tanya tanggal awal dan akhir lewat input (nonaktif)
@@ -343,7 +338,7 @@ def main():
 	3 = csv
 	4 = text
 	""")
-	def test_output():
+	def test_output(hasil):
 		opsi = input (" opsi : ")
 		if opsi == 0:
 			test_print()
@@ -366,6 +361,8 @@ def main():
 				return test_output()
 			else:
 				pass
+	
+	test_output(hasil)
 	
 	print("ulangi proses ?")
 	answer = input("jawab Y atau N: ")
