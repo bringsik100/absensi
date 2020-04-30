@@ -294,12 +294,6 @@ def test_txt(file_title,buffer):
 	with open('{}.txt'.format(file_title), 'w') as txtfile:
 		txtfile.write(buffer)
 
-def test_option(file_title,func,buffer):
-	if file_title == None:
-		file_title = dt.today().strftime('%Y-%m-%d.%H.%M.%s')
-		
-	func(file_title,buffer)
-
 """salam pembuka"""
 print("""
 SELAMAT DATANG DI ABTOMATIS
@@ -338,19 +332,21 @@ def main():
 	3 = csv
 	4 = text
 	""")
-	def test_output(hasil):
+	def test_output():
 		opsi = input (" opsi : ")
-		if opsi == 0:
+		if int(opsi) == 0:
 			test_print()
-		elif opsi == 1:
+		elif int(opsi) == 1:
 			judul_opsi = input("beri judul : " )
-			test_option(judul_opsi,test_excell(),hasil)
+			if judul_opsi == None:
+				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
+				test_excell(judul_blank,hasil)
+			else:
+				test_excell(judul_opsi,hasil)
 		elif opsi == 2:
 			judul_opsi = input("beri judul : " )
 			test_option(judul_opsi,test_json(),hasil)
 		elif opsi == 3:
-			judul_opsi = input("beri judul : " )
-			test_option(judul_opsi,test_csv(),hasil)
 		elif opsi == 4:
 			judul_opsi = input("beri judul : " )
 			test_option(judul_opsi,test_txt(),hasil)
