@@ -33,8 +33,9 @@ from datetime import datetime as dt
 from datetime import timedelta as td
 import string
 import json
+import csv
 from openpyxl import Workbook
-import pytest
+#import pytest
 
 """fungsi ambil data pegawai, jadwal, judul, liburan"""
 def test_get_data(source):
@@ -133,24 +134,11 @@ def test_process(start,end,buffer):
 			
 			"""tentukan tangal"""
 			thisday = start + td(days = day)
-			"""isi data tanggal dan data pegawai"""
 			data = subdata
-			data["Tanggal"] = thisday.strftime('%Y-%m-%d')
-			data["NoPeg"] = employee[str(x)]['nopeg']
-			data["No. Akun"] = employee[str(x)]['akun']
-			data["No."] = employee[str(x)]['nomor']
-			data["Nama"] = employee[str(x)]['nama']
-			data["Auto-Assign"] = '0'
-			data["Status"] = ' '
-			data["Hrs C/In"] = ' '
-			data["Hrs C/Out"] = ' '
-			data["Departemen"] = employee[str(x)]['dpt']
-			data["Waktu real"] = '1'
-			
 			"""fungsi untuk mengisi waktu"""
 			if thisday in holiday:
 				"""hari libur"""
-				thisday_schedule = data["Jam Kerja"] = schedule["0"]["name"]
+				thisday_schedule = schedule["0"]["name"]
 				hour_in = test_gethour(schedule["0"]['hour start'])
 				hour_out = test_gethour(schedule["0"]['hour end'])
 				check_in = td(seconds = 0)
@@ -162,30 +150,45 @@ def test_process(start,end,buffer):
 				totaltime = test_totaltime(check_in,check_out)
 				overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 				
+				"""isi data tanggal dan data pegawai"""
+				data["NoPeg"] = employee[str(x)]['nopeg']
+				data["No. Akun"] = employee[str(x)]['akun']
+				data["No."] = employee[str(x)]['nomor']
+				data["Nama"] = employee[str(x)]['nama']
+				data["Auto-Assign"] = '0'
+				data["Tanggal"] = thisday.strftime('%Y-%m-%d')
+				data["Jam Kerja"] = schedule["0"]["name"]
 				data["Awal tugas"] = schedule["0"]['hour start']
 				data["Akhir tugas"] = schedule["0"]['hour end']
 				data["Masuk"] = test_getstring(thisday,check_in)
 				data["Keluar"] = test_getstring(thisday,check_out)
+				data["Normal"] = ' '
+				data["Waktu real"] = '1'
 				data["Telat"] = test_getstring(thisday,late_in)
 				data["Plg Awal"] = test_getstring(thisday,early_out)
+				if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+					data["Bolos"] = 'True'
+				else : 
+					data["Bolos"] = ' '	
 				data["Waktu Lembur"] = test_getstring(thisday,overtime)
 				data["Waktu Kerja"] = test_getstring(thisday,worktime)
 				data["Lama Hadir"] = test_getstring(thisday,totaltime)
+				data["Status"] = ' '
+				data["Hrs C/In"] = ' '
+				data["Hrs C/Out"] = ' '
+				data["Departemen"] = employee[str(x)]['dpt']
+				data["NDays"] = ' '
+				data["Akhir Pekan"] = ' '
+				data["Hari Libur"] = ' '
+				data["NDays_OT"] = ' '
+				data["Lembur A.Pekan"] = ' '
 				data["Libur Lembur"] = str(overtype)
-				data["NDays"] = '0'
-				data["Akhir Pekan"] = '0'
-				data["Hari Libur"] = '0'
-				data["NDays_OT"] = '0'
-				data["Lembur A.Pekan"] = '0'
-				if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
-					data["Bolos"] = '1'
-				else : 
-					data["Bolos"] = '0'	
+				buffer.append(data)
 			else:
 			
 				if thisday.weekday == 6:
 					"""hari minggu """
-					thisday_schedule = data["Jam Kerja"] = schedule["2"]["name"]
+					thisday_schedule = schedule["2"]["name"]
 					hour_in = test_gethour(schedule["2"]['hour start'])
 					hour_out = test_gethour(schedule["2"]['hour end'])
 					check_in = td(seconds = 0)
@@ -197,25 +200,39 @@ def test_process(start,end,buffer):
 					totaltime = test_totaltime(check_in,check_out)
 					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
+					data["NoPeg"] = employee[str(x)]['nopeg']
+					data["No. Akun"] = employee[str(x)]['akun']
+					data["No."] = employee[str(x)]['nomor']
+					data["Nama"] = employee[str(x)]['nama']
+					data["Auto-Assign"] = '0'
+					data["Tanggal"] = thisday.strftime('%Y-%m-%d')
+					data["Jam Kerja"] = schedule["2"]["name"]
 					data["Awal tugas"] = schedule["2"]['hour start']
 					data["Akhir tugas"] = schedule["2"]['hour end']
 					data["Masuk"] = test_getstring(thisday,check_in)
 					data["Keluar"] = test_getstring(thisday,check_out)
+					data["Normal"] = ' '
+					data["Waktu real"] = '1'
 					data["Telat"] = test_getstring(thisday,late_in)
 					data["Plg Awal"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["Bolos"] = 'True'
+					else : 
+						data["Bolos"] = ' '	
 					data["Waktu Lembur"] = test_getstring(thisday,overtime)
 					data["Waktu Kerja"] = test_getstring(thisday,worktime)
 					data["Lama Hadir"] = test_getstring(thisday,totaltime)
+					data["Status"] = ' '
+					data["Hrs C/In"] = ' '
+					data["Hrs C/Out"] = ' '
+					data["Departemen"] = employee[str(x)]['dpt']
+					data["NDays"] = ' '
+					data["Akhir Pekan"] = ' '
+					data["Hari Libur"] = ' '
+					data["NDays_OT"] = ' '
+					data["Lembur A.Pekan"] = ' '
 					data["Libur Lembur"] = str(overtype)
-					data["NDays"] = '0'
-					data["Akhir Pekan"] = '1'
-					data["Hari Libur"] = '0'
-					data["NDays_OT"] = '0'
-					data["Lembur A.Pekan"] = '0'
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
-						data["Bolos"] = '1'
-					else : 
-						data["Bolos"] = '0'	
+					buffer.append(data)
 		
 				elif thisday.weekday == 5:
 					"""hari sabtu """
@@ -235,25 +252,39 @@ def test_process(start,end,buffer):
 					totaltime = test_totaltime(check_in,check_out)
 					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
+					data["NoPeg"] = employee[str(x)]['nopeg']
+					data["No. Akun"] = employee[str(x)]['akun']
+					data["No."] = employee[str(x)]['nomor']
+					data["Nama"] = employee[str(x)]['nama']
+					data["Auto-Assign"] = '0'
+					data["Tanggal"] = thisday.strftime('%Y-%m-%d')
+					data["Jam Kerja"] = schedule["2"]["name"]
 					data["Awal tugas"] = schedule["2"]['hour start']
 					data["Akhir tugas"] = schedule["2"]['hour end']
 					data["Masuk"] = test_getstring(thisday,check_in)
 					data["Keluar"] = test_getstring(thisday,check_out)
+					data["Normal"] = ' '
+					data["Waktu real"] = '1'
 					data["Telat"] = test_getstring(thisday,late_in)
 					data["Plg Awal"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["Bolos"] = 'True'
+					else : 
+						data["Bolos"] = ' '	
 					data["Waktu Lembur"] = test_getstring(thisday,overtime)
 					data["Waktu Kerja"] = test_getstring(thisday,worktime)
 					data["Lama Hadir"] = test_getstring(thisday,totaltime)
-					data["Libur Lembur"] = '0'
-					data["NDays"] = '0'
-					data["Akhir Pekan"] = '1'
-					data["Hari Libur"] = '0'
-					data["NDays_OT"] = '0'
+					data["Status"] = ' '
+					data["Hrs C/In"] = ' '
+					data["Hrs C/Out"] = ' '
+					data["Departemen"] = employee[str(x)]['dpt']
+					data["NDays"] = ' '
+					data["Akhir Pekan"] = ' '
+					data["Hari Libur"] = ' '
+					data["NDays_OT"] = ' '
 					data["Lembur A.Pekan"] = str(overtype)
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
-						data["Bolos"] = '1'
-					else : 
-						data["Bolos"] = '0'	
+					data["Libur Lembur"] = ' '
+					buffer.append(data)
 				else:
 					"""hari senin sarmpai jumat"""
 					thisday_schedule = data["Jam Kerja"] = schedule["1"]["name"]
@@ -272,28 +303,42 @@ def test_process(start,end,buffer):
 					totaltime = test_totaltime(check_in,check_out)
 					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
-					data["Awal tugas"] = schedule["2"]['hour start']
-					data["Akhir tugas"] = schedule["2"]['hour end']
+					data["NoPeg"] = employee[str(x)]['nopeg']
+					data["No. Akun"] = employee[str(x)]['akun']
+					data["No."] = employee[str(x)]['nomor']
+					data["Nama"] = employee[str(x)]['nama']
+					data["Auto-Assign"] = ' '
+					data["Tanggal"] = thisday.strftime('%Y-%m-%d')
+					data["Jam Kerja"] = schedule["1"]["name"]
+					data["Awal tugas"] = schedule["1"]['hour start']
+					data["Akhir tugas"] = schedule["1"]['hour end']
 					data["Masuk"] = test_getstring(thisday,check_in)
 					data["Keluar"] = test_getstring(thisday,check_out)
+					data["Normal"] = ' '
+					data["Waktu real"] = '1'
 					data["Telat"] = test_getstring(thisday,late_in)
 					data["Plg Awal"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["Bolos"] = 'True'
+					else : 
+						data["Bolos"] = ' '	
 					data["Waktu Lembur"] = test_getstring(thisday,overtime)
 					data["Waktu Kerja"] = test_getstring(thisday,worktime)
 					data["Lama Hadir"] = test_getstring(thisday,totaltime)
-					data["Libur Lembur"] = '0'
-					data["NDays"] = '0'
-					data["Akhir Pekan"] = '0'
-					data["Hari Libur"] = '0'
+					data["Status"] = ' '
+					data["Hrs C/In"] = ' '
+					data["Hrs C/Out"] = ' '
+					data["Departemen"] = employee[str(x)]['dpt']
+					data["NDays"] = ' '
+					data["Akhir Pekan"] = ' '
+					data["Hari Libur"] = ' '
 					data["NDays_OT"] = str(overtype)
-					data["Lembur A.Pekan"] = '0'
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
-						data["Bolos"] = '1'
-					else : 
-						data["Bolos"] = '0'	
+					data["Lembur A.Pekan"] = ' '
+					data["Libur Lembur"] = ' '
+					buffer.append(data)
 			
 			"""mengisi data ke buffer"""
-			buffer.append(data)
+			
 	return buffer
 
 """fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text"""
@@ -333,11 +378,11 @@ def test_excell(file_title,buffer):
 def test_json(file_title,buffer):
 	"""output ke json"""
 	with open('{}.json'.format(file_title),'w') as jsonfile:
-		json.dump(buffer)
+		json.dumps(buffer)
 
 def test_csv(file_title,buffer):
 	"""output ke csv"""
-	with open('{}.csv'.format(file_title), 'w', dialect='excell', newline='') as csvfile:
+	with open(f'{file_title}.csv', 'w', newline='') as csvfile:
 		x = csv.writer(csvfile, delimiter=',',quotechar='"')
 		for i in buffer:
 			x.writerow(i)
@@ -345,7 +390,7 @@ def test_csv(file_title,buffer):
 def test_txt(file_title,buffer):
 	"""output ke text"""
 	with open('{}.txt'.format(file_title), 'w') as txtfile:
-		txtfile.write(buffer)
+			txtfile.write(json.dumps(buffer))
 
 """salam pembuka"""
 print("""
@@ -377,18 +422,20 @@ def main():
 	test_process(awal,akhir,hasil)
 	
 			
-	print("""
-	pilih format output dari 5 opsi
-	0 = layar
-	1 = excel
-	2 = JSON
-	3 = csv
-	4 = text
-	""")
+
 	def test_output():
+		print("""
+		pilih format output dari 5 opsi
+		 0 = layar
+		 1 = excel
+		 2 = JSON
+		 3 = csv
+		 4 = text
+		""")
 		opsi = input (" opsi : ")
 		if int(opsi) == 0:
 			test_print(hasil)
+		
 		elif int(opsi) == 1:
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
@@ -396,21 +443,24 @@ def main():
 				test_excell(judul_blank,hasil)
 			else:
 				test_excell(judul_opsi,hasil)
-		elif opsi == 2:
+		
+		elif int(opsi) == 2:
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
 				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
 				test_json(judul_blank,hasil)
 			else:
 				test_json(judul_opsi,hasil)
-		elif opsi == 3:
+		
+		elif int(opsi) == 3:
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
 				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
 				test_csv(judul_blank,hasil)
 			else:
 				test_csv(judul_opsi,hasil)
-		elif opsi == 4:
+		
+		elif int(opsi) == 4:
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
 				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
@@ -418,7 +468,7 @@ def main():
 			else:
 				test_txt(judul_opsi,hasil)
 		else:
-			print("pilihan anda tidak ada dalm daftar \n ulangi lagi?")
+			print("\n"+"pilihan anda tidak ada dalm daftar \n\n ulangi lagi?")
 			answer = input("jawab Y atau N: ")
 			if answer.lower() == 'y':
 				return test_output()
@@ -427,8 +477,8 @@ def main():
 	
 	test_output()
 	
-	print("ulangi proses ?")
-	answer = input("jawab Y atau N: ")
+	print("\n"+"ulangi proses ?")
+	answer = input("\n"+"jawab Y atau N: ")
 	if answer.lower() == 'y':
 		return main()
 	else:
