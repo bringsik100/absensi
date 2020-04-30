@@ -45,7 +45,7 @@ def test_get_data(source):
 """fungsi untuk merubah input yang berformat string dari user menjadi datetime"""
 def test_get_input(arg):
 	x = input(arg )
-	return dt.strptime(x,'%Y-%m-%d')
+	return dt.strptime(x,'%Y-%m-%d') - dt.today
 
 """fungsi untuk merubah input yang berformat string dari jadwal menjadi datetime"""
 def test_gethour(arg):
@@ -164,15 +164,15 @@ def test_process(start,end,buffer):
 			else:
 				if thisday.weekday == 6:
 					"""hari minggu """
-					thisday_schedule = data["Jam Kerja"] = schedule[2]["name"]
-					hour_in = data["Awal tugas"] = test_gethour(schedule[2]['hour start'])
-					hour_out = data["Akhir tugas"] = test_gethour(schedule[2]['hour end'])
+					thisday_schedule = data["Jam Kerja"] = schedule["2"]["name"]
+					hour_in = data["Awal tugas"] = test_gethour(schedule["2"]['hour start'])
+					hour_out = data["Akhir tugas"] = test_gethour(schedule["2"]['hour end'])
 					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
 					check_in = data["Masuk"] = td(seconds = 0)
 					check_out = data["Keluar"] = td(seconds = 0)
 					check_out = data["Keluar"] = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
-					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule[2]['late in']))
-					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule[2]['early out']))
+					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
+					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
 					overtime = data["Waktu Lembur"] = test_overtime(hour_in,hour_out,check_in,check_out)
 					worktime = data["Waktu Kerja"] = test_worktime(hour_in,hour_out,check_in,check_out)
 					totaltime = data["Lama Hadir"] = test_totaltime(check_in,check_out)
@@ -182,22 +182,22 @@ def test_process(start,end,buffer):
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
 					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule[1]["checkin max"]) or check_out < test_gethour(schedule[1]["checkin max"]):
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["1"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
 						data["Bolos"] = '0'	
 		
 				elif thisday.weekday == 5:
 					"""hari sabtu """
-					thisday_schedule = data["Jam Kerja"] = schedule[2]["name"]
-					hour_in = data["Awal tugas"] = test_gethour(schedule[2]['hour start'])
-					hour_out = data["Akhir tugas"] = test_gethour(schedule[2]['hour end'])
+					thisday_schedule = data["Jam Kerja"] = schedule["2"]["name"]
+					hour_in = data["Awal tugas"] = test_gethour(schedule["2"]['hour start'])
+					hour_out = data["Akhir tugas"] = test_gethour(schedule["2"]['hour end'])
 					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
 					check_in = data["Masuk"] = td(seconds = 0)
 					check_out = data["Keluar"] = td(seconds = 0)
 					check_out = data["Keluar"] = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
-					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule[2]['late in']))
-					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule[2]['early out']))
+					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
+					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
 					overtime = data["Waktu Lembur"] = test_overtime(hour_in,hour_out,check_in,check_out)
 					worktime = data["Waktu Kerja"] = test_worktime(hour_in,hour_out,check_in,check_out)
 					totaltime = data["Lama Hadir"] = test_totaltime(check_in,check_out)
@@ -207,24 +207,24 @@ def test_process(start,end,buffer):
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
 					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule[2]["checkin max"]) or check_out < test_gethour(schedule[2]["checkin max"]):
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["2"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
 						data["Bolos"] = '0'	
 				else:
-					"""hari senin sampai jumat"""
-					thisday_schedule = data["Jam Kerja"] = schedule[1]["name"]
-					hour_in = data["Awal tugas"] = test_gethour(schedule[1]['hour start'])
-					hour_out = data["Akhir tugas"] = test_gethour(schedule[1]['hour end'])
+					"""hari senin sarmpai jumat"""
+					thisday_schedule = data["Jam Kerja"] = schedule["1"]["name"]
+					hour_in = data["Awal tugas"] = test_gethour(schedule["1"]['hour start'])
+					hour_out = data["Akhir tugas"] = test_gethour(schedule["1"]['hour end'])
 					check_in = data["Masuk"] = check_in = td(hours = ri(7,8))
 					check_in = data["Masuk"] = td(hours = ri(7,8))
-					if check_in.hours == 8:
+					if check_in == td(hours=8):
 						check_in + td(minutes = ri(0,15),seconds = ri(0,59))
 					else:
 						check_in + td(minutes = ri(0,59),seconds = ri(0,59))
 					check_out = data["Keluar"] = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
-					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule[1]['late in']))
-					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule[1]['early out']))
+					late_in = data["Telat"] = test_late_in(hour_in,check_in,test_gethour(schedule["1"]['late in']))
+					early_out = data["Plg Awal"] = test_early_out(hour_out,check_out,test_gethour(schedule["1"]['early out']))
 					overtime = data["Waktu Lembur"] = test_overtime(hour_in,hour_out,check_in,check_out)
 					worktime = data["Waktu Kerja"] = test_worktime(hour_in,hour_out,check_in,check_out)
 					totaltime = data["Lama Hadir"] = test_totaltime(check_in,check_out)
@@ -234,7 +234,7 @@ def test_process(start,end,buffer):
 					data["Hari Libur"] = '0'
 					data["NDays_OT"] = '0'
 					data["Lembur A.Pekan"] = test_overtype(hour_in,check_in)
-					if check_in == td(seconds = 0) or late_in > test_gethour(schedule[1]["checkin max"]) or check_out < test_gethour(schedule[1]["checkin max"]):
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["1"]["checkin max"]):
 						data["Bolos"] = '1'
 					else : 
 						data["Bolos"] = '0'	
