@@ -4,220 +4,485 @@ Absensi
 """
 
 __author__ = "bringsik100"
-__version__ = "0.1.3"
+__version__ = "0.1.3b"
 __license__ = "MIT"
 
+"""
+alur program
++ import library
++ deklarasi fungsi objek
+- fungsi ambil data pegawai, jadwal, judul, liburan
+- fungsi perubah input 
+- fungsi tanggal
+- fungsi waktu
+- fungsi output
++ fungsi main()
+- salam pembuka
+- dict template penampung < pegawai < tanggal < waktu < data
+- input pegawai
+- input tanggal
+- input waktu
+- pilih format output
+- ulangi atau selesai
+"""
+
+"""import library"""
 from random import randint as ri
+import datetime as dd
 from datetime import datetime as dt
 from datetime import timedelta as td
 import string
 import json
+import csv
 from openpyxl import Workbook
-from attend import countf
+#import pytest
 
-#FUNCTION LIST
-'''
-penjelasan variable 
-hi = hour in, jam masuk
-ho = hour out, jam keluar
-ci = check in
-co = check out
-'''
+"""fungsi ambil data pegawai, jadwal, judul, liburan"""
+def test_get_data(source):
+	with open(source,'r') as srce:
+		this_data = json.load(srce)
+	return this_data
 
-def con_up(a):
-	'''container update'''
-	'''update dan pengisi cl_con'''
-	ii = i+1
-	a['nopeg'] = str(ii)
-	a['noakun'] = str(ii)
-	a['nomor'] = str(ii)
-	a['nama'] = emp[str(ii)]['nama']
-	a['assign'] = ety
-	a['shift'] = wr_sf
-	a['date'] = today.strftime('%Y/%m/%d')
-	a['hour_on'] = dt_in.strftime('%H:%M')
-	a['hour_off'] = dt_out.strftime('%H:%M')
-	a['check_in'] = dh_in.strftime('%H:%M')
-	a['check_out'] = dh_out.strftime('%H:%M')
-	a['normal_time'] = n_tab
-	a['real_time'] = t_real
-	a['late'] = dh_late
-	a['early'] = dh_early
-	a['day_off'] = day_o
-	a['overtime'] = ov_tm
-	a['worktime'] = wr_tm
-	a['status'] = ety
-	a['man_cin'] = ety
-	a['man_cout'] = ety
-	a['dept'] = emp[str(ii)]['dpt']
-	a['normalday'] = n_day
-	a['weekday'] = we_tm
-	a['holiday'] = n_tab
-	a['total_att'] = (today + ttl_a).strftime('%H:%M')
-	a['normal_ot'] = n_ot
-	a['week_ot'] = w_ot
-	a['holi_ot'] = ety
+"""fungsi untuk merubah input yang berformat string dari user menjadi datetime"""
+def test_get_input(arg):
+	x = input(arg )
+	return dt.strptime(x,'%Y-%m-%d')
 
-#VARIABLE LIST
-header = []
-emp = []
-container = []
-ety = ' ' #Auto-Assign, Status, Hari Libur, Libur Lembur is empty
-n_tab = '\'1'
-#date time
-dt_st = dt(2020,1,1,0,0,0) #start date
-dt_fn = dt(2020,1,10,0,0,0) #end date
-dt_dlt = dt_fn-dt_st #date interval
-dt_ls = [dt_st+td(days=i) for i in range(dt_dlt.days+1)] #date list
-hr_in = td(hours=8) #hour in
-hr_out = [td(hours=16),td(hours=13)] #hour out. 16 PM and 13 PM
-hr_0 = td(seconds=0) # kosong
-sf_ls = ['Senin-Jumat','Sabtu-Minggu'] #work shift list
+"""fungsi untuk merubah input yang berformat string dari jadwal menjadi datetime"""
+def test_gethour(arg):
+	x = dt.strptime(arg,'%H:%M')
+	return td(hours = x.hour, minutes = x.minute)
 
-if __name__ == '__main__':
+def test_getstring(day,delta):
+	x = day + delta
+	return x.strftime('%H:%M')
+
+"""menghitung berapa lama pegawai terlambat"""
+def test_late_in(hour_in,check_in,tolerance):
+	if check_in > hour_in:
+		if (check_in - hour_in) < tolerance:
+			return td(seconds=0)
+		else:
+			return check_in - hour_in
+	else:
+		return td(seconds=0)
+
+"""menghitung berapa lama pegawai pulang lebih awal"""
+def test_early_out(hour_out,check_out,tolerance):
+	if hour_out > check_out:
+		if (hour_out - check_out) < tolerance:
+			return td(seconds=0)
+		else:
+			return hour_out - check_out
+	else:
+		return td(seconds=0)
+
+"""menghitung lembur"""
+def test_overtime(hour_in,hour_out,check_in,check_out):
+	if check_in < hour_in and check_out > hour_out:
+		return (hour_in - check_in)+(check_out - hour_out)
+	elif check_in < hour_in and check_out < hour_out:
+		return hour_in - check_in
+	elif check_in > hour_in and check_out > hour_out:
+		return check_out - hour_out
+	else:
+		return td(seconds=0)
+
+"""menghitung jam kerja minus telat dan pulang awal"""
+def test_worktime(hour_in,hour_out,check_in,check_out):
+	if check_in > hour_in:
+		return hour_out - check_in
+	elif check_out > hour_out:
+		return check_out - hour_in
+	else:
+		return hour_out - hour_in
+
+def test_totaltime(check_in,check_out):
+	return (check_out - check_in)
+
+"""menghitung jam lembur dalam desimal"""
+def test_overtype(hour_in,hour_out,check_in,check_out):
+	if check_in < hour_in and check_out > hour_out:
+		return round(((hour_in - check_in)+(check_out - hour_out))/td(hours = 1),2)
+	elif check_in < hour_in and check_out < hour_out:
+		return round((hour_in - check_in)/td(hours = 1),2)
+	elif check_in > hour_in and check_out > hour_out:
+		return round((check_out - hour_out)/td(hours = 1),2)
+	else:
+		return td(seconds=0)
+
+"""fungsi untuk memproses pegawai tanggal waktu dan input ke buffer"""
+def test_process(start,end,buffer):
+	"""start = tanggal mulai"""
+	"""end = tanggal akhir """
+	"""buffer berfungsi sebagai penampung data"""
 	
-	'''membaca header'''
-	with open('data/header.json','r') as head_data:
-		header = list(json.load(head_data).keys())
-
-	'''membaca employee untuk kolom NoPeg, Akun, No., Nama, Auto-Assign, Status, Hrs C/In, Hrs C/Out, Departemen'''
-	with open('data/employee.json','r') as emp_data:
-		emp = json.load(emp_data)
-
-	for i in range(len(emp)):
-		'''looping employee'''
-		for x in range(len(dt_ls)):
-			'''looping tanggal'''
-			
-			'''cluster container'''
-			cl_con = {}
-			today = dt_ls[x]
-			'''randomisasi waktu in dan out'''
-			ch_in = td(hours=ri(7,9))
-			cm_in = [td(minutes=ri(45,59))
-					,td(minutes=ri(0,15))
-					,td(minutes=ri(0,59))]
-			ch_out = [td(minutes=ri(14,18))
-					,td(minutes=ri(13,18))]
-			
-			dt_in = today+hr_in
+	"""ambil library yang dibutuhkan"""
+	employee = test_get_data('data/pegawai.json')
+	schedule = test_get_data('data/jadwal.json')
+	subdata = test_get_data('data/judul.json')
+	holiday = list(test_get_data('data/libur.json'))
 	
-			if today.weekday() == 6:
-				'''hari minggu'''
-				wr_sf = sf_ls[1]
-				dt_out = today + hr_out[1]
-				dh_in = today + hr_0
-				dh_out = today + hr_0
-				t_real = ety
-				dh_late = ety
-				dh_early = ety
-				day_o = n_tab
-				ov_tm = ety
-				wr_tm = ety
-				n_day = ety
-				we_tm = ety
-				ttl_a = hr_0
-				n_ot = ety
-				w_ot = ety
+	"""daftar tanggal"""
+	delta = end - start
+	
+	"""looping pegawai"""
+	for x in range(len(employee)):
+		x = x + 1
+		"""looping tanggal"""
+		for day in range(delta.days+1):
+			
+			"""tentukan tangal"""
+			thisday = start + td(days = day)
+			data = subdata
+			"""fungsi untuk mengisi waktu"""
+			if thisday in holiday:
+				"""hari libur"""
+				thisday_schedule = schedule["0"]["name"]
+				hour_in = test_gethour(schedule["0"]['hour start'])
+				hour_out = test_gethour(schedule["0"]['hour end'])
+				check_in = td(seconds = 0)
+				check_out = td(seconds = 0)
+				late_in = test_late_in(hour_in,check_in,test_gethour(schedule["0"]['late in']))
+				early_out = test_early_out(hour_out,check_out,test_gethour(schedule["0"]['early out']))
+				overtime = test_overtime(hour_in,hour_out,check_in,check_out)
+				worktime = test_worktime(hour_in,hour_out,check_in,check_out)
+				totaltime = test_totaltime(check_in,check_out)
+				overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 				
-				con_up(cl_con)
-				container.append(cl_con)
-				
-			elif today.weekday() == 5:
-				'''hari rabu'''
-				wr_sf = sf_ls[1]
-				dt_out = today + hr_out[1]
-				dh_out = today + ch_out[1] + cm_in[2]
-				t_real = n_tab
-				if ch_in == 7:
-					dh_in = today + ch_in + cm_in[0]
-					rs = countf(dt_in,dt_out,dh_in,dh_out) #rs countf
-					dh_late = today + rs.late_in()
-					dh_early = today + rs.early_out()
-					ov_tm = today + rs.o_time()
-					wr_tm = today + rs.w_time()
-					ttl_a = rs.t_time()
-					w_ot = rs.nw_ot()
-					day_o = ety
-					n_day = ety
-					we_tm = n_tab
-					n_ot = ety
-					
-					con_up(cl_con)
-					container.append(cl_con)
-					
-				else:
-					dh_in = today + ch_in + cm_in[1]
-					rs = countf(dt_in,dt_out,dh_in,dh_out) #rs countf
-					dh_late = today + rs.late_in()
-					dh_early = today + rs.early_out()
-					ov_tm = today + rs.o_time()
-					wr_tm = today + rs.w_time()
-					ttl_a = rs.t_time()
-					w_ot = rs.nw_ot()
-					day_o = ety
-					n_day = ety
-					we_tm = n_tab
-					n_ot = ety
-					
-					con_up(cl_con)
-					container.append(cl_con)
-					
+				"""isi data tanggal dan data pegawai"""
+				data["0"] = employee[str(x)]['nopeg']
+				data["1"] = employee[str(x)]['akun']
+				data["2"] = employee[str(x)]['nomor']
+				data["3"] = employee[str(x)]['nama']
+				data["4"] = '0'
+				data["5"] = thisday.strftime('%Y-%m-%d')
+				data["6"] = schedule["0"]["name"]
+				data["7"] = schedule["0"]['hour start']
+				data["8"] = schedule["0"]['hour end']
+				data["9"] = test_getstring(thisday,check_in)
+				data["10"] = test_getstring(thisday,check_out)
+				data["11"] = ' '
+				data["12"] = '1'
+				data["13"] = test_getstring(thisday,late_in)
+				data["14"] = test_getstring(thisday,early_out)
+				if check_in == td(seconds = 0) or late_in > test_gethour(schedule["0"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+					data["15"] = 'True'
+				else : 
+					data["15"] = ' '	
+				data["16"] = test_getstring(thisday,overtime)
+				data["17"] = test_getstring(thisday,worktime)
+				data["18"] = test_getstring(thisday,totaltime)
+				data["19"] = ' '
+				data["20"] = ' '
+				data["21"] = ' '
+				data["22"] = employee[str(x)]['dpt']
+				data["23"] = ' '
+				data["24"] = ' '
+				data["25"] = ' '
+				data["26"] = ' '
+				data["27"] = ' '
+				data["28"] = str(overtype)
+				buffer.append(data)
 			else:
-				'''hari senin sampai jumat'''
-				wr_sf = sf_ls[0]
-				dt_out = today + hr_out[0]
-				dh_out = today + ch_out[0] + cm_in[2]
-				t_real = n_tab
-				if ch_in == 7:
-					dh_in = today + ch_in + cm_in[0]
-					rs = countf(dt_in,dt_out,dh_in,dh_out) #rs countf
-					dh_late = today + rs.late_in()
-					dh_early = today + rs.early_out()
-					ov_tm = today + rs.o_time()
-					wr_tm = today + rs.w_time()
-					ttl_a = rs.t_time()
-					w_ot = rs.nw_ot()
-					day_o = ety
-					n_day = ety
-					we_tm = n_tab
-					n_ot = ety
+			
+				if thisday.weekday == 6:
+					"""hari minggu """
+					thisday_schedule = schedule["2"]["name"]
+					hour_in = test_gethour(schedule["2"]['hour start'])
+					hour_out = test_gethour(schedule["2"]['hour end'])
+					check_in = td(seconds = 0)
+					check_out = td(seconds = 0)
+					late_in = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
+					early_out = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
+					overtime = test_overtime(hour_in,hour_out,check_in,check_out)
+					worktime = test_worktime(hour_in,hour_out,check_in,check_out)
+					totaltime = test_totaltime(check_in,check_out)
+					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
-					con_up(cl_con)
-					container.append(cl_con)
+					data["0"] = employee[str(x)]['nopeg']
+					data["1"] = employee[str(x)]['akun']
+					data["2"] = employee[str(x)]['nomor']
+					data["3"] = employee[str(x)]['nama']
+					data["4"] = '0'
+					data["5"] = thisday.strftime('%Y-%m-%d')
+					data["6"] = schedule["2"]["name"]
+					data["7"] = schedule["2"]['hour start']
+					data["8"] = schedule["2"]['hour end']
+					data["9"] = test_getstring(thisday,check_in)
+					data["10"] = test_getstring(thisday,check_out)
+					data["11"] = ' '
+					data["12"] = '1'
+					data["13"] = test_getstring(thisday,late_in)
+					data["14"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["15"] = 'True'
+					else : 
+						data["15"] = ' '	
+					data["16"] = test_getstring(thisday,overtime)
+					data["17"] = test_getstring(thisday,worktime)
+					data["18"] = test_getstring(thisday,totaltime)
+					data["19"] = ' '
+					data["20"] = ' '
+					data["21"] = ' '
+					data["22"] = employee[str(x)]['dpt']
+					data["23"] = ' '
+					data["24"] = ' '
+					data["25"] = ' '
+					data["26"] = ' '
+					data["27"] = ' '
+					data["28"] = str(overtype)
+					buffer.append(data)
+		
+				elif thisday.weekday == 5:
+					"""hari sabtu """
+					thisday_schedule = data["6"] = schedule["2"]["name"]
+					hour_in = test_gethour(schedule["2"]['hour start'])
+					hour_out = test_gethour(schedule["2"]['hour end'])
+					check_in = td(hours = ri(7,8))
+					if check_in == td(hours=8):
+						check_in + td(minutes = ri(0,15),seconds = ri(0,59))
+					else:
+						check_in + td(minutes = ri(0,59),seconds = ri(0,59))
+					check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
+					late_in = test_late_in(hour_in,check_in,test_gethour(schedule["2"]['late in']))
+					early_out = test_early_out(hour_out,check_out,test_gethour(schedule["2"]['early out']))
+					overtime = test_overtime(hour_in,hour_out,check_in,check_out)
+					worktime = test_worktime(hour_in,hour_out,check_in,check_out)
+					totaltime = test_totaltime(check_in,check_out)
+					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
+					data["0"] = employee[str(x)]['nopeg']
+					data["1"] = employee[str(x)]['akun']
+					data["2"] = employee[str(x)]['nomor']
+					data["3"] = employee[str(x)]['nama']
+					data["4"] = '0'
+					data["5"] = thisday.strftime('%Y-%m-%d')
+					data["6"] = schedule["2"]["name"]
+					data["7"] = schedule["2"]['hour start']
+					data["8"] = schedule["2"]['hour end']
+					data["9"] = test_getstring(thisday,check_in)
+					data["10"] = test_getstring(thisday,check_out)
+					data["11"] = ' '
+					data["12"] = '1'
+					data["13"] = test_getstring(thisday,late_in)
+					data["14"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["2"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["15"] = 'True'
+					else : 
+						data["15"] = ' '	
+					data["16"] = test_getstring(thisday,overtime)
+					data["17"] = test_getstring(thisday,worktime)
+					data["18"] = test_getstring(thisday,totaltime)
+					data["19"] = ' '
+					data["20"] = ' '
+					data["21"] = ' '
+					data["22"] = employee[str(x)]['dpt']
+					data["23"] = ' '
+					data["24"] = ' '
+					data["25"] = ' '
+					data["26"] = ' '
+					data["27"] = str(overtype)
+					data["28"] = ' '
+					buffer.append(data)
 				else:
-					dh_in = today + ch_in + cm_in[1]
-					rs = countf(dt_in,dt_out,dh_in,dh_out) #rs countf
-					dh_late = today + rs.late_in()
-					dh_early = today + rs.early_out()
-					ov_tm = today + rs.o_time()
-					wr_tm = today + rs.w_time()
-					ttl_a = rs.t_time()
-					w_ot = rs.nw_ot()
-					day_o = ety
-					n_day = ety
-					we_tm = n_tab
-					n_ot = ety
+					"""hari senin sarmpai jumat"""
+					thisday_schedule = data["6"] = schedule["1"]["name"]
+					hour_in = test_gethour(schedule["1"]['hour start'])
+					hour_out = test_gethour(schedule["1"]['hour end'])
+					check_in = td(hours = ri(7,8))
+					if check_in == td(hours=8):
+						check_in + td(minutes = ri(0,15),seconds = ri(0,59))
+					else:
+						check_in + td(minutes = ri(0,59),seconds = ri(0,59))
+					check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
+					late_in = test_late_in(hour_in,check_in,test_gethour(schedule["1"]['late in']))
+					early_out = test_early_out(hour_out,check_out,test_gethour(schedule["1"]['early out']))
+					overtime = test_overtime(hour_in,hour_out,check_in,check_out)
+					worktime = test_worktime(hour_in,hour_out,check_in,check_out)
+					totaltime = test_totaltime(check_in,check_out)
+					overtype = test_overtype(hour_in,hour_out,check_in,check_out)
 					
-					con_up(cl_con)
-					container.append(cl_con)
+					data["0"] = employee[str(x)]['nopeg']
+					data["1"] = employee[str(x)]['akun']
+					data["2"] = employee[str(x)]['nomor']
+					data["3"] = employee[str(x)]['nama']
+					data["4"] = ' '
+					data["5"] = thisday.strftime('%Y-%m-%d')
+					data["6"] = schedule["1"]["name"]
+					data["7"] = schedule["1"]['hour start']
+					data["8"] = schedule["1"]['hour end']
+					data["9"] = test_getstring(thisday,check_in)
+					data["10"] = test_getstring(thisday,check_out)
+					data["11"] = ' '
+					data["12"] = '1'
+					data["13"] = test_getstring(thisday,late_in)
+					data["14"] = test_getstring(thisday,early_out)
+					if check_in == td(seconds = 0) or late_in > test_gethour(schedule["1"]["checkin max"]) or check_out < test_gethour(schedule["0"]["checkin max"]):
+						data["15"] = 'True'
+					else : 
+						data["15"] = ' '	
+					data["16"] = test_getstring(thisday,overtime)
+					data["17"] = test_getstring(thisday,worktime)
+					data["18"] = test_getstring(thisday,totaltime)
+					data["19"] = ' '
+					data["20"] = ' '
+					data["21"] = ' '
+					data["22"] = employee[str(x)]['dpt']
+					data["23"] = ' '
+					data["24"] = ' '
+					data["25"] = ' '
+					data["26"] = str(overtype)
+					data["27"] = ' '
+					data["28"] = ' '
+					buffer.append(data)
+			
+			"""mengisi data ke buffer"""
+			
+	return buffer
+
+"""fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text"""
+
+def test_print(buffer):
+	"""output ke layar"""
+	for i in buffer:
+		print(i)
+
+
+def test_excell(file_title,buffer):
+	"""output ke excell"""
 	
-	'''proses ke excell'''
+	"""membaca data header dari judul.json"""
+	with open('data/judul.json','r') as head_data:
+		header = list(json.load(head_data).keys())
+	
+	book = Workbook()
+	sheet = book.active
+	sheet.title = file_title
+	"""daftar kolom untuk excell ouput"""
 	column = list(string.ascii_uppercase)+['AA','AB','AC']
-	wb = Workbook()
-	ws = wb.active
-	ws.title = 'Absensi'
-	
-	#output ke excell
+	"""header untuk mengisi baris pertama"""
 	for i in range(len(header)):
-		ws.cell(column=i+1,row=1, value=header[i])
-	
-	for x in range(len(container)):
-		z=list(container[x].values())
+		sheet.cell(column=i+1,row=1, value=header[i])
+
+	"""isi sheet dari buffer"""
+	for x in range(len(buffer)):
+		z=list(buffer[x].values())
 		for y in range(len(column)):
-			ws.cell(column=y+1,row=x+2,value=(z[y]))
+			sheet.cell(column=y+1,row=x+2,value=(z[y]))
+
+	"""save ke excell"""
+	book.save('{}.xlsx'.format(file_title))
+	book.close()
+
+def test_json(file_title,buffer):
+	"""output ke json"""
+	with open('{}.json'.format(file_title),'w') as jsonfile:
+		json.dumps(buffer)
+
+def test_csv(file_title,buffer):
+	"""output ke csv"""
+	with open(f'{file_title}.csv', 'w', newline='') as csvfile:
+		x = csv.writer(csvfile, delimiter=',',quotechar='"')
+		for i in buffer:
+			x.writerow(i)
+
+def test_txt(file_title,buffer):
+	"""output ke text"""
+	with open('{}.txt'.format(file_title), 'w') as txtfile:
+			txtfile.write(json.dumps(buffer))
+
+"""salam pembuka"""
+print("""
+SELAMAT DATANG DI ABTOMATIS
+MODUL PENGISI ABSENSI OTOMATIS
+""")
+
+def main():
+
+	print("""
+	metode pengisian :
+	masukkan tanggal awal dan akhir dengan format YYYY-MM-DD dimana 
+	YYYY = 4 angka tahun
+	MM = 2 angka bulan 
+	DD = 2 angka tanggal
+	""")
 	
-	wb.save('testing.xlsx')
-	wb.close
+	"""tanya tanggal awal dan akhir otomatis"""
+	awal = test_get_input(' masukkan tanggal awal absensi: ') 
+	akhir = test_get_input(' masukkan tanggal akhir absensi: ')
+	hasil = []
 	
+	"""tanya tanggal awal dan akhir lewat input (nonaktif)
+	awal = test_get_input(' masukkan tanggal awal absensi: ')
+	akhir = test_get_input(' masukkan tanggal akhir absensi: ')
+	""" 
+	
+	"""main proses"""
+	test_process(awal,akhir,hasil)
+	
+			
+
+	def test_output():
+		print("""
+		pilih format output dari 5 opsi
+		 0 = layar
+		 1 = excel
+		 2 = JSON
+		 3 = csv
+		 4 = text
+		""")
+		opsi = input (" opsi : ")
+		if int(opsi) == 0:
+			test_print(hasil)
+		
+		elif int(opsi) == 1:
+			judul_opsi = input("beri judul : " )
+			if judul_opsi == None:
+				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
+				test_excell(judul_blank,hasil)
+			else:
+				test_excell(judul_opsi,hasil)
+		
+		elif int(opsi) == 2:
+			judul_opsi = input("beri judul : " )
+			if judul_opsi == None:
+				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
+				test_json(judul_blank,hasil)
+			else:
+				test_json(judul_opsi,hasil)
+		
+		elif int(opsi) == 3:
+			judul_opsi = input("beri judul : " )
+			if judul_opsi == None:
+				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
+				test_csv(judul_blank,hasil)
+			else:
+				test_csv(judul_opsi,hasil)
+		
+		elif int(opsi) == 4:
+			judul_opsi = input("beri judul : " )
+			if judul_opsi == None:
+				judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
+				test_txt(judul_blank,hasil)
+			else:
+				test_txt(judul_opsi,hasil)
+		else:
+			print("\n"+"pilihan anda tidak ada dalm daftar \n\n ulangi lagi?")
+			answer = input("jawab Y atau N: ")
+			if answer.lower() == 'y':
+				return test_output()
+			else:
+				pass
+	
+	test_output()
+	
+	print("\n"+"ulangi proses ?")
+	answer = input("\n"+"jawab Y atau N: ")
+	if answer.lower() == 'y':
+		return main()
+	else:
+		pass
+
+if __name__=='__main__':
+	main()
