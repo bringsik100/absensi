@@ -2,39 +2,71 @@
 """
 Jadwal
 """
-
+"""
+- buat perintah Read untuk membaca data dan menampungnya ke dalam buffer
+- buat perintah View untuk menampilkan buffer ke layar
+- buat perintah Find untuk mencari data di dalam buffer
+- buat perintah Edit untuk menyunting data di dalam buffer
+- buat perintah Create untuk menambahkan data ke dalam buffer
+- buat perintah Delete untuk menghapus data di dalam buffer
+- buat perintah Write untuk menuliskan buffer ke dalam data
+"""
 
 import json
 from datetime import datetime as dt
 from datetime import timedelta as dt
 
-class test_rules:
-	'''class untuk menentukan jadwal'''
-	def __init__(self,**kwargs):
-		'''shift'''
-		self.kwargs = kwargs
-		self.buff={}
-		self.buff.update(self.kwargs)
+"""import library"""
+import json
 
-	def test_sumber(self):
-		'''membaca daftar jadwal dari jadwal.json '''
-		with open('test/data/jadwal.json','r') as srce:
-			return json.load(srce)
+class Emp:
+	'''
+	fungsi untuk create, read, write, edit, dan delete item dalam employee.json
+	'''
+	def __init__(self):
+		'''membaca file jadwal.json'''
+		with open('data/jadwal.json') as source:
+			self.buffer = json.load(source)
+			return self.buffer
 
-	def test_printall(self):
-		'''menampilkan data shift dari file dan buffer ke layar'''
-		print(self.test_sumber() + self.buff)
+	def view_all(self):
+		"""tampilkan data di layar"""
+		print(self.buffer)
 
-	def test_printbuff(self):
-		'''menampilkan data shift dari buffer ke layar'''
-		print(self.buff)
+	def view_id(self,pid):
+		"""tampilkan data jadwal dari pilihan id"""
+		print(self.data[str(pid)])
+	
+	def find_elem(self,arg):
+		"""mencari data jadwal dengan kata kunci"""
+		for elem in self.data:
+			if args in self.data[elem]:
+				print(f'{arg} ada di dalam {self.data.[elem]}')
+			else:
+				print(f'data {arg} tidak ditemukan')
 
-	def test_write(self):
-		with open(self.test_sumber,'w') as sorc:
-			x = json.load(sorc.read())
-			y = json.dump(self.buff)
-			x = x + y
-			sorc.write(x)
+	def edit_elem(self,pid,**kwargs):
+		"""menyunting data dari buffer"""
+		self.buffer.update{[pid]:{kwargs}}
+	
+	def Add_elem(self,**kwargs):
+		""" menambahkan data ke dalam buffer"""
+		self.new_pid = str(len(self.buffer+1))
+		self.buffer.update{self.new_pid:{kwargs}}
+
+	def Delete(self,pid):
+		"""menghapus data di dalam buffer"""
+		self.pid = pid
+		del self.buffer[self.pid]
+	
+	def Write(self):
+		""" menulis data dari buffer ke dalam pegawai.json"""
+		with open('data/jadwal.json','w') as source:
+			source.write(json.dump(self.buffer))
+
+def main():
+	"""modul utama"""
+	print("not ready yet")
 
 if __name__ == '__main__':
 	main()
