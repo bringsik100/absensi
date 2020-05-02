@@ -51,3 +51,9 @@ Version 0.1.2
 - uji output ke terminal lancar
 - uji output ke excell lancar
 - urutan kolom di output kacau dan tidak seperti yg diharapkan
+
+Version 0.1.2
+=============
+- 2020-05-02
+- urutan kolom di output excell sudah benar dan hasilnya memuaskan
+- modul masuk tahap beta

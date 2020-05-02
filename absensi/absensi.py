@@ -66,7 +66,7 @@ def get_late_in(hour_in,check_in,tolerance):
 	"""menghitung berapa lama pegawai terlambat"""
 	if check_in > hour_in:
 		if (check_in - hour_in) < tolerance:
-			return td(seconds=0)
+			return ' '
 		else:
 			return check_in - hour_in
 	else:
@@ -102,7 +102,7 @@ def get_totaltime(check_in,check_out):
 	"""menghitung jam kerja dari jam masuk dan jam keluar"""
 	return (check_out - check_in)
 
-def get_overtype(hour_in,hour_out,check_in,check_out):
+def get_overtype(hour_out,check_out):
 	"""menghitung jam lembur dalam desimal"""
 	if check_out > hour_out:
 		return round((check_out - hour_out)/td(hours = 1),2)
@@ -119,7 +119,7 @@ def process(start,end,buffer):
 	employee = get_data('data/pegawai.json')
 	schedule = get_data('data/jadwal.json')
 	subdata = get_data('data/judul.json')
-	holiday = list(get_data('data/libur.json'))
+	holiday = list(map(lambda x:dt.strptime(x,'%Y-%m-%d'),list(get_data('data/libur.json').keys())))
 	
 	"""daftar tanggal"""
 	delta = end - start
@@ -145,49 +145,12 @@ def process(start,end,buffer):
 			data["21"] = ' ' #harus check out
 			data["22"] = employee[str(x)]['dpt'] #departemen
 			
-			if thisday in holiday is True:
-				"""hari libur"""
-				thisday_schedule = schedule["0"]["name"]
-				hour_in = get_hour(schedule["0"]['hour start'])
-				hour_out = get_hour(schedule["0"]['hour end'])
-				check_in = ' '
-				check_out = ' '
-				late_in = ' '
-				early_out = ' '
-				overtime = ' '
-				worktime = ' '
-				totaltime = ' '
-				overtype = ' '
-				
-				data["6"] = schedule["0"]["name"] #nama jadwal
-				data["7"] = schedule["0"]['hour start'] #jadwal masuk
-				data["8"] = schedule["0"]['hour end'] #jadwal keluar
-				data["9"] = get_string(thisday,check_in) #jam masuk
-				data["10"] = get_string(thisday,check_out) #jam keluar
-				data["11"] = ' ' #jam normal
-				
-				data["13"] = get_string(thisday,late_in) #terlambat
-				data["14"] = get_string(thisday,early_out) #pulang cepat
-				if check_in == td(seconds = 0) or late_in > get_hour(schedule["1"]["checkin max"]) or check_out < get_hour(schedule["0"]["checkin max"]):
-					data["15"] = 'True' #bolos
-				else : 
-					data["15"] = ' ' #bolos
-				data["16"] = get_string(thisday,overtime) #lembur
-				data["17"] = get_string(thisday,worktime) #jam kerja
-				data["18"] = get_string(thisday,totaltime) #waktu kerja
-				data["23"] = ' ' #normal days
-				data["24"] = ' ' #akhir pekan
-				data["25"] = '1' #hari libur
-				data["26"] = ' ' # lembur hari normal
-				data["27"] = ' ' #lembur akhir pekan
-				data["28"] = str(overtype) #lembur hari libur
-			
-			else:
-				if thisday.weekday == 6:
+			if not thisday in holiday:
+				if thisday.weekday() == 6:
 					"""hari minggu """
-					thisday_schedule = schedule["2"]["name"]
-					hour_in = get_hour(schedule["2"]['hour start'])
-					hour_out = get_hour(schedule["2"]['hour end'])
+					thisday_schedule = schedule["2"]
+					hour_in = get_hour(thisday_schedule['hour start'])
+					hour_out = get_hour(thisday_schedule['hour end'])
 					check_in = ' '
 					check_out = ' '
 					late_in = ' '
@@ -197,18 +160,27 @@ def process(start,end,buffer):
 					totaltime = ' '
 					overtype = ' '
 				
-					data["6"] = schedule["2"]["name"] #nama jadwal
-					data["7"] = schedule["2"]['hour start'] #jadwal masuk
-					data["8"] = schedule["2"]['hour end'] #jadwal keluar
+					data["6"] = thisday_schedule["name"] #nama jadwal
+					data["7"] = thisday_schedule['hour start'] #jadwal masuk
+					data["8"] = thisday_schedule['hour end'] #jadwal keluar
 					data["9"] = ' ' #jam masuk
 					data["10"] = ' ' #jam keluar
 					data["11"] = ' ' #jam normal
 				
 					data["13"] = ' ' #terlambat
 					data["14"] = ' ' #pulang cepat
-					if check_in == td(seconds = 0) or late_in > get_hour(schedule["1"]["checkin max"]) or check_out < get_hour(schedule["0"]["checkin max"]):
-						data["15"] = 'True' #bolos
-					else : 
+					try:
+						if isinstance(check_in,td) == False:
+							data["15"] = 'True' #bolos
+						elif check_in == td(seconds = 0):
+							data["15"] = 'True' #bolos
+						elif late_in > get_hour(thisday_schedule["checkin max"]):
+							data["15"] = 'True' #bolos
+						elif check_out < get_hour(thisday_schedule["checkin max"]):
+							data["15"] = 'True' #bolos
+						else : 
+							data["15"] = ' ' #bolos
+					except Exception:
 						data["15"] = ' ' #bolos
 					data["16"] = ' ' #lembur
 					data["17"] = ' ' #jam kerja
@@ -220,11 +192,11 @@ def process(start,end,buffer):
 					data["27"] = str(overtype) #lembur akhir pekan
 					data["28"] = ' ' #lembur hari libur
 			
-				elif thisday.weekday == 5:
+				elif thisday.weekday() == 5:
 					"""hari sabtu """
-					thisday_schedule = schedule["2"]["name"]
-					hour_in = get_hour(schedule["2"]['hour start'])
-					hour_out = get_hour(schedule["2"]['hour end'])
+					thisday_schedule = schedule["2"]
+					hour_in = get_hour(thisday_schedule['hour start'])
+					hour_out = get_hour(thisday_schedule['hour end'])
 					hour = ri(7,8)
 					if hour == 8:
 						minute = ri(0,15)
@@ -234,24 +206,33 @@ def process(start,end,buffer):
 						second = ri(0,59)
 					check_in = td(hours = hour, minutes = minute, seconds = second)
 					check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
-					late_in = get_late_in(hour_in,check_in,get_hour(schedule["2"]['late in']))
-					early_out = get_early_out(hour_out,check_out,get_hour(schedule["2"]['early out']))
+					late_in = get_late_in(hour_in,check_in,get_hour(thisday_schedule['late in']))
+					early_out = get_early_out(hour_out,check_out,get_hour(thisday_schedule['early out']))
 					overtime = get_overtime(hour_out,check_out)
 					worktime = get_worktime(hour_in,hour_out,check_in,check_out)
 					totaltime = get_totaltime(check_in,check_out)
 					overtype = get_overtype(hour_out,check_out)
-					
-					data["6"] = schedule["2"]["name"] #nama jadwal
-					data["7"] = schedule["2"]['hour start'] #jadwal masuk
-					data["8"] = schedule["2"]['hour end'] #jadwal keluar
+				
+					data["6"] = thisday_schedule["name"] #nama jadwal
+					data["7"] = thisday_schedule['hour start'] #jadwal masuk
+					data["8"] = thisday_schedule['hour end'] #jadwal keluar
 					data["9"] = get_string(thisday,check_in) #jam masuk
 					data["10"] = get_string(thisday,check_out) #jam keluar
 					data["11"] = '1' #jam normal
 					data["13"] = get_string(thisday,late_in) #terlambat
 					data["14"] = get_string(thisday,early_out) #pulang cepat
-					if check_in == td(seconds = 0) or late_in > get_hour(schedule["2"]["checkin max"]) or check_out < get_hour(schedule["0"]["checkin max"]):
-						data["15"] = 'True' #bolos
-					else : 
+					try:
+						if isinstance(check_in,td) == False:
+							data["15"] = 'True' #bolos
+						elif check_in == td(seconds = 0):
+							data["15"] = 'True' #bolos
+						elif late_in > get_hour(thisday_schedule["checkin max"]):
+							data["15"] = 'True' #bolos
+						elif check_out < get_hour(thisday_schedule["checkin max"]):
+							data["15"] = 'True' #bolos
+						else : 
+							data["15"] = ' ' #bolos
+					except Exception:
 						data["15"] = ' ' #bolos
 					data["16"] = get_string(thisday,overtime) #lembur
 					data["17"] = get_string(thisday,worktime) #jam kerja
@@ -265,9 +246,9 @@ def process(start,end,buffer):
 			
 				else:
 					"""hari senin sarmpai jumat"""
-					thisday_schedule = schedule["1"]["name"]
-					hour_in = get_hour(schedule["1"]['hour start'])
-					hour_out = get_hour(schedule["1"]['hour end'])
+					thisday_schedule = schedule["1"]
+					hour_in = get_hour(thisday_schedule['hour start'])
+					hour_out = get_hour(thisday_schedule['hour end'])
 					hour = ri(7,8)
 					if hour == 8:
 						minute = ri(0,15)
@@ -277,13 +258,13 @@ def process(start,end,buffer):
 						second = ri(0,59)
 					check_in = td(hours = hour, minutes = minute, seconds = second)
 					check_out = td(hours = ri(15,18), minutes = ri(0,59),seconds = ri(0,59))
-					late_in = get_late_in(hour_in,check_in,get_hour(schedule["1"]['late in']))
-					early_out = get_early_out(hour_out,check_out,get_hour(schedule["1"]['early out']))
+					late_in = get_late_in(hour_in,check_in,get_hour(thisday_schedule['late in']))
+					early_out = get_early_out(hour_out,check_out,get_hour(thisday_schedule['early out']))
 					overtime = get_overtime(hour_out,check_out)
 					worktime = get_worktime(hour_in,hour_out,check_in,check_out)
 					totaltime = get_totaltime(check_in,check_out)
-					overtype = get_overtype(hour_in,hour_out,check_in,check_out)
-				
+					overtype = get_overtype(hour_out,check_out)
+			
 					data["6"] = schedule["1"]["name"] #nama jadwal
 					data["7"] = schedule["1"]['hour start'] #jadwal masuk
 					data["8"] = schedule["1"]['hour end'] #jadwal keluar
@@ -293,11 +274,17 @@ def process(start,end,buffer):
 					data["13"] = get_string(thisday,late_in) #terlambat
 					data["14"] = get_string(thisday,early_out) #pulang cepat
 					try:
-						if check_in == td(seconds = 0) or late_in > get_hour(schedule["2"]["checkin max"]) or check_out < get_hour(schedule["0"]["checkin max"]):
+						if isinstance(check_in,td) == False:
+							data["15"] = 'True' #bolos
+						elif check_in == td(seconds = 0):
+							data["15"] = 'True' #bolos
+						elif late_in > get_hour(thisday_schedule["checkin max"]):
+							data["15"] = 'True' #bolos
+						elif check_out < get_hour(thisday_schedule["checkin max"]):
 							data["15"] = 'True' #bolos
 						else : 
 							data["15"] = ' ' #bolos
-					except TypeError:
+					except Exception:
 						data["15"] = ' ' #bolos
 					data["16"] = get_string(thisday,overtime) #lembur
 					data["17"] = get_string(thisday,worktime) #jam kerja
@@ -308,7 +295,48 @@ def process(start,end,buffer):
 					data["26"] = str(overtype) # lembur hari normal
 					data["27"] = ' ' #lembur akhir pekan
 					data["28"] = ' ' #lembur hari libur
-			
+			else:
+				"""hari libur"""
+				thisday_schedule = schedule["0"]
+				hour_in = get_hour(thisday_schedule['hour start'])
+				hour_out = get_hour(thisday_schedule['hour end'])
+				check_in = ' '
+				check_out = ' '
+				late_in = ' '
+				early_out = ' '
+				overtime = ' '
+				worktime = ' '
+				totaltime = ' '
+				overtype = ' '
+				
+				data["6"] = thisday_schedule["name"] #nama jadwal
+				data["7"] = thisday_schedule['hour start'] #jadwal masuk
+				data["8"] = thisday_schedule['hour end'] #jadwal keluar
+				data["9"] = get_string(thisday,check_in) #jam masuk
+				data["10"] = get_string(thisday,check_out) #jam keluar
+				data["11"] = ' ' #jam normal
+				
+				data["13"] = get_string(thisday,late_in) #terlambat
+				data["14"] = get_string(thisday,early_out) #pulang cepat
+				if isinstance(check_in,td) == False:
+					data["15"] = 'True' #bolos
+				elif check_in == td(seconds = 0):
+					data["15"] = 'True' #bolos
+				elif late_in > get_hour(thisday_schedule["checkin max"]):
+					data["15"] = 'True' #bolos
+				elif check_out < get_hour(thisday_schedule["checkin max"]):
+					data["15"] = 'True' #bolos
+				else : 
+					data["15"] = ' ' #bolos
+				data["16"] = get_string(thisday,overtime) #lembur
+				data["17"] = get_string(thisday,worktime) #jam kerja
+				data["18"] = get_string(thisday,totaltime) #waktu kerja
+				data["23"] = ' ' #normal days
+				data["24"] = ' ' #akhir pekan
+				data["25"] = '1' #hari libur
+				data["26"] = ' ' # lembur hari normal
+				data["27"] = ' ' #lembur akhir pekan
+				data["28"] = str(overtype) #lembur hari libur
 			"""mengisi data ke buffer"""
 			buffer.append(data)
 
