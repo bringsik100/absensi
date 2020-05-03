@@ -57,7 +57,7 @@ def pt_txt(file_title,buffer):
 	with open('{}.txt'.format(file_title), 'w') as txtfile:
 			txtfile.write(json.dumps(buffer))
 
-def ():
+def main():
 	print("not ready yet")
 
 if __name__ == '__main__':

@@ -5,7 +5,33 @@ Proses
 
 import json
 from datetime import datetime as dt
-from datetime import timedelta as dt
+from datetime import timedelta as td
+from random import randint as ri
+import json
+
+def get_data(source):
+	"""fungsi ambil data pegawai, jadwal, judul, liburan"""
+	with open(source,'r') as srce:
+		return json.load(srce)
+
+def get_input(arg):
+	"""fungsi untuk merubah input yang berformat string dari user menjadi datetime"""
+	x = input(arg )
+	return dt.strptime(x,'%Y-%m-%d')
+
+def get_hour(arg):
+	"""fungsi untuk merubah input yang berformat string dari jadwal menjadi datetime"""
+	x = dt.strptime(arg,'%H:%M')
+	return td(hours = x.hour, minutes = x.minute)
+
+def get_string(day,delta):
+	"""fungsi untuk merubah input yang berformat datetime menjadi string"""
+	if type(delta) == str:
+		return " "
+	else:
+		x = day + delta
+		return x.strftime('%H:%M')
+
 def get_late_in(hour_in,check_in,tolerance):
 	"""menghitung berapa lama pegawai terlambat"""
 	if check_in > hour_in:
