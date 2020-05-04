@@ -28,12 +28,27 @@ class Emp:
 		with open('data/pegawai.json') as source:
 			self.buffer = json.load(source)
 		"""tampilkan data di layar"""
-		print(self.buffer)
-
-	def view_id(self,pid):
+		for i in self.buffer:
+			print(f'ID {i} = {self.buffer[i]}')
+		return main()
+	def view_id(self):
+		self.buffef =self.view_all()
 		"""tampilkan data pegawai dari pilihan id"""
-		print(self.buffer[str(pid)])
-	
+		self.pid =str(input('masukkan id pegawai :  '))
+		try:
+			if self.pid in self.buffer:
+				print(self.buffer[self.pid])
+				return main()
+			else:
+				print(f"pegawai dengan ID {self.pid} tidak ditemukan \nulangi?\npilih Y untuk mengulangi pencarian\n")
+				pilihan =str(input("ulangi pencarian? "))
+				if pilihan.lower()=='y':
+					return view_id()
+				else:
+					return main()
+		except Exception:
+			print(sys.exc_info())
+			pass
 	def find_elem(self,arg):
 		"""mencari data pegawai dengan kata kunci"""
 		for elem in self.buffer:
@@ -72,19 +87,19 @@ def main():
 		3 sunting data 
 		4 tambah data 
 		5 tulis data 
-		0 hapus data 
+		6 hapus data
+		0 keluar 
 		\n""")
 	menu()
 	
 	data = Emp()
 	
 	opsi = int(input("pilih opsi : "))
-	print(type(opsi))
 	try:
 		if opsi == 1:
 			data.view_all()
 		elif opsi == 2:
-			data.view_all()
+			data.view_id()
 		elif opsi == 3:
 			data.view_all()
 		elif opsi == 4:
@@ -92,12 +107,12 @@ def main():
 		elif opsi == 5:
 			data.view_all()
 		elif opsi == 0:
-			data.view_all()
+			sys.exit
 		else:
-			data.view_all()
+			pass
 	except BaseException:
 		print(sys.exc_info())
-		pass
+		sys.exit
 
 
 if __name__ == '__main__':
