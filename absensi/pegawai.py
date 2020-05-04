@@ -23,21 +23,22 @@ class Emp:
 	def __init__(self):
 		print("ready")
 
-	def view_all(self):
+	def buffer(self):
 		'''membaca file pegawai.json'''
 		with open('data/pegawai.json') as source:
-			self.buffer = json.load(source)
+			return  json.load(source)
+	def view_all(self)
 		"""tampilkan data di layar"""
-		for i in self.buffer:
+		for i in self.buffer():
 			print(f'ID {i} = {self.buffer[i]}')
 		return main()
+
 	def view_id(self):
-		self.buffef =self.view_all()
 		"""tampilkan data pegawai dari pilihan id"""
-		self.pid =str(input('masukkan id pegawai :  '))
+		self.pid = str(input('masukkan id pegawai :  '))
 		try:
-			if self.pid in self.buffer:
-				print(self.buffer[self.pid])
+			if self.pid in self.buffer():
+				print(self.buffer()[self.pid])
 				return main()
 			else:
 				print(f"pegawai dengan ID {self.pid} tidak ditemukan \nulangi?\npilih Y untuk mengulangi pencarian\n")
@@ -48,33 +49,65 @@ class Emp:
 					return main()
 		except Exception:
 			print(sys.exc_info())
-			pass
-	def find_elem(self,arg):
+			return main()
+	
+	def find_elem(self):
 		"""mencari data pegawai dengan kata kunci"""
-		for elem in self.buffer:
-			if args in self.buffer[elem]:
-				print(f'{arg} ada di dalam {self.buffer[elem]}')
-			else:
-				print(f'data {arg} tidak ditemukan')
+		self.args=input('masukkan data yang dicari :')
+		try:
+			for id in self.buffer():
+				if self.args in self.buffer()[id]:
+					print(f'{self.arg} ada di dalam {self.buffer()[id]}')
+					return main()
+				else:
+					print(f'data {self.arg} tidak ditemukan')
+					pilihan =str(input("ulangi pencarian? "))
+				if pilihan.lower()=='y':
+					return find_elem()
+				else:
+					return main()
+		except Exception:
+			print(sys.exc_info())
+			return main()
 
-	def edit_elem(self,pid,**kwargs):
+	def edit_elem(self):
 		"""menyunting data dari buffer"""
-		self.buffer.update({[str(pid)]:{kwargs}})
-	
-	def Add_elem(self,**kwargs):
-		""" menambahkan data ke dalam buffer"""
-		self.new_pid = str(len(self.buffer+1))
-		self.buffer.update({self.new_pid:{kwargs}})
+		self.pid = str(input('masukkan id pegawai :  '))
+		self.kwargs=input('masukkan data :')
+		try:
+			self.buffer().update({self.pid:{self.kwargs}})
+			return main()
+		except Exception:
+			print(sys.exc_info())
+			return main()
 
-	def Delete(self,pid):
+	def Add_elem(self):
+		""" menambahkan data ke dalam buffer"""
+		self.kwargs=input('masukkan data :')
+		try:
+			self.new_pid = str(len(self.buffer()+1))
+			self.buffer().update({self.new_pid:{self.kwargs}})
+		except Exception:
+			print(sys.exc_info())
+			return main()
+
+	def del_data(self):
 		"""menghapus data di dalam buffer"""
-		self.pid = pid
-		del self.buffer[self.pid]
-	
-	def Write(self):
+		self.pid = str(input('masukkan id pegawai :  '))
+		try:
+			del self.buffer()[self.pid]
+		except Exception:
+			print(sys.exc_info())
+			return main()
+
+	def write_data(self):
 		""" menulis data dari buffer ke dalam pegawai.json"""
 		with open('data/pegawai.json','w') as source:
 			source.write(json.dump(self.buffer))
+
+def keluar():
+	print("\terima kasih")
+	return sys.exit
 
 def main():
 	"""modul utama"""
@@ -82,18 +115,19 @@ def main():
 		"""pilihan menu"""
 		print("""\n
 		pilih perintah :
-		1 tampilkan data
-		2 cari data
-		3 sunting data 
-		4 tambah data 
-		5 tulis data 
-		6 hapus data
-		0 keluar 
+		1 tampilkan semua data
+		2 tampilkan data per id
+		3 cari data
+		4 sunting data
+		5 tambah data
+		6 tulis data
+		7 hapus data
+		0 keluar
 		\n""")
 	menu()
-	
+
 	data = Emp()
-	
+
 	opsi = int(input("pilih opsi : "))
 	try:
 		if opsi == 1:
@@ -101,18 +135,22 @@ def main():
 		elif opsi == 2:
 			data.view_id()
 		elif opsi == 3:
-			data.view_all()
+			data.find_elem()
 		elif opsi == 4:
-			data.view_all()
+			data.edit_elem()
 		elif opsi == 5:
-			data.view_all()
+			data.add_elem()
+		elif opsi == 6:
+			data.write_data()
+		elif opsi == 7:
+			data.del_data()
 		elif opsi == 0:
-			sys.exit
+			keluar()
 		else:
-			pass
+			print(f'opsi {opsi} tidak ditemukan, ulangi lagi?')
+			return main()
 	except BaseException:
-		print(sys.exc_info())
-		sys.exit
+		keluar()
 
 
 if __name__ == '__main__':
