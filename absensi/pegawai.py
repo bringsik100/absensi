@@ -27,14 +27,17 @@ class Emp:
 		'''membaca file pegawai.json'''
 		with open('data/pegawai.json') as source:
 			return  json.load(source)
+	
 	def view_all(self):
 		"""tampilkan data di layar"""
+		print('\n')
 		for i in self.buffer():
-			print(f'ID {i} = {self.buffer[i]}')
+			print(f'ID {i} = {self.buffer()[i]}')
 		return main()
 
 	def view_id(self):
 		"""tampilkan data pegawai dari pilihan id"""
+		print('\n')
 		self.pid = str(input('masukkan id pegawai :  '))
 		try:
 			if self.pid in self.buffer():
@@ -56,16 +59,16 @@ class Emp:
 		self.args=input('masukkan data yang dicari :')
 		try:
 			for id in self.buffer():
-				if self.args in self.buffer()[id]:
+				if self.args in self.buffer()[id].values():
 					print(f'{self.args} ada di dalam {self.buffer()[id]}')
-					return main()
+					return self.find_elem()
 				else:
 					print(f'data {self.args} tidak ditemukan')
 					pilihan =str(input("ulangi pencarian? "))
-				if pilihan.lower()=='y':
-					return find_elem()
-				else:
-					return main()
+					if pilihan.lower()=='y':
+						return self.find_elem()
+					else:
+						return main()
 		except Exception:
 			print(sys.exc_info())
 			return main()
@@ -102,8 +105,9 @@ class Emp:
 
 	def write_data(self):
 		""" menulis data dari buffer ke dalam pegawai.json"""
-		with open('data/pegawai.json','w') as source:
-			source.write(json.dump(self.buffer))
+		#with open('data/pegawai.json','w') as source:
+		#	source.write(json.dump(self.buffer))
+		print('fungsi di blokir')
 
 def keluar():
 	print("\nterima kasih")

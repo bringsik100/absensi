@@ -27,10 +27,10 @@ class Emp:
 		'''membaca file jadwal.json'''
 		with open('data/jadwal.json') as source:
 			return  json.load(source)
-	def view_all(self)
+	def view_all(self):
 		"""tampilkan data di layar"""
 		for i in self.buffer():
-			print(f'ID {i} = {self.buffer[i]}')
+			print(f'ID {i} = {self.buffer()[i]}')
 		return main()
 
 	def view_id(self):
@@ -102,8 +102,9 @@ class Emp:
 
 	def write_data(self):
 		""" menulis data dari buffer ke dalam jadwal.json"""
-		with open('data/jadwal.json','w') as source:
-			source.write(json.dump(self.buffer))
+		#with open('data/jadwal.json','w') as source:
+		#	source.write(json.dump(self.buffer))
+		print('fungsi diblokir')
 
 def keluar():
 	print("\terima kasih")
