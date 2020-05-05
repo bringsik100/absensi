@@ -15,6 +15,7 @@ Pegawai
 """import library"""
 import json
 import sys
+import unittest
 
 class test_Emp:
 	'''
@@ -29,8 +30,11 @@ class test_Emp:
 			return  json.load(source)
 	def test_view_all(self):
 		"""tampilkan data di layar"""
-		for i in self.test_buffer():
-			print(f'ID {i} = {self.buffer()[i]}')
+		try:
+			for i in self.test_buffer():
+				print(f'ID {i} = {self.test_buffer()[i]}')
+		except Exception:
+			print(f'data tidak bis ditampilkan karena {sys.exc_info()} \n')
 		return test_main()
 
 	def test_view_id(self):
@@ -114,15 +118,15 @@ def test_main():
 	def test_menu():
 		"""pilihan menu"""
 		print("""\n
-		pilih perintah :
-		1 tampilkan semua data
-		2 tampilkan data per id
-		3 cari data
-		4 sunting data
-		5 tambah data
-		6 tulis data
-		7 hapus data
-		0 keluar
+pilih perintah :
+1 tampilkan semua data
+2 tampilkan data per id
+3 cari data
+4 sunting data
+5 tambah data
+6 tulis data
+7 hapus data
+0 keluar
 		\n""")
 	test_menu()
 

@@ -27,7 +27,7 @@ class Emp:
 		'''membaca file pegawai.json'''
 		with open('data/pegawai.json') as source:
 			return  json.load(source)
-	def view_all(self)
+	def view_all(self):
 		"""tampilkan data di layar"""
 		for i in self.buffer():
 			print(f'ID {i} = {self.buffer[i]}')
@@ -57,10 +57,10 @@ class Emp:
 		try:
 			for id in self.buffer():
 				if self.args in self.buffer()[id]:
-					print(f'{self.arg} ada di dalam {self.buffer()[id]}')
+					print(f'{self.args} ada di dalam {self.buffer()[id]}')
 					return main()
 				else:
-					print(f'data {self.arg} tidak ditemukan')
+					print(f'data {self.args} tidak ditemukan')
 					pilihan =str(input("ulangi pencarian? "))
 				if pilihan.lower()=='y':
 					return find_elem()
@@ -106,7 +106,7 @@ class Emp:
 			source.write(json.dump(self.buffer))
 
 def keluar():
-	print("\terima kasih")
+	print("\nterima kasih")
 	return sys.exit
 
 def main():
