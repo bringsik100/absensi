@@ -32,6 +32,7 @@ import datetime as dd
 from datetime import datetime as dt
 from datetime import timedelta as td
 import string
+import syse
 import json
 import csv
 from openpyxl import Workbook
@@ -77,13 +78,13 @@ def main():
 		 4 = text
 		""")
 		"""pilih opsi output"""
-		opsi = input (" opsi : ")
+		opsi = str(input (" opsi : "))
 		
-		if int(opsi) == 0:
+		if opsi =='0':
 			"""cetak ke layar"""
 			output.pt_screen(hasil)
 		
-		elif int(opsi) == 1:
+		elif opsi == '1':
 			"""cetak ke excell"""
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
@@ -92,7 +93,7 @@ def main():
 			else:
 				ouput.pt_excell(judul_opsi,hasil)
 		
-		elif int(opsi) == 2:
+		elif opsi == '2':
 			"""cetak ke JSON"""
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
@@ -101,7 +102,7 @@ def main():
 			else:
 				ouput.pt_json(judul_opsi,hasil)
 		
-		elif int(opsi) == 3:
+		elif 'opsi' == '3':
 			"""cetak ke csv"""
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
@@ -110,7 +111,7 @@ def main():
 			else:
 				ouput.pt_csv(judul_opsi,hasil)
 		
-		elif int(opsi) == 4:
+		elif opsi == '4':
 			"""cetak ke text"""
 			judul_opsi = input("beri judul : " )
 			if judul_opsi == None:
@@ -136,7 +137,7 @@ def main():
 	if answer.lower() == 'y':
 		return main()
 	else:
-		pass
+		sys.exit
 
 if __name__=='__main__':
 	main()
