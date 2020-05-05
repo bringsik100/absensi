@@ -1,0 +1,22 @@
+{ {
+    'name':'Senin-Jumat',
+    'hstart':'8',
+    'hend':'16',
+    'latetol':'10',
+    'earlytol':'5',
+    'chinmin':'6',
+    'chinmax':'9',
+    'choutmin':'15',
+    'choutmax':['23','59']
+},{
+    'name':'Sabtu-Minggu',
+    'hstart':'8',
+    'hend':'13',
+    'latetol':'10',
+    'earlytol':'5',
+    'chinmin':'6',
+    'chinmax':'9',
+    'choutmin':'15',
+    'choutmax':['23','59']
+}
+}

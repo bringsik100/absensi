@@ -28,10 +28,10 @@ class test_Emp:
 		'''membaca file jadwal.json'''
 		with open('data/jadwal.json') as source:
 			return  json.load(source)
-	def test_view_all(self)
+	def test_view_all(self):
 		"""tampilkan data di layar"""
 		for i in self.test_buffer():
-			print(f'ID {i} = {self.test_buffer[i]}')
+			print("ID {i} = {self.buffer()[i]}")
 		return test_main()
 
 	def test_view_id(self):

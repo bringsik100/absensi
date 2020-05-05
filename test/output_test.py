@@ -56,7 +56,7 @@ def test_pt_json(file_title,buffer):
 
 def test_pt_csv(file_title,buffer):
 	"""output ke csv"""
-	with open(f'{test_home()+file_title}.csv', 'w', newline='') as csvfile:
+	with open('{}.()csv'.format(os.path.join(test_home(),file_title)), 'w', newline='') as csvfile:
 		x = csv.writer(csvfile, delimiter=',',quotechar='"')
 		for i in buffer:
 			x.writerow(i)

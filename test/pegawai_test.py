@@ -27,10 +27,10 @@ class test_Emp:
 		'''membaca file pegawai.json'''
 		with open('data/pegawai.json') as source:
 			return  json.load(source)
-	def test_view_all(self)
+	def test_view_all(self):
 		"""tampilkan data di layar"""
 		for i in self.test_buffer():
-			print(f'ID {i} = {self.buffer[i]}')
+			print(f'ID {i} = {self.buffer()[i]}')
 		return test_main()
 
 	def test_view_id(self):

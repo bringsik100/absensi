@@ -57,8 +57,8 @@ def test_main():
 	""")
 	
 	"""tanya tanggal awal dan akhir otomatis"""
-	awal = proses_test.get_input(' masukkan tanggal awal absensi: ') 
-	akhir = proses_test.get_input(' masukkan tanggal akhir absensi: ')
+	awal = proses_test._get_input(' masukkan tanggal awal absensi: ') 
+	akhir = proses_test._get_input(' masukkan tanggal akhir absensi: ')
 	hasil = []
 	
 	"""main proses"""
