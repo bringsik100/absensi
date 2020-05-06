@@ -47,44 +47,104 @@ header = ("NoPeg","No. Akun","No.","Nama","Auto-Assign","Tanggal","Jam Kerja","A
 ,"Hrs C/In","Hrs C/Out","Departemen","NDays","Akhir Pekan","Hari Libur","Lama Hadir","NDays_OT"
 ,"Lembur A.Pekan","Libur Lembur")
 
-pro = process
-hasil = []
-pro(dt(2020,1,1,0,0,0),dt(2020,12,31,0,0,0),hasil)
-
 conn = db.connect("data/report.db")
 curs = conn.cursor()
 
-for row in hasil:
-	curs.execute("""insert into absensi(NoPeg
-	,NoAkun
-	,No
-	,Nama
-	,Auto_Assign
-	,Tanggal
-	,Jam_Kerja
-	,Awal_tugas
-	,Akhir_tugas
-	,Masuk
-	,Keluar
-	,Normal
-	,Waktu
-	,Telat
-	,Plg_Awal
-	,Bolos
-	,Waktu_Lembur
-	,Waktu_Kerja
-	,Status
-	,Hrs_CIn
-	,Hrs_COut
-	,Departemen
-	,NDays
-	,Akhir_Pekan
-	,Hari_Libur
-	,Lama_Hadir
-	,NDays_OT
-	,Lembur_APekan
-	,Libur_Lembur)
-	 values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",row)
+conn.execute("""create table if not exists absensi (row_id integer primary key autoincrement
+,`NoPeg` text
+,`No. Akun` text
+,`No.` text
+,`Nama` text
+,`Auto-Assign` text
+,`Tanggal` text
+,`Jam Kerja` text
+,`Awal tugas` text
+,`Akhir tugas` text
+,`Masuk` text
+,`Keluar` text
+,`Normal` text
+,`Waktu real` text
+,`Telat` text
+,`Plg Awal` text
+,`Bolos` text
+,`Waktu Lembur` text
+,`Waktu Kerja` text
+,`Status` text
+,`Hrs C/In` text
+,`Hrs C/Out` text
+,`Departemen` text
+,`NDays` text
+,`Akhir Pekan` text
+,`Hari Libur` text
+,`Lama Hadir` text
+,`NDays_OT` text
+,`Lembur A.Pekan` text
+,`Libur Lembur` text)""")
+conn.commit()
+
+pro = process
+hasil = []
+pro(dt(2020,1,1,0,0,0),dt(2020,12,31,0,0,0), hasil)
+
+for rows in hasil:
+	items = rows.values()
+	conn.execute("""insert into absensi(`NoPeg`
+,`No. Akun`
+,`No.`
+,`Nama`
+,`Auto-Assign`
+,`Tanggal`
+,`Jam Kerja`
+,`Awal tugas`
+,`Akhir tugas`
+,`Masuk`
+,`Keluar`
+,`Normal`
+,`Waktu real`
+,`Telat`
+,`Plg Awal`
+,`Bolos`
+,`Waktu Lembur`
+,`Waktu Kerja`
+,`Status`
+,`Hrs C/In`
+,`Hrs C/Out`
+,`Departemen`
+,`NDays`
+,`Akhir Pekan`
+,`Hari Libur`
+,`Lama Hadir`
+,`NDays_OT`
+,`Lembur A.Pekan`
+,`Libur Lembur`) values(items[0]
+,items[1]
+,items[2]
+,items[3]
+,items[4]
+,items[5]
+,items[7]
+,items[8]
+,items[9]
+,items[10]
+,items[11]
+,items[12]
+,items[13]
+,items[14]
+,items[15]
+,items[16]
+,items[17]
+,items[18]
+,items[19]
+,items[20]
+,items[21]
+,items[22]
+,items[23]
+,items[24]
+,items[25]
+,items[26]
+,items[27]
+,items[28])""")
+
 
 def main():
 	pass
