@@ -4,11 +4,17 @@ Data
 """
 
 """
-- buat perintah Read untuk membaca data dan menampungnya ke dalam buffer
-- buat perintah View untuk menampilkan buffer ke layar
-- buat perintah Find untuk mencari data di dalam buffer
-- buat perintah Edit untuk menyunting data di dalam buffer
-- buat perintah Create untuk menambahkan data ke dalam buffer
+daftar nama tabel
+
+USERINFO 	= data pegawai
+HOLIDAYS        = daftar hari libur
+DEPARTMENTS	= daftar departemen
+CHECKINOUT	= log absensi
+SCHCLASS	= jadwal kerja
+SystemLog 	= log system
+Machines        = mesin absensi
+CHECKEXACT	= validasi absensi
+ATTPARAM	= parameter/peraturan absen
 
 import library
 """
