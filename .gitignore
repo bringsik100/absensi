@@ -53,6 +53,7 @@ coverage.xml
 absensi/_pycache_/
 _pycache_/
 absensi/.coverage
+test/
 
 # Translations
 *.mo
