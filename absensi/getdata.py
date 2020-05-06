@@ -20,63 +20,18 @@ import os
 fungsi untuk create, read, write, edit, dan delete item dalam absensi.d
 '''
 '''connect ke database'''
-def create_table(args):
+def exque(expr):
 	'''create / select table'''
 	conn = sq.connect("data/absensi.db")
 	curs = con.cursor
 	try:
-		curs.execute(args)
+		curs.execute(expr)
 		print(f'eksekusi : {args} berhasil')
 	except Exception:
+		conn.close()
 		print(f' eksekusi gagal!\n{sys.exc_info()}\n')
 
-curs.execute("""create table pegawai if not exist(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	no_peg int NOT NULL,
-	no_akun int NOT NULL,
-	nama text,
-	departemen text)""")
-curs.execute("""create table jadwal if not exist(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	nama int,
-	hour_start int,
-	hour_end text,
-	late_in text,
-	early_out text,
-	checkin_min text,
-	checkin_max text,
-	checkout_min text,
-	checkout_max text)""")
-curs.execute("""create table libur if not exist(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	tanggal text,
-	hari text)""")
-curs.execute("""create table log_absensi if not exist(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	NoPeg int not null,
-	NoAkun int NOT NULL,
-	Nama text,
-	Auto-Assign int,
-	Tanggal text,
-	Jam_Kerja text,
-	Awal_tugas text,
-	Akhir_tugas text,
-	Masuk_text,
-	Keluar_text,
-	Normal_int,
-	Waktu_real int,
-	Telat_text,
-	Plg-Awal text,
-	Bolos text,
-	Waktu_Lembur text,
-	Waktu_Kerja text,
-	Status int,
-	Hrs_CIn int,
-	Hrs_COut int,
-	Departemen text,
-	NDays int,
-	Akhir_Pekan int,
-	Hari-Libur int,
-	Lama_Hadir text,
-	NDays_OT int,
-	Lembur_A_Pekan int,
-	Libur_Lembur int)""")
+
 
 def main():
 	"""modul utama"""
@@ -121,6 +76,5 @@ def main():
 	except BaseException:
 		keluar()
 
-conn.close()
 if __name__ == '__main__':
 	main()
