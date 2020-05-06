@@ -1,22 +1,17 @@
-USERINFO  = (`USERID`, `Badgenumber`, `SSN`, `Name`, `Gender`, `TITLE`, `PAGER`, `BIRTHDAY`, `HIREDDAY`, `street`, `CITY`, `STATE`, `ZIP`, `OPHONE`, `FPHONE`, `VERIFICATIONMETHOD`, `DEFAULTDEPTID`, `SECURITYFLAGS`, `ATT`, `INLATE`, `OUTEARLY`, `OVERTIME`, `SEP`, `HOLIDAY`, `MINZU`, `PASSWORD`, `LUNCHDURATION`, `MVERIFYPASS`, `PHOTO`, `Notes`, `privilege`, `InheritDeptSch`, `InheritDeptSchClass`, `AutoSchPlan`, `MinAutoSchInterval`, `RegisterOT`, `InheritDeptRule`, `EMPRIVILEGE`, `CardNo`);
+USERINFO = (`USERID`, `Badgenumber`, `SSN`, `Name`, `Gender`, `TITLE`, `PAGER`, `BIRTHDAY`, `HIREDDAY`, `street`, `CITY`, `STATE`, `ZIP`, `OPHONE`, `FPHONE`, `VERIFICATIONMETHOD`, `DEFAULTDEPTID`, `SECURITYFLAGS`, `ATT`, `INLATE`, `OUTEARLY`, `OVERTIME`, `SEP`, `HOLIDAY`, `MINZU`, `PASSWORD`, `LUNCHDURATION`, `MVERIFYPASS`, `PHOTO`, `Notes`, `privilege`, `InheritDeptSch`, `InheritDeptSchClass`, `AutoSchPlan`, `MinAutoSchInterval`, `RegisterOT`, `InheritDeptRule`, `EMPRIVILEGE`, `CardNo`);
 
-SCHCLASS  = (`SCHCLASSID`, `SCHNAME`, `STARTTIME`, `ENDTIME`, `LATEMINUTES`, `EARLYMINUTES`, `CHECKIN`, `CHECKOUT`, `CHECKINTIME1`, `CHECKINTIME2`,`CHECKOUTTIME1`, `CHECKOUTTIME2`, `COLOR`, `AUTOBIND`, `WorkDay`, `SensorID`, `WorkMins`);
+SCHCLASS = (`SCHCLASSID`, `SCHNAME`, `STARTTIME`, `ENDTIME`, `LATEMINUTES`, `EARLYMINUTES`, `CHECKIN`, `CHECKOUT`, `CHECKINTIME1`, `CHECKINTIME2`,`CHECKOUTTIME1`, `CHECKOUTTIME2`, `COLOR`, `AUTOBIND`, `WorkDay`, `SensorID`, `WorkMins`);
 
-HOLIDAYS        = daftar hari libur
-CREATE TABLE `HOLIDAYS` (`HOLIDAYID`, `HOLIDAYNAME`, `HOLIDAYYEAR`, `HOLIDAYMONTH`, `HOLIDAYDAY`, `STARTTIME`, `DURATION`, `HOLIDAYTYPE`, `XINBIE`, `MINZU`, `DeptID`);
+HOLIDAYS = (`HOLIDAYID`, `HOLIDAYNAME`, `HOLIDAYYEAR`, `HOLIDAYMONTH`, `HOLIDAYDAY`, `STARTTIME`, `DURATION`, `HOLIDAYTYPE`, `XINBIE`, `MINZU`, `DeptID`);
 
 DEPARTMENTS = (`DEPTID`, `DEPTNAME`, `SUPDEPTID`, `InheritParentSch`, `InheritDeptSch`, `InheritDeptSchClass`, `AutoSchPlan`, `InLate`, `OutEarly`, `InheritDeptRule`, `MinAutoSchInterval`, `RegisterOT`, `DefaultSchId`, `ATT`, `Holiday`, `OverTime`);
 
-CHECKINOUT  = (`USERID`, `CHECKTIME`, `CHECKTYPE`, `VERIFYCODE`, `SENSORID`, `WorkCode`, `sn`, `UserExtFmt`);
+CHECKINOUT = (`USERID`, `CHECKTIME`, `CHECKTYPE`, `VERIFYCODE`, `SENSORID`, `WorkCode`, `sn`, `UserExtFmt`);
 
-CHECKEXACT  = (`EXACTID`, `USERID`, `CHECKTIME`, `CHECKTYPE`, `ISADD`, `YUYIN`, `ISMODIFY`, `ISDELETE`, `INCOUNT`, `ISCOUNT`, `MODIFYBY`, `DATE`);
+CHECKEXACT = (`EXACTID`, `USERID`, `CHECKTIME`, `CHECKTYPE`, `ISADD`, `YUYIN`, `ISMODIFY`, `ISDELETE`, `INCOUNT`, `ISCOUNT`, `MODIFYBY`, `DATE`);
 
- ATTPARAM =  (`PARANAME`, `PARATYPE`, `PARAVALUE`);
+ATTPARAM = (`PARANAME`, `PARATYPE`, `PARAVALUE`);
 
 SystemLog = (`ID`, `Operator`, `LogTime`, `MachineAlias`, `LogTag`, `LogDescr`);
 
-Machines  = CREATE TABLE `Machines` (`ID`, `MachineAlias`, `ConnectType`, `IP`, `SerialPort`
-, `Port`, `Baudrate`, `MachineNumber`, `IsHost`, `Enabled`, `CommPassword`, `UIL
-anguage`, `DateFormat`, `InOutRecordWarn`, `Idle`, `Voice`, `managercount`, `use
-rcount`, `fingercount`, `SecretCount`, `FirmwareVersion`, `ProductType`, `LockCo
-ntrol`, `Purpose`, `ProduceKind`);
+
