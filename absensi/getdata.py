@@ -79,7 +79,7 @@ conn.execute("""create table if not exists absensi (row_id integer primary key a
 ,`Lama Hadir` text
 ,`NDays_OT` text
 ,`Lembur A.Pekan` text
-,`Libur Lembur` text)""")
+,`Libur Lembur` text);""")
 conn.commit()
 
 pro = process
@@ -87,8 +87,9 @@ hasil = []
 pro(dt(2020,1,1,0,0,0),dt(2020,12,31,0,0,0), hasil)
 
 for rows in hasil:
-	items = rows.values()
-	conn.execute("""insert into absensi(`NoPeg`
+	items = list(rows.values())
+	curs = conn.cursor()
+	curs.execute("""insert into absensi(`NoPeg`
 ,`No. Akun`
 ,`No.`
 ,`Nama`
@@ -143,7 +144,7 @@ for rows in hasil:
 ,items[25]
 ,items[26]
 ,items[27]
-,items[28])""")
+,items[28]);""")
 
 
 def main():
