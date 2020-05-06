@@ -1,44 +1,58 @@
 {
 	"1": {
 		"nopeg": "1",
-		"akun": "1",
-		"nomor": "1",
-		"nama": "Ape",
-		"dpt": "Animal"
+		"akun": "4",
+		"nomor": "004",
+		"nama": "Surya Adi",
+		"dpt": "SSI"
 	},
 	"2": {
 		"nopeg": "2",
-		"akun": "2",
-		"nomor": "2",
-		"nama": "Bull",
-		"dpt": "Animal"
+		"akun": "5",
+		"nomor": "005",
+		"nama": "Dwi Yan Apriliandi",
+		"dpt": "SSI"
 	},
 	"3": {
 		"nopeg": "3",
-		"akun": "3",
-		"nomor": "3",
-		"nama": "Cat",
-		"dpt": "Animal"
+		"akun": "6",
+		"nomor": "006",
+		"nama": "Suhariyono",
+		"dpt": "SSI"
 	},
 	"4": {
 		"nopeg": "4",
-		"akun": "4",
-		"nomor": "4",
-		"nama": "Dog",
-		"dpt": "Animal"
+		"akun": "7",
+		"nomor": "007",
+		"nama": "Heru",
+		"dpt": "SSI"
 	},
 	"5": {
 		"nopeg": "5",
-		"akun": "5",
-		"nomor": "5",
-		"nama": "Elk",
-		"dpt": "Animal"
+		"akun": "11",
+		"nomor": "011",
+		"nama": "Syamsul Arifin",
+		"dpt": "SSI"
 	},
 	"6": {
 		"nopeg": "6",
-		"akun": "6",
-		"nomor": "6",
-		"nama": "Fowl",
-		"dpt": "Animal"
+		"akun": "3",
+		"nomor": "003",
+		"nama": "Siswo Wahyudi",
+		"dpt": "SSI"
+	},
+	"7": {
+		"nopeg": "7",
+		"akun": "8",
+		"nomor": "008",
+		"nama": "Roni",
+		"dpt": "SSI"
+	},
+	"8": {
+		"nopeg": "8",
+		"akun": "9",
+		"nomor": "009",
+		"nama": "Ahmad Roni",
+		"dpt": "SSI"
 	}
 }
