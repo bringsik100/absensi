@@ -10,20 +10,14 @@ __license__ = "MIT"
 """
 alur program
 + import library
-+ deklarasi fungsi objek
-- fungsi ambil data pegawai, jadwal, judul, liburan
-- fungsi perubah input 
-- fungsi tanggal
-- fungsi waktu
-- fungsi output
++ modul data
+- koneksi ke database
+- buat / lihat / sunting tabel pegawai,jadwal,liburan
++ modul laporan
+- buat / lihat / sunting laporan
++ modul output
+- output ke excel / database
 + fungsi main()
-- salam pembuka
-- dict template penampung < pegawai < tanggal < waktu < data
-- input pegawai
-- input tanggal
-- input waktu
-- pilih format output
-- ulangi atau selesai
 """
 
 """import library"""
@@ -31,6 +25,7 @@ from random import randint as ri
 import datetime as dd
 from datetime import datetime as dt
 from datetime import timedelta as td
+import sqlite3 as db
 import string
 import sys
 import json
@@ -38,8 +33,64 @@ import csv
 from openpyxl import Workbook
 import proses 
 import output
-#import pytest
 
+'''modul database'''
+def cnxn():
+	'''menyambungkan ke data/report.db'''
+	try:
+		conn=db.connect('data/report.db')
+		print('koneksi berhasil')	
+	except Exception:
+		print(f'koneksi gagal\n{sys.exc_info()} \n')
+		pass
+	def tab_pegawai():
+		try:
+			conn.execute('''create table if not exist pegawai(
+			noID integer primary key autoincrement
+			,nopeg text
+			,noakun text
+			,nokartu text
+			,nama text
+			,titel text
+			,departemen text)
+			''')
+			conn.commit()
+			print('tabel pegawai berhasil dibuat')
+		except Exception:
+		print(f'tabel pegawai gagal dibuat karena:\n{sys.exc_info()} \n') 
+	
+	def tab_jadwal():
+		try:
+			conn.execute('''create table if not exist jadwal(
+			noID integer primary key autoincrement
+			,nama text
+			,`Jam Masuk` text
+			,`Jam Keluar` text
+			,`Telat` text
+			,`Pulang Cepat` text
+			,`Harus CIn` text
+			,`Harus COut` text
+			,`Normal` text
+			,`Akhir Pekan` text
+			,`Hari Libur` text
+			,`Waktu Real` text)
+			''')
+			conn.commit()
+			print('tabel jadwal berhasil dibuat')
+		except Exception:
+		print(f'tabel jadwal gagal dibuat karena:\n{sys.exc_info()} \n')
+	def tab_pegawai():
+		try:
+			conn.execute('''create table if not exist liburan(
+			tanggal text
+			,hari text)
+			''')
+			conn.commit()
+			print('tabel liburan berhasil dibuat')
+		except Exception:
+		print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
+	conn.close()
+			
 """salam pembuka"""
 print("""
 SELAMAT DATANG DI ABTOMATIS
