@@ -85,11 +85,12 @@ conn.commit()
 pro = process
 hasil = []
 pro(dt(2020,1,1,0,0,0),dt(2020,12,31,0,0,0), hasil)
+items = []
 
 for rows in hasil:
-	items = list(rows.values())
-	curs = conn.cursor()
-	curs.execute("""insert into absensi(`NoPeg`
+	litems = list(rows.values())
+	conn.execute(f'''insert into absensi(
+`NoPeg`
 ,`No. Akun`
 ,`No.`
 ,`Nama`
@@ -117,35 +118,38 @@ for rows in hasil:
 ,`Lama Hadir`
 ,`NDays_OT`
 ,`Lembur A.Pekan`
-,`Libur Lembur`) values(items[0]
-,items[1]
-,items[2]
-,items[3]
-,items[4]
-,items[5]
-,items[7]
-,items[8]
-,items[9]
-,items[10]
-,items[11]
-,items[12]
-,items[13]
-,items[14]
-,items[15]
-,items[16]
-,items[17]
-,items[18]
-,items[19]
-,items[20]
-,items[21]
-,items[22]
-,items[23]
-,items[24]
-,items[25]
-,items[26]
-,items[27]
-,items[28]);""")
-
+,`Libur Lembur`)
+ values("{litems[0]}"
+,"{litems[1]}"
+,"{litems[2]}"
+,"{litems[3]}"
+,"{litems[4]}"
+,"{litems[5]}"
+,"{litems[6]}"
+,"{litems[7]}"
+,"{litems[8]}"
+,"{litems[9]}"
+,"{litems[10]}"
+,"{litems[11]}"
+,"{litems[12]}"
+,"{litems[13]}"
+,"{litems[14]}"
+,"{litems[15]}"
+,"{litems[16]}"
+,"{litems[17]}"
+,"{litems[18]}"
+,"{litems[19]}"
+,"{litems[20]}"
+,"{litems[21]}"
+,"{litems[22]}"
+,"{litems[23]}"
+,"{litems[24]}"
+,"{litems[25]}"
+,"{litems[26]}"
+,"{litems[27]}"
+,"{litems[28]}");''')
+conn.commit()
+conn.close()
 
 def main():
 	pass
