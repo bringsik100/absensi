@@ -32,7 +32,7 @@ import datetime as dd
 from datetime import datetime as dt
 from datetime import timedelta as td
 import string
-import syse
+import sys
 import json
 import csv
 from openpyxl import Workbook
@@ -65,6 +65,12 @@ def main():
 	"""main proses"""
 	"""proses ada di dalam modul proses"""
 	proses.process(awal,akhir,hasil)
+	"""otomatis menyimpan ke database"""
+	try:
+		output.pt_db(hasil)
+	except Exception:
+		print(f"gagal menyimpan ke database karena : \n{Exception}\n")
+		print(f"laporan dari system : \n{sys.exc_info()}")
 	
 	def this_output():
 		"""memproses data dari penampung untuk di cetak ke layar atau berkas"""

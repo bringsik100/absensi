@@ -3,10 +3,10 @@
 Output
 """
 
-
 import json
 import csv
 import string
+import sqlite3 as db
 from openpyxl import Workbook
 import os
 
@@ -64,6 +64,72 @@ def pt_txt(file_title,buffer):
 	"""output ke text"""
 	with open('{}.txt'.format(home()+file_title), 'w') as txtfile:
 			txtfile.write(json.dumps(buffer))
+
+def pt_db(buffer):
+	"""simpan ke database"""
+	conn = db.connect("data/report.db")
+	for rows in buffer:
+		conn.execute(f'''insert into absensi(
+`NoPeg`
+,`No. Akun`
+,`No.`
+,`Nama`
+,`Auto-Assign`
+,`Tanggal`
+,`Jam Kerja`
+,`Awal tugas`
+,`Akhir tugas`
+,`Masuk`
+,`Keluar`
+,`Normal`
+,`Waktu real`
+,`Telat`
+,`Plg Awal`
+,`Bolos`
+,`Waktu Lembur`
+,`Waktu Kerja`
+,`Status`
+,`Hrs C/In`
+,`Hrs C/Out`
+,`Departemen`
+,`NDays`
+,`Akhir Pekan`
+,`Hari Libur`
+,`Lama Hadir`
+,`NDays_OT`
+,`Lembur A.Pekan`
+,`Libur Lembur`)
+ values("{rows['0']}"
+,"{rows['1']}"
+,"{rows['2']}"
+,"{rows['3']}"
+,"{rows['4']}"
+,"{rows['5']}"
+,"{rows['6']}"
+,"{rows['7']}"
+,"{rows['8']}"
+,"{rows['9']}"
+,"{rows['10']}"
+,"{rows['11']}"
+,"{rows['12']}"
+,"{rows['13']}"
+,"{rows['14']}"
+,"{rows['15']}"
+,"{rows['16']}"
+,"{rows['17']}"
+,"{rows['18']}"
+,"{rows['19']}"
+,"{rows['20']}"
+,"{rows['21']}"
+,"{rows['22']}"
+,"{rows['23']}"
+,"{rows['24']}"
+,"{rows['25']}"
+,"{rows['26']}"
+,"{rows['27']}"
+,"{rows['28']}");''')
+	conn.commit()
+	conn.close()
 
 def main():
 	print("not ready yet")
