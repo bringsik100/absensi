@@ -55,6 +55,63 @@ def create_table():
 	conn.commit()
 	conn.close()
 
+'''modul database'''
+def cnxn():
+	'''menyambungkan ke data/report.db'''
+	try:
+		conn=db.connect('data/report.db')
+		print('koneksi berhasil')	
+	except Exception:
+		print(f'koneksi gagal\n{sys.exc_info()} \n')
+		pass
+	def tab_pegawai():
+		try:
+			conn.execute('''create table if not exist pegawai(
+			noID integer primary key autoincrement
+			,nopeg text
+			,noakun text
+			,nokartu text
+			,nama text
+			,titel text
+			,departemen text)
+			''')
+			conn.commit()
+			print('tabel pegawai berhasil dibuat')
+		except Exception:
+			print(f'tabel pegawai gagal dibuat karena:\n{sys.exc_info()} \n') 
+	
+	def tab_jadwal():
+		try:
+			conn.execute('''create table if not exist jadwal(
+			noID integer primary key autoincrement
+			,nama text
+			,`Jam Masuk` text
+			,`Jam Keluar` text
+			,`Telat` text
+			,`Pulang Cepat` text
+			,`Harus CIn` text
+			,`Harus COut` text
+			,`Normal` text
+			,`Akhir Pekan` text
+			,`Hari Libur` text
+			,`Waktu Real` text)
+			''')
+			conn.commit()
+			print('tabel jadwal berhasil dibuat')
+		except Exception:
+			print(f'tabel jadwal gagal dibuat karena:\n{sys.exc_info()} \n')
+	def tab_pegawai():
+		try:
+			conn.execute('''create table if not exist liburan(
+			tanggal text
+			,hari text)
+			''')
+			conn.commit()
+			print('tabel liburan berhasil dibuat')
+		except Exception:
+			print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
+	conn.close()
+cnxn()
 def main():
 	pass
 	

@@ -12,9 +12,9 @@ alur program
 + import library
 + modul data
 - koneksi ke database
-- buat / lihat / sunting tabel pegawai,jadwal,liburan
+- lihat / sunting tabel pegawai,jadwal,liburan
 + modul laporan
-- buat / lihat / sunting laporan
+- lihat / sunting laporan
 + modul output
 - output ke excel / database
 + fungsi main()
@@ -43,54 +43,17 @@ def cnxn():
 	except Exception:
 		print(f'koneksi gagal\n{sys.exc_info()} \n')
 		pass
-	def tab_pegawai():
-		try:
-			conn.execute('''create table if not exist pegawai(
-			noID integer primary key autoincrement
-			,nopeg text
-			,noakun text
-			,nokartu text
-			,nama text
-			,titel text
-			,departemen text)
-			''')
-			conn.commit()
-			print('tabel pegawai berhasil dibuat')
-		except Exception:
-			print(f'tabel pegawai gagal dibuat karena:\n{sys.exc_info()} \n') 
-	
-	def tab_jadwal():
-		try:
-			conn.execute('''create table if not exist jadwal(
-			noID integer primary key autoincrement
-			,nama text
-			,`Jam Masuk` text
-			,`Jam Keluar` text
-			,`Telat` text
-			,`Pulang Cepat` text
-			,`Harus CIn` text
-			,`Harus COut` text
-			,`Normal` text
-			,`Akhir Pekan` text
-			,`Hari Libur` text
-			,`Waktu Real` text)
-			''')
-			conn.commit()
-			print('tabel jadwal berhasil dibuat')
-		except Exception:
-			print(f'tabel jadwal gagal dibuat karena:\n{sys.exc_info()} \n')
-	def tab_pegawai():
-		try:
-			conn.execute('''create table if not exist liburan(
-			tanggal text
-			,hari text)
-			''')
-			conn.commit()
-			print('tabel liburan berhasil dibuat')
-		except Exception:
-			print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
-	conn.close()
+
 cnxn()
+
+def view_tabel(nama_tabel):
+	'''menampilkan isi tabel'''
+	conn=db.connect('data/report.db')
+	try:
+		curs=conn.execute(f'select * from {nama_tabel};')
+		print(curs)
+	except Exception:
+		print(f'gagal menampilkan isi tabel karena :\n{sys.exc_info()}\n')
 
 """salam pembuka"""
 print("""
@@ -196,6 +159,7 @@ def main():
 		return main()
 	else:
 		sys.exit
+	conn.close()
 
 if __name__=='__main__':
 	main()
