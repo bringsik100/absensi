@@ -88,7 +88,7 @@ pro(dt(2020,1,1,0,0,0),dt(2020,12,31,0,0,0), hasil)
 items = []
 
 for rows in hasil:
-	litems = list(rows.values())
+	
 	conn.execute(f'''insert into absensi(
 `NoPeg`
 ,`No. Akun`
@@ -119,35 +119,35 @@ for rows in hasil:
 ,`NDays_OT`
 ,`Lembur A.Pekan`
 ,`Libur Lembur`)
- values("{litems[0]}"
-,"{litems[1]}"
-,"{litems[2]}"
-,"{litems[3]}"
-,"{litems[4]}"
-,"{litems[5]}"
-,"{litems[6]}"
-,"{litems[7]}"
-,"{litems[8]}"
-,"{litems[9]}"
-,"{litems[10]}"
-,"{litems[11]}"
-,"{litems[12]}"
-,"{litems[13]}"
-,"{litems[14]}"
-,"{litems[15]}"
-,"{litems[16]}"
-,"{litems[17]}"
-,"{litems[18]}"
-,"{litems[19]}"
-,"{litems[20]}"
-,"{litems[21]}"
-,"{litems[22]}"
-,"{litems[23]}"
-,"{litems[24]}"
-,"{litems[25]}"
-,"{litems[26]}"
-,"{litems[27]}"
-,"{litems[28]}");''')
+ values("{rows['0']}"
+,"{rows['1']}"
+,"{rows['2']}"
+,"{rows['3']}"
+,"{rows['4']}"
+,"{rows['5']}"
+,"{rows['6']}"
+,"{rows['7']}"
+,"{rows['8']}"
+,"{rows['9']}"
+,"{rows['10']}"
+,"{rows['11']}"
+,"{rows['12']}"
+,"{rows['13']}"
+,"{rows['14']}"
+,"{rows['15']}"
+,"{rows['16']}"
+,"{rows['17']}"
+,"{rows['18']}"
+,"{rows['19']}"
+,"{rows['20']}"
+,"{rows['21']}"
+,"{rows['22']}"
+,"{rows['23']}"
+,"{rows['24']}"
+,"{rows['25']}"
+,"{rows['26']}"
+,"{rows['27']}"
+,"{rows['28']}");''')
 conn.commit()
 conn.close()
 
