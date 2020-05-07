@@ -57,7 +57,7 @@ def cnxn():
 			conn.commit()
 			print('tabel pegawai berhasil dibuat')
 		except Exception:
-		print(f'tabel pegawai gagal dibuat karena:\n{sys.exc_info()} \n') 
+			print(f'tabel pegawai gagal dibuat karena:\n{sys.exc_info()} \n') 
 	
 	def tab_jadwal():
 		try:
@@ -78,7 +78,7 @@ def cnxn():
 			conn.commit()
 			print('tabel jadwal berhasil dibuat')
 		except Exception:
-		print(f'tabel jadwal gagal dibuat karena:\n{sys.exc_info()} \n')
+			print(f'tabel jadwal gagal dibuat karena:\n{sys.exc_info()} \n')
 	def tab_pegawai():
 		try:
 			conn.execute('''create table if not exist liburan(
@@ -88,9 +88,10 @@ def cnxn():
 			conn.commit()
 			print('tabel liburan berhasil dibuat')
 		except Exception:
-		print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
+			print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
 	conn.close()
-			
+cnxn()
+
 """salam pembuka"""
 print("""
 SELAMAT DATANG DI ABTOMATIS
