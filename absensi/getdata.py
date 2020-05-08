@@ -19,43 +19,9 @@ TODO:
 - modul untuk menampilkan dan menyunting jadwal
 - modul untuk menampilkan dan menyunting liburan
 """
-def create_table():
-	"""buat table baru di database"""
-	conn = db.connect("data/report.db")
-	conn.execute("""create table if not exists absensi (row_id integer primary key autoincrement
-,`NoPeg` text
-,`No. Akun` text
-,`No.` text
-,`Nama` text
-,`Auto-Assign` text
-,`Tanggal` text
-,`Jam Kerja` text
-,`Awal tugas` text
-,`Akhir tugas` text
-,`Masuk` text
-,`Keluar` text
-,`Normal` text
-,`Waktu real` text
-,`Telat` text
-,`Plg Awal` text
-,`Bolos` text
-,`Waktu Lembur` text
-,`Waktu Kerja` text
-,`Status` text
-,`Hrs C/In` text
-,`Hrs C/Out` text
-,`Departemen` text
-,`NDays` text
-,`Akhir Pekan` text
-,`Hari Libur` text
-,`Lama Hadir` text
-,`NDays_OT` text
-,`Lembur A.Pekan` text
-,`Libur Lembur` text);""")
-	conn.commit()
-	conn.close()
 
 '''modul database'''
+
 def cnxn():
 	'''menyambungkan ke data/report.db'''
 	try:
@@ -110,9 +76,50 @@ def cnxn():
 			print('tabel liburan berhasil dibuat')
 		except Exception:
 			print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
+	
+	def create_table():
+		try:
+			"""buat table baru di database"""
+			conn = db.connect("data/report.db")
+			conn.execute("""create table if not exists absensi (row_id integer primary key autoincrement
+			,`NoPeg` text
+			,`No. Akun` text
+			,`No.` text
+			,`Nama` text
+			,`Auto-Assign` text
+			,`Tanggal` text
+			,`Jam Kerja` text
+			,`Awal tugas` text
+			,`Akhir tugas` text
+			,`Masuk` text
+			,`Keluar` text
+			,`Normal` text
+			,`Waktu real` text
+			,`Telat` text
+			,`Plg Awal` text
+			,`Bolos` text
+			,`Waktu Lembur` text
+			,`Waktu Kerja` text
+			,`Status` text
+			,`Hrs C/In` text
+			,`Hrs C/Out` text
+			,`Departemen` text
+			,`NDays` text
+			,`Akhir Pekan` text
+			,`Hari Libur` text
+			,`Lama Hadir` text
+			,`NDays_OT` text
+			,`Lembur A.Pekan` text
+			,`Libur Lembur` text);""")
+			conn.commit()
+			print('tabel liburan berhasil dibuat')
+		except Exception:
+			print(f'tabel liburan gagal dibuat karena:\n{sys.exc_info()} \n') 
+	
 	conn.close()
-cnxn()
+
 def main():
+	cnxn()
 	pass
 	
 if __name__ == '__main__':
