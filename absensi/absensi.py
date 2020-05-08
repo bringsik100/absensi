@@ -44,11 +44,21 @@ def cnxn():
 		print(f'koneksi gagal\n{sys.exc_info()} \n')
 		pass
 
-cnxn()
+def user_sql():
+	'''modul untuk menjalankan perintah SQL'''
+	cnxn
+	print(" masukkan perintah SQL disini\t:\n")
+	sql = str(input())
+	if ';' not in sql:
+		sql=sql+';'
+	try:
+		conn.execute(sql)
+	except Exception:
+		print(f'gagal mengeksekusi "{sql}" karena :\n{sys.exc_info()}\n')
 
 def view_tabel(nama_tabel):
 	'''menampilkan isi tabel'''
-	conn=db.connect('data/report.db')
+	cnxn()
 	try:
 		curs=conn.execute(f'select * from {nama_tabel};')
 		print(curs)
