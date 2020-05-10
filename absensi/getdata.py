@@ -59,14 +59,12 @@ class Table(DataBase):
 		'''tampilkan data dalam tabel'''
 		if column == None:
 			try:
-				cursor = db.connect('report.db')
 				cursor.execute(f'select * from {table};')
 				print(cursor.fetchall())
 			except Exception:
 				print(f'gagal membaca data {table} \n {sys.exc_info()} \n Exception = {Exception()}\n')
 		else:
 			try:
-				cursor = db.connect('report.db')
 				cursor.execute(f'select {column} from {table};')
 				print(cursor.fetchall())
 			except Exception:
@@ -146,38 +144,39 @@ def recover():
 #ubah_laporan = EditTable('laporan')
 
 class ubah_pegawai:
-
-	def __init__(self):
 	'''sunting data pegawai'''
-	pegawai=Table('pegawai')
-	pegawai.column('nopeg','noakun','nokartu','nama','titel','departemen')
-	pegawai.rows('nopeg','noakun','nokartu','nama','titel','departemen')
+	def __init__(self):
+	self.conn = db.connect('report.db')
+	self.curs = self.conn.cursor()
+	self.table = 'pegawai'
+	self.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
+	self.rows = self.curs.execute(f'select * from {self.table};').fetchall()
 	
 	def lihat(self):
-		args = input('masukkan nama kolom atau biarkan kosong :\t')
-		pegawai.view('pegawai',args)
+		'''lihat data pegawai'''
+		self.curs.execute(f'select * from {self.table};')
 	
 	def tambah(self):
 		"""tambah data pegawai"""
-		tambah = InsertRow('pegawai')
 		q0 = input('nopeg :\t')
 		q1 = input('noakun :\t')
 		q2 = input('nokartu :\t')
 		q3 = input('nama :\t')
 		q4 = input('titel :\t')
 		q5 = input('departemen :\t')
-		tambah.column = pegawai.column
-		tambah.value(q0,q1,q2,q3,q4,q5)
-		tambah.insert()
-		
+		self.value(q0,q1,q2,q3,q4,q5)
+		try:
+			self.curs.execute(f'insert into {self.table} {self.column} values {self.valuew};')
+			self.conn.commit()
+			print()
+
 	def ubah(self):
 		"""ubah data pegawai"""
-		ubah.rows = pegawai.rows
 		column = input('masukkan kolom pegawai yang akan dirubah :\t')
-		ubah.column(column)
+		self.column(column)
 		value = input('masukkan nilai pegawai yang akan dirubah :\t')
-		ubah.value(value)
-		ubah = UpdateRow(row)
+		self.value(value)
+		self.curs.execute(f'update {self.table} {self.column} values {self.valuew};')
 
 	def hapus(self):
 		""" hapus data pegawai"""

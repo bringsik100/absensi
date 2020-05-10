@@ -202,19 +202,46 @@ M - lihat opsi \t\t Q - keluar
 		elif opsi.lower() == '4': # lihat data liburan
 			cnxn
 			view('libur')
-			print(view)
 			opsi_input()
 		elif opsi.lower() == 'o': # ubah data laporan
 			cnxn
-			this = getdata.ubah_laporan()
-			this
+			print('''
+			pilih opsi
+			1 lihat	
+			2 tambah
+			3 ubah 
+			4 hapus
+			0 kembali
+			''')
+			opsi = input("opsi : \t")
+			if opsi == '0':
+				opsi_input()
+			elif opsi == '1': #lihat
+				view('laporan')
+			elif opsi == '2': #tambah
+			elif opsi == '3': #ubah
+			elif opsi == '4': #hapus
+			else:
 		elif opsi.lower() == 'p': # ubah data pegawai
-			cls()
-			getdata.ubah_pegawai()
+			print('''
+			pilih opsi
+			1 lihat	
+			2 tambah
+			3 ubah 
+			4 hapus
+			0 kembali
+			''')
+			opsi = input("opsi : \t")
 			opsi_input()
 		elif opsi.lower() == 'j': # ubah data jadwal
-			cls()
-			getdata.ubah_jadwal()
+			print('''
+			pilih opsi
+			1 lihat	
+			2 tambah
+			3 ubah 
+			4 hapus
+			0 kembali
+			''')
 			opsi_input()
 		elif opsi.lower() == 'l': # ubah data liburan
 			cls()
