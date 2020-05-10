@@ -129,17 +129,18 @@ class DelRow(Table):
 cnxn = DataBase('report.db')
 cnxn
 
-tab_pegawai = CreateTable('pegawai')
-tab_pegawai.create('noID integer primary key autoincrement','nopeg text','noakun text','nokartu text','nama text','titel text','departemen text')
+def tab_buat():
+	tab_pegawai = CreateTable('pegawai')
+	tab_pegawai.create('noID integer primary key autoincrement','nopeg text','noakun text','nokartu text','nama text','titel text','departemen text')
 
-tab_jadwal = CreateTable('jadwal')
-tab_jadwal.create('noID integer primary key autoincrement','nama text','`Jam Masuk` text','`Jam Keluar` text','`Telat` text','`Pulang Cepat` text','`Harus CIn` text','`Harus COut` text','`Normal` text','`Akhir Pekan` text','`Hari Libur` text','`Waktu Real` text')
+	tab_jadwal = CreateTable('jadwal')
+	tab_jadwal.create('noID integer primary key autoincrement','nama text','`Jam Masuk` text','`Jam Keluar` text','`Telat` text','`Pulang Cepat` text','`Harus CIn` text','`Harus COut` text','`Normal` text','`Akhir Pekan` text','`Hari Libur` text','`Waktu Real` text')
 
-tab_liburan = CreateTable('liburan')
-tab_liburan.create('tanggal text','hari text')
+	tab_liburan = CreateTable('liburan')
+	tab_liburan.create('tanggal text','hari text')
 
-tab_laporan = CreateTable('laporan')
-tab_laporan.create('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
+	tab_laporan = CreateTable('laporan')
+	tab_laporan.create('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
 
 def recover():
 	"""recover tabel"""

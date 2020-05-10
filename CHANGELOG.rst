@@ -57,3 +57,6 @@ Version 0.1.2
 - 2020-05-02
 - urutan kolom di output excell sudah benar dan hasilnya memuaskan
 - modul masuk tahap beta
+- 2020-05-10
+- sudah pakai database sqlite
+- modul utama dan getdata belum beres
