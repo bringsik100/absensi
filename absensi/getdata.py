@@ -12,7 +12,6 @@ import sqlite3 as db
 import sys
 import os
 from proses import process
-from absensi import cls
 
 """
 TODO:
@@ -25,57 +24,53 @@ TODO:
 
 class DataBase:
 	'''objek database'''
-	
 	def __init__(self,dbname = None):
 		self.dbname = dbname
-		self.conn = db.connect
-		self.cursor = self.conn(dbname)
-		try:
-			self.conn = db.connect(f'{self.dbname}')
-			print('koneksi berhasil')
-		except Exception:
-			print(f'koneksi gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
+		self.conn = db.connect(f'{self.dbname}')
+		self.cursor = self.conn.cursor()
+		print('koneksi berhasil')
+
 	def close(self):
 		self.conn.close()
 
 class Table(DataBase):
 	'''objek table'''
-	def __init__(self,table):
+	def table(self,table):
 		self.table = table
-		DataBase().__init__()
 
 	def rows(self,*column):
 		self.column = column
 		'''mengambil data dalam tabel'''
 		if self.column != None:
 			try:
-				self.cursor.execute(f'select {self.column} from {self.table}')
+				self.cursor.execute(f'select {self.column} from {self.table};')
 				return self.cursor.fetchall()
 			except Exception:
 				print(f'koneksi gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
 				pass
 		else:
 			try:
-				self.cursor.execute(f'select * from {self.table}')
+				self.cursor.execute(f'select * from {self.table};')
 				rows = self.cursor.fetchall()
 			except Exception:
 				print(f'gagal membaca data \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
-	def view(self,table, *column):
+	def view(table, *column):
 		'''tampilkan data dalam tabel'''
-		self.column = column
-		if self.column == None:
+		if column == None:
 			try:
-				self.cursor.execute(f'select * from {self.table}')
-				print(self.cursor.fetchall())
+				cursor = db.connect('report.db')
+				cursor.execute(f'select * from {table};')
+				print(cursor.fetchall())
 			except Exception:
-				print(f'gagal membaca data {self.table} \n {sys.exc_info()} \n Exception = {Exception()}\n')
+				print(f'gagal membaca data {table} \n {sys.exc_info()} \n Exception = {Exception()}\n')
 		else:
 			try:
-				self.cursor.execute(f'select {self.column} from {self.table}')
-				print(self.cursor.fetchall())
+				cursor = db.connect('report.db')
+				cursor.execute(f'select {column} from {table};')
+				print(cursor.fetchall())
 			except Exception:
-				print(f'gagal membaca data {self.table} \n {sys.exc_info()} \n Exception = {Exception()}\n')
+				print(f'gagal membaca data {table} \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
 class CreateTable(Table): 
 	'''objek pembuat tabel'''
@@ -83,24 +78,28 @@ class CreateTable(Table):
 		'''metode utama'''
 		self.column = column
 		try:
-			self.cursor.execute(f'''create table if not exists {self.table}{self.column};''')
+			self.cursor.execute(f'create table if not exists {self.table}{self.column};')
 			self.conn.commit()
 			print(f'buat data {self.table} berhasil')
 		except Exception:
 			print(f'buat tabel {self.table} gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
 class InsertRow(Table):
+	'''masukkan data ke dalam tabel'''
 	def value(self,*value):
+		'''isi data'''
 		self.value = value
 	def insert(self):
+		'''proses pengisian data'''
 		try:
-			self.cursor.execute(f'insert into {self.table}{self.column} values {self.value}')
+			self.cursor.execute(f'insert into {self.table}{self.column} values {self.value};')
 			self.conn.commit()
 			print(f'input data ke {self.table} berhasil')
 		except Exception:
 			print(f'input data ke tabel {self.table} gagal\n {sys.exc_info()} \n Exception = {Exception()}\n')
 	
 class UpdateRow(InsertRow):
+	'''object penyunting data'''
 	def update(self,row):
 		self.row = row
 		old_data = self.rows()[row]
@@ -116,20 +115,19 @@ class UpdateRow(InsertRow):
 			print(f'update data ke {self.table} berhasil')
 		except Exception:
 			print(f'update data ke tabel {self.table} gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
+
 class DelRow(Table):
+	'''object penghapus data'''
 	def Delete(self,row):
 		self.row = self.rows[row]
 		try:
-			self.cursor.execute(f'delete {self.row} from {self.rows}')
+			self.cursor.execute(f'delete {self.row} from {self.rows};')
 			self.conn.commit()
 			print('hapus data (self.row) berhasil')
 		except Exception:
 			print('hapus data (self.row) gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
-cnxn = DataBase('report.db')
-cnxn
-
-def tab_buat():
+def recover():
 	tab_pegawai = CreateTable('pegawai')
 	tab_pegawai.create('noID integer primary key autoincrement','nopeg text','noakun text','nokartu text','nama text','titel text','departemen text')
 
@@ -142,29 +140,24 @@ def tab_buat():
 	tab_laporan = CreateTable('laporan')
 	tab_laporan.create('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
 
-def recover():
-	"""recover tabel"""
-	tab_pegawai
-	tab_jadwal
-	tab_liburan
-	tab_laporan
-
 #ubah_pegawai = EditTable('pegawai')
 #ubah_jadwal = EditTable('jadwal')
 #ubah_libur = EditTable('libur')
 #ubah_laporan = EditTable('laporan')
 
-def ubah_pegawai():
+class ubah_pegawai:
+
+	def __init__(self):
 	'''sunting data pegawai'''
 	pegawai=Table('pegawai')
 	pegawai.column('nopeg','noakun','nokartu','nama','titel','departemen')
 	pegawai.rows('nopeg','noakun','nokartu','nama','titel','departemen')
 	
-	def lihat():
+	def lihat(self):
 		args = input('masukkan nama kolom atau biarkan kosong :\t')
 		pegawai.view('pegawai',args)
 	
-	def tambah():
+	def tambah(self):
 		"""tambah data pegawai"""
 		tambah = InsertRow('pegawai')
 		q0 = input('nopeg :\t')
@@ -177,7 +170,7 @@ def ubah_pegawai():
 		tambah.value(q0,q1,q2,q3,q4,q5)
 		tambah.insert()
 		
-	def ubah():
+	def ubah(self):
 		"""ubah data pegawai"""
 		ubah.rows = pegawai.rows
 		column = input('masukkan kolom pegawai yang akan dirubah :\t')
@@ -186,22 +179,22 @@ def ubah_pegawai():
 		ubah.value(value)
 		ubah = UpdateRow(row)
 
-	def hapus():
+	def hapus(self):
 		""" hapus data pegawai"""
 		row = input('masukkan baris data yang akan dihapus :\t')
 		hapus = DelRow(row)
 
-def ubah_jadwal():
+def ubah_jadwal:
 	"""sunting data jadwal"""
 	jadwal=Table('pegawai')
 	jadwal.column('nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`')
 	jadwal.rows('nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`')
 	
-	def lihat():
+	def lihat(self):
 		args = input('masukkan nama kolom atau biarkan kosong :\t')
 		jadwal.view('jadwal',args)
 	
-	def tambah():
+	def tambah(self):
 		"""tambah data jadwal"""
 		tambah = InsertRow('jadwal')
 		
@@ -221,7 +214,7 @@ def ubah_jadwal():
 		tambah.value(q0,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10)
 		tambah.insert()
 
-	def ubah():
+	def ubah(self):
 		"""ubah data jadwal"""
 		ubah.rows = jadwal.rows
 		column = input('masukkan kolom jadwal yang akan dirubah :\t')
@@ -230,23 +223,24 @@ def ubah_jadwal():
 		ubah.value(value)
 		ubah = UpdateRow(row)
 
-	def hapus():
+	def hapus(self):
 		""" hapus data jadwal"""
 		row = input('masukkan baris data yang akan dihapus :\t')
 		hapus = DelRow(row)
 
-def ubah_libur():
+class ubah_libur:
 	'''sunting data libur'''
+	def __init__(self):
 	libur=Table('libur')
 	libur.column('tanggal text','hari text')
 	libur.rows('tanggal text','hari text')
 	
-	def lihat():
+	def lihat(self):
 		"""lihat data libur"""
 		args = input('masukkan nama kolom atau biarkan kosong :\t')
 		libur.view('libur',args)
 	
-	def tambah():
+	def tambah(self):
 		"""tambah data libur"""
 		tambah = InsertRow('libur')
 		q0 = input('tanggal :\t')
@@ -255,7 +249,7 @@ def ubah_libur():
 		tambah.value(q0,q1)
 		tambah.insert()
 		
-	def ubah():
+	def ubah(self):
 		"""ubah data libur"""
 		ubah.rows = pegawai.rows
 		column = input('masukkan kolom libur yang akan dirubah :\t')
@@ -264,23 +258,25 @@ def ubah_libur():
 		ubah.value(value)
 		ubah = UpdateRow(row)
 
-	def hapus():
+	def hapus(self):
 		""" hapus data libur"""
 		row = input('masukkan baris data yang akan dihapus :\t')
 		hapus = DelRow(row)
 
-def ubah_laporan():
+class ubah_laporan:
 	'''sunting data laporan'''
-	laporan=Table('laporan')
-	laporan.column('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
-	laporan.rows('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
+	def __init__(self):
+		laporan=Table('laporan')
+		laporan.rows('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
+		
+		laporan.rows('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
 	
-	def lihat():
+	def lihat(self):
 		"""lihat data laporan"""
 		args = input('masukkan nama kolom atau biarkan kosong :\t')
 		laporan.view('laporan',args)
 	
-	def tambah():
+	def tambah(self):
 		"""tambah data laporan"""
 		tambah = InsertRow('laporan')
 		q0 = input('`NoPeg` : 	')
@@ -316,7 +312,7 @@ def ubah_laporan():
 		tambah.value(q0,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20,q21,q22,q23,q24,q25,q26,q27,q28)
 		tambah.insert()
 
-	def ubah():
+	def ubah(self):
 		"""ubah data laporan"""
 		ubah.rows = pegawai.rows
 		column = input('masukkan kolom libur yang akan dirubah :\t')
@@ -325,14 +321,13 @@ def ubah_laporan():
 		ubah.value(value)
 		ubah = UpdateRow(row)
 
-	def hapus():
+	def hapus(self):
 		""" hapus data laporan"""
 		row = input('masukkan baris data yang akan dihapus :\t')
 		hapus = DelRow(row)
 
 def main():
 	"""modul utama"""
-	cnxn.close()
 	pass
 	
 if __name__ == '__main__':

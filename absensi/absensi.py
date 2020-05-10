@@ -33,24 +33,16 @@ import csv
 from openpyxl import Workbook
 import proses 
 import output
+import getdata
 
 '''modul database'''
-def cnxn():
-	'''menyambungkan ke data/report.db'''
-	try:
-		conn=db.connect('data/report.db')
-		print('koneksi berhasil')	
-	except Exception:
-		print(f'koneksi gagal\n{sys.exc_info()} \n')
-		pass
+
+cnxn = getdata.DataBase('data/report.db')
 
 def user_sql():
 	'''modul untuk menjalankan perintah SQL'''
-	cnxn()
-	print(" masukkan perintah SQL disini\t:\n")
+	print(" masukkan perintah SQL disini\t:\n ;")
 	sql = str(input())
-	if ';' not in sql:
-		sql=sql+';'
 	try:
 		conn.execute(sql)
 	except Exception:
@@ -58,7 +50,6 @@ def user_sql():
 
 def view_tabel(nama_tabel):
 	'''menampilkan isi tabel'''
-	cnxn()
 	try:
 		curs=conn.execute(f'select * from {nama_tabel};')
 		print(curs)
@@ -168,7 +159,6 @@ def keluar():
 
 def ulang():
 	"""opsi ulangi proses"""
-	cls()
 	print("\n\nulangi proses ?")
 	answer = input("\n\njawab Y atau N: ")
 	if answer.lower() == 'y':
@@ -183,10 +173,8 @@ def main():
 	SELAMAT DATANG DI ABTOMATIS
 	MODUL PENGISI ABSENSI OTOMATIS
 	""")
-	
-	def opsi_menu():
-		"""modul menu"""
-		cls()
+	"""modul menu"""
+	def menu():
 		print("""
 1 - lihat data laporan \t\t 2 - lihat data pegawai
 3 - lihat data jadwal \t\t 4 - lihat data liburan
@@ -195,29 +183,37 @@ J - ubah / hapus data jadwal \t\t L - ubah / hapus data liburan
 B - buat laporan otomatis \t\t C - cetak laporan
 M - lihat opsi \t\t Q - keluar
 		""")
-	opsi_menu()
 	
 	def opsi_input():
+		menu()
 		opsi = str(input("pilih opsi :\t"))
-		
 		if opsi.lower() == '1': # lihat data laporan
-			cls()
-			view_tabel('absensi')
+			cnxn
+			view = cnxn.cursor.execute('select * from laporan').fetchall()
+			print(view)
 			opsi_input()
 		elif opsi.lower() == '2': # lihat data pegawai
+			cnxn
+			view = cnxn.cursor.execute('select * from pegawai').fetchall()
 			cls()
-			view_tabel('pegawai')
+			print(view)
 			opsi_input()
 		elif opsi.lower() == '3': # lihat data jadwal
+			cnxn
+			view = cnxn.cursor.execute('select * from jadwal').fetchall()
 			cls()
-			view_tabel('jadwal')
+			print(view)
 			opsi_input()
 		elif opsi.lower() == '4': # lihat data liburan
+			cnxn
+			view = cnxn.cursor.execute('select * from libur').fetchall()
 			cls()
-			view_tabel('liburan')
+			print(view)
 			opsi_input()
 		elif opsi.lower() == 'o': # ubah data laporan
-			print(opsi)
+			cnxn
+			this = getdata.ubah_laporan()
+			this
 		elif opsi.lower() == 'p': # ubah data pegawai
 			cls()
 			getdata.ubah_pegawai()
@@ -249,7 +245,6 @@ M - lihat opsi \t\t Q - keluar
 			ulang()
 	
 	opsi_input()
-	db.connect.close()
 
 if __name__=='__main__':
 	main()
