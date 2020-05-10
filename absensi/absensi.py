@@ -46,7 +46,7 @@ def cnxn():
 
 def user_sql():
 	'''modul untuk menjalankan perintah SQL'''
-	cnxn
+	cnxn()
 	print(" masukkan perintah SQL disini\t:\n")
 	sql = str(input())
 	if ';' not in sql:
@@ -74,23 +74,22 @@ def buat():
 		YYYY = 4 angka tahun
 		MM = 2 angka bulan 
 		DD = 2 angka tanggal
-		""")
+	""")
 	
-		"""tanya tanggal awal dan akhir otomatis"""
-		awal = proses.get_input(' masukkan tanggal awal absensi: ') 
-		akhir = proses.get_input(' masukkan tanggal akhir absensi: ')
-		hasil = []
+	"""tanya tanggal awal dan akhir otomatis"""
+	awal = proses.get_input(' masukkan tanggal awal absensi: ') 
+	akhir = proses.get_input(' masukkan tanggal akhir absensi: ')
+	hasil = []
 	
-		"""main proses"""
-		"""proses ada di dalam modul proses"""
-		proses.process(awal,akhir,hasil)
-		"""otomatis menyimpan ke database"""
-		try:
-			output.pt_db(hasil)
-			
-		except Exception:
-			print(f"gagal menyimpan ke database karena : \n{Exception}\n")
-			print(f"laporan dari system : \n{sys.exc_info()}")
+	"""main proses"""
+	"""proses ada di dalam modul proses"""
+	proses.process(awal,akhir,hasil)
+	"""otomatis menyimpan ke database"""
+	try:
+		output.pt_db(hasil)		
+	except Exception:
+		print(f"gagal menyimpan ke database karena : \n{Exception}\n")
+		print(f"laporan dari system : \n{sys.exc_info()}")
 	return hasil
 
 def cetak():
@@ -189,14 +188,14 @@ def main():
 		"""modul menu"""
 		cls()
 		print("""
-		1 - lihat data laporan \t\t 2 - lihat data pegawai
-		3 - lihat data jadwal \t\t 4 - lihat data liburan
-		O - ubah / hapus data laporan \t\t P - ubah / hapus data pegawai
-		J - ubah / hapus data jadwal \t\t L - ubah / hapus data liburan
-		B - buat laporan otomatis \t\t C - cetak laporan
-		M - lihat opsi \t\t Q - keluar
+1 - lihat data laporan \t\t 2 - lihat data pegawai
+3 - lihat data jadwal \t\t 4 - lihat data liburan
+O - ubah / hapus data laporan \t\t P - ubah / hapus data pegawai
+J - ubah / hapus data jadwal \t\t L - ubah / hapus data liburan
+B - buat laporan otomatis \t\t C - cetak laporan
+M - lihat opsi \t\t Q - keluar
 		""")
-	menu()
+	opsi_menu()
 	
 	def opsi_input():
 		opsi = str(input("pilih opsi :\t"))
@@ -250,7 +249,7 @@ def main():
 			ulang()
 	
 	opsi_input()
-	conn.close()
+	db.connect.close()
 
 if __name__=='__main__':
-main()
+	main()

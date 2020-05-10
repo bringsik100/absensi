@@ -28,20 +28,24 @@ class DataBase:
 	
 	def __init__(self,dbname = None):
 		self.dbname = dbname
+		self.conn = db.connect
+		self.cursor = self.conn(dbname)
 		try:
-			self.conn = db.connect(f'{self.dbname}.db')
-			self.cursor = self.conn.cursor()
+			self.conn = db.connect(f'{self.dbname}')
 			print('koneksi berhasil')
 		except Exception:
 			print(f'koneksi gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
+	def close(self):
+		self.conn.close()
 
 class Table(DataBase):
 	'''objek table'''
 	def __init__(self,table):
 		self.table = table
+		DataBase().__init__()
 
-	def rows(self,*column = None):
-			self.column = column
+	def rows(self,*column):
+		self.column = column
 		'''mengambil data dalam tabel'''
 		if self.column != None:
 			try:
@@ -57,10 +61,10 @@ class Table(DataBase):
 			except Exception:
 				print(f'gagal membaca data \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
-	def view(self,table,*column=None):
+	def view(self,table, *column):
 		'''tampilkan data dalam tabel'''
 		self.column = column
-		if self.column = None:
+		if self.column == None:
 			try:
 				self.cursor.execute(f'select * from {self.table}')
 				print(self.cursor.fetchall())
@@ -116,19 +120,26 @@ class DelRow(Table):
 	def Delete(self,row):
 		self.row = self.rows[row]
 		try:
-			self.cursor.execute(f'delete {} from {self.rows}')
+			self.cursor.execute(f'delete {self.row} from {self.rows}')
 			self.conn.commit()
 			print('hapus data (self.row) berhasil')
 		except Exception:
 			print('hapus data (self.row) gagal \n {sys.exc_info()} \n Exception = {Exception()}\n')
 
-tab_pegawai = CreateTable('pegawai','noID integer primary key autoincrement','nopeg text','noakun text','nokartu text','nama text','titel text','departemen text')
+cnxn = DataBase('report.db')
+cnxn
 
-tab_jadwal = CreateTable('jadwal','noID integer primary key autoincrement','nama text','`Jam Masuk` text','`Jam Keluar` text','`Telat` text','`Pulang Cepat` text','`Harus CIn` text','`Harus COut` text','`Normal` text','`Akhir Pekan` text','`Hari Libur` text','`Waktu Real` text')
+tab_pegawai = CreateTable('pegawai')
+tab_pegawai.create('noID integer primary key autoincrement','nopeg text','noakun text','nokartu text','nama text','titel text','departemen text')
 
-tab_liburan = CreateTable('liburan','tanggal text','hari text')
+tab_jadwal = CreateTable('jadwal')
+tab_jadwal.create('noID integer primary key autoincrement','nama text','`Jam Masuk` text','`Jam Keluar` text','`Telat` text','`Pulang Cepat` text','`Harus CIn` text','`Harus COut` text','`Normal` text','`Akhir Pekan` text','`Hari Libur` text','`Waktu Real` text')
 
-tab_laporan = CreateTable('laporan','row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
+tab_liburan = CreateTable('liburan')
+tab_liburan.create('tanggal text','hari text')
+
+tab_laporan = CreateTable('laporan')
+tab_laporan.create('row_id integer primary key autoincrement','`NoPeg` text','`No. Akun` text','`No.` text','`Nama` text','`Auto-Assign` text','`Tanggal` text','`Jam Kerja` text','`Awal tugas` text','`Akhir tugas` text','`Masuk` text','`Keluar` text','`Normal` text','`Waktu real` text','`Telat` text','`Plg Awal` text','`Bolos` text','`Waktu Lembur` text','`Waktu Kerja` text','`Status` text','`Hrs C/In` text','`Hrs C/Out` text','`Departemen` text','`NDays` text','`Akhir Pekan` text','`Hari Libur` text','`Lama Hadir` text','`NDays_OT` text','`Lembur A.Pekan` text','`Libur Lembur` text')
 
 def recover():
 	"""recover tabel"""
@@ -237,7 +248,7 @@ def ubah_libur():
 	def tambah():
 		"""tambah data libur"""
 		tambah = InsertRow('libur')
-		q0 = input('tanggal' :\t')
+		q0 = input('tanggal :\t')
 		q1 = input('hari :\t')
 		tambah.column = libur.column
 		tambah.value(q0,q1)
@@ -320,10 +331,8 @@ def ubah_laporan():
 
 def main():
 	"""modul utama"""
-	cnxn()
-	
-	conn.close()
+	cnxn.close()
 	pass
 	
 if __name__ == '__main__':
-main()
+	main()
