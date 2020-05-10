@@ -48,10 +48,10 @@ def user_sql():
 	except Exception:
 		print(f'gagal mengeksekusi "{sql}" karena :\n{sys.exc_info()}\n')
 
-def view_tabel(nama_tabel):
+def view(nama_tabel):
 	'''menampilkan isi tabel'''
 	try:
-		curs=conn.execute(f'select * from {nama_tabel};')
+		curs=conn.execute(f'select * from {nama_tabel};').fetchall()
 		print(curs)
 	except Exception:
 		print(f'gagal menampilkan isi tabel karena :\n{sys.exc_info()}\n')
@@ -189,25 +189,19 @@ M - lihat opsi \t\t Q - keluar
 		opsi = str(input("pilih opsi :\t"))
 		if opsi.lower() == '1': # lihat data laporan
 			cnxn
-			view = cnxn.cursor.execute('select * from laporan').fetchall()
-			print(view)
+			view('laporan')
 			opsi_input()
 		elif opsi.lower() == '2': # lihat data pegawai
 			cnxn
-			view = cnxn.cursor.execute('select * from pegawai').fetchall()
-			cls()
-			print(view)
+			view('pegawai')
 			opsi_input()
 		elif opsi.lower() == '3': # lihat data jadwal
 			cnxn
-			view = cnxn.cursor.execute('select * from jadwal').fetchall()
-			cls()
-			print(view)
+			view('jadwal')
 			opsi_input()
 		elif opsi.lower() == '4': # lihat data liburan
 			cnxn
-			view = cnxn.cursor.execute('select * from libur').fetchall()
-			cls()
+			view('libur')
 			print(view)
 			opsi_input()
 		elif opsi.lower() == 'o': # ubah data laporan
