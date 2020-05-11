@@ -111,15 +111,40 @@ class Ubah:
 		except Exception:
 			print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {er}\n')
 
-ubah_pegawai=Ubah('data/report.db','pegawai')
-ubah_pegawai.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
+	def menu(self):
+		'''tampilan menu'''
+		print('''
+pilih opsi
+1 lihat	
+2 tambah
+3 ubah 
+4 hapus
+0 kembali
+		''')
+		self.opsi = input("opsi : \t")
+		if self.opsi == '0':
+			pass
+		elif self.opsi == '1': #lihat
+			self.view
+		elif self.opsi == '2': #tambah
+			self.inserts
+		elif self.opsi == '3': #ubah
+			self.updates
+		elif self.opsi == '4': #hapus
+			self.delrow
+		else:
+			self.menu()
 
 def lihat_pegawai():
 	'''lihat data pegawai'''
+	ubah_pegawai=Ubah('data/report.db','pegawai')
+	ubah_pegawai.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
 	ubah_pegawai.view()
 
 def tambah_pegawai():
 	"""tambah data pegawai"""
+	ubah_pegawai=Ubah('data/report.db','pegawai')
+	ubah_pegawai.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
 	q0 = input('nopeg :\t')
 	q1 = input('noakun :\t')
 	q2 = input('nokartu :\t')
@@ -130,12 +155,16 @@ def tambah_pegawai():
 
 def ubah_pegawai():
 	"""ubah data pegawai"""
+	ubah_pegawai=Ubah('data/report.db','pegawai')
+	ubah_pegawai.column = ['nopeg','noakun','nokartu','nama','titel','departemen']	
 	row = input('masukkan nomor baris pegawai yang akan dirubah :\t')
 	kwargs = input('masukkan kolom dan data pegawai yang akan dirubah :\t')
 	ubah_pegawai.updates(row,kwargs)
 
 def hapus_pegawai():
 	""" hapus data pegawai"""
+	ubah_pegawai=Ubah('data/report.db','pegawai')
+	ubah_pegawai.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
 	row = input('masukkan baris data yang akan dihapus :\t')
 	hapus = delrow(row)
 
