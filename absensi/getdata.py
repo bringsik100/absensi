@@ -77,40 +77,6 @@ class Ubah:
 		self.column = None
 		self.rows = self.curs.execute(f'select * from {self.table};').fetchall()
 
-	def view(self):
-		'''fungsi untuk melihat data'''
-		for row in self.rows:
-			print(row)
-
-	def inserts(self,values):
-		'''fungsi untuk menambah data'''
-		self.values=values
-		try:
-			self.curs.execute(f'insert into {self.table}{self.column} values {self.values};')
-			print(f'menambahkan data ke {self.table } berhasil \n')
-		except Exception:
-			print(f'menambahkan data ke tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
-	
-	def updates(self,row,**kwargs):
-		'''fungsi untuk mengubah data'''
-		self.row = row
-		self.kwargs=kwargs
-		try:
-			self.curs.execute(f'update {self.table} set {self.kwargs} where ID = {self.row};')
-			print(f'mengubah data di tabel {self.table } berhasil \n')
-		except Exception:
-			print(f'menngubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
-	
-	def delrow(self,row_id):
-		'''fungsi untuk menghapus data'''
-		self.row_id = row_id
-		try:
-			self.curs.execute(f'delete from {self.table} where ID = {row_id}')
-			self.conn.commit()
-			print(f'menghapus data di tabel {self.table } berhasil \n')
-		except Exception:
-			print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
-
 	def menu(self):
 		'''tampilan menu'''
 		print('''
@@ -125,16 +91,45 @@ pilih opsi
 		if self.opsi == '0':
 			pass
 		elif self.opsi == '1': #lihat
-			self.view
+			def view():
+				'''fungsi untuk melihat data'''
+				for row in self.rows:
+					print(row)
+			view()
+			self.menu()
 		elif self.opsi == '2': #tambah
-			self.values = None
-			self.inserts(self.values)
+			def inserts():
+				'''fungsi untuk menambah data'''
+				self.values = input('==>')
+				try:
+					self.curs.execute(f'insert into {self.table}{self.column} values {self.values};')
+					print(f'menambahkan data ke {self.table } berhasil \n')
+				except Exception:
+					print(f'menambahkan data ke tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+			inserts()
+			self.menu()
 		elif self.opsi == '3': #ubah
-			self.kwargs = input('==>')
-			self.updates
+			def updates(self,row,**kwargs):
+				'''fungsi untuk mengubah data'''
+				self.row = input('==>')
+				self.kwargs = input('==>')
+				try:
+					self.curs.execute(f'update {self.table} set {self.kwargs} where ID = {self.row};')
+					print(f'mengubah data di tabel {self.table } berhasil \n')
+				except Exception:
+					print(f'menngubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+			self.menu()
 		elif self.opsi == '4': #hapus
-			self.row_id = input('==>')
-			self.delrow
+			def delrow(self,row_id):
+				'''fungsi untuk menghapus data'''
+				self.row_id = input('==>')
+				try:
+					self.curs.execute(f'delete from {self.table} where ID = {row_id}')
+					self.conn.commit()
+					print(f'menghapus data di tabel {self.table } berhasil \n')
+				except Exception:
+					print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+			self.menu()
 		else:
 			self.menu()
 

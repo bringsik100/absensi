@@ -208,17 +208,17 @@ M - lihat opsi \t\t Q - keluar
 			pass
 		elif opsi.lower() == 'p': # ubah data pegawai
 			this_menu = getdata.Ubah('data/report.db','pegawai')
-			this_menu.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
+			this_menu.column = ("nopeg","noakun","nokartu","nama","titel","departemen")
 			this_menu.menu()
 			opsi_input()
 		elif opsi.lower() == 'j': # ubah data jadwal
 			this_menu = getdata.Ubah('data/report.db','jadwal')
-			this_menu.column = ['nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`']
+			this_menu.column = ('nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`')
 			this_menu.menu()
 			opsi_input()
 		elif opsi.lower() == 'l': # ubah data liburan
 			this_menu = getdata.Ubah('data/report.db','liburan')
-			this_menu.column = ['tanggal text','hari text']
+			this_menu.column = ('tanggal text','hari text')
 			opsi_input()
 		elif opsi.lower() == 'b': # buat laporan otomatis
 			cls()
