@@ -89,7 +89,7 @@ class Ubah:
 			self.curs.execute(f'insert into {self.table}{self.column} values {self.values};')
 			print(f'menambahkan data ke {self.table } berhasil \n')
 		except Exception:
-			print(f'menambahkan data ke tabel {self.table} gagal \n {sys.exc_info()} \n error = {er}\n')
+			print(f'menambahkan data ke tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
 	
 	def updates(self,row,**kwargs):
 		'''fungsi untuk mengubah data'''
@@ -99,7 +99,7 @@ class Ubah:
 			self.curs.execute(f'update {self.table} set {self.kwargs} where ID = {self.row};')
 			print(f'mengubah data di tabel {self.table } berhasil \n')
 		except Exception:
-			print(f'menngubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {er}\n')
+			print(f'menngubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
 	
 	def delrow(self,row_id):
 		'''fungsi untuk menghapus data'''
@@ -109,7 +109,7 @@ class Ubah:
 			self.conn.commit()
 			print(f'menghapus data di tabel {self.table } berhasil \n')
 		except Exception:
-			print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {er}\n')
+			print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
 
 	def menu(self):
 		'''tampilan menu'''
@@ -127,10 +127,13 @@ pilih opsi
 		elif self.opsi == '1': #lihat
 			self.view
 		elif self.opsi == '2': #tambah
-			self.inserts
+			self.values = None
+			self.inserts(self.values)
 		elif self.opsi == '3': #ubah
+			self.kwargs = input('==>')
 			self.updates
 		elif self.opsi == '4': #hapus
+			self.row_id = input('==>')
 			self.delrow
 		else:
 			self.menu()

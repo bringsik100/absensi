@@ -87,8 +87,8 @@ def buat():
 
 def cetak():
 	"""memproses data dari penampung untuk di cetak ke layar atau berkas"""
-	
-	cls()
+	rows = cnxn.conn.execute('select * from laporan')
+	hasil = rows.fetchall()
 	print("""
 	pilih format output dari 5 opsi
 	 0 = layar
@@ -109,36 +109,36 @@ def cetak():
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			ouput.pt_excell(judul_blank,hasil)
+			output.pt_excell(judul_blank,hasil)
 		else:
-			ouput.pt_excell(judul_opsi,hasil)
+			output.pt_excell(judul_opsi,hasil)
 		
 	elif opsi == '2':
 		"""cetak ke JSON"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			ouput.pt_json(judul_blank,hasil)
+			output.pt_json(judul_blank,hasil)
 		else:
-			ouput.pt_json(judul_opsi,hasil)
+			output.pt_json(judul_opsi,hasil)
 		
 	elif 'opsi' == '3':
 		"""cetak ke csv"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			ouput.pt_csv(judul_blank,hasil)
+			output.pt_csv(judul_blank,hasil)
 		else:
-			ouput.pt_csv(judul_opsi,hasil)
+			output.pt_csv(judul_opsi,hasil)
 	
 	elif opsi == '4':
 		"""cetak ke text"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			ouput.pt_txt(judul_blank,hasil)
+			output.pt_txt(judul_blank,hasil)
 		else:
-			ouput.pt_txt(judul_opsi,hasil)
+			output.pt_txt(judul_opsi,hasil)
 	else:
 		"""opsi diluar batas"""
 		print("\n"+"pilihan anda tidak ada dalm daftar \n\n ulangi lagi?")

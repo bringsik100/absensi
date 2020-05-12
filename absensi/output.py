@@ -13,9 +13,12 @@ import os
 """mencari home direktori"""
 def home():
 	if os.name == 'nt':
-		return os.environ["HOME"]+"/My Documents/"
+		try:
+			return os.path(os.environ["HOMEPATH"],"My Documents")
+		except Exception:
+			return os.environ["HOMEDRIVE"]
 	else:
-		return os.environ["HOME"]+"/user/"
+		return os.path(os.environ["HOME"],"user")
 
 """fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text"""
 
@@ -47,11 +50,13 @@ def pt_excell(file_title,buffer):
 	"""save ke excell"""
 	book.save('{}.xlsx'.format(home()+file_title))
 	book.close()
+	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.xlsx ')
 
 def pt_json(file_title,buffer):
 	"""output ke json"""
 	with open('{}.json'.format(home()+file_title),'w') as jsonfile:
 		json.dumps(buffer)
+	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.json ')
 
 def pt_csv(file_title,buffer):
 	"""output ke csv"""
@@ -59,17 +64,19 @@ def pt_csv(file_title,buffer):
 		x = csv.writer(csvfile, delimiter=',',quotechar='"')
 		for i in buffer:
 			x.writerow(i)
+	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.csv ')
 
 def pt_txt(file_title,buffer):
 	"""output ke text"""
 	with open('{}.txt'.format(home()+file_title), 'w') as txtfile:
 			txtfile.write(json.dumps(buffer))
+	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.txt ')
 
 def pt_db(buffer):
 	"""simpan ke database"""
 	conn = db.connect("data/report.db")
 	for rows in buffer:
-		conn.execute(f'''insert into absensi(
+		conn.execute(f'''insert into laporan(
 `NoPeg`
 ,`No. Akun`
 ,`No.`
