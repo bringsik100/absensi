@@ -87,8 +87,8 @@ def buat():
 
 def cetak():
 	"""memproses data dari penampung untuk di cetak ke layar atau berkas"""
-	rows = cnxn.conn.execute('select * from laporan')
-	hasil = rows.fetchall()
+	
+	cls()
 	print("""
 	pilih format output dari 5 opsi
 	 0 = layar
@@ -109,36 +109,36 @@ def cetak():
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			output.pt_excell(judul_blank,hasil)
+			ouput.pt_excell(judul_blank,hasil)
 		else:
-			output.pt_excell(judul_opsi,hasil)
+			ouput.pt_excell(judul_opsi,hasil)
 		
 	elif opsi == '2':
 		"""cetak ke JSON"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			output.pt_json(judul_blank,hasil)
+			ouput.pt_json(judul_blank,hasil)
 		else:
-			output.pt_json(judul_opsi,hasil)
+			ouput.pt_json(judul_opsi,hasil)
 		
 	elif 'opsi' == '3':
 		"""cetak ke csv"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			output.pt_csv(judul_blank,hasil)
+			ouput.pt_csv(judul_blank,hasil)
 		else:
-			output.pt_csv(judul_opsi,hasil)
+			ouput.pt_csv(judul_opsi,hasil)
 	
 	elif opsi == '4':
 		"""cetak ke text"""
 		judul_opsi = input("beri judul : " )
 		if judul_opsi == None:
 			judul_blank = dt.today.strftime('%Y-%m-%d-%H.%M.%s')
-			output.pt_txt(judul_blank,hasil)
+			ouput.pt_txt(judul_blank,hasil)
 		else:
-			output.pt_txt(judul_opsi,hasil)
+			ouput.pt_txt(judul_opsi,hasil)
 	else:
 		"""opsi diluar batas"""
 		print("\n"+"pilihan anda tidak ada dalm daftar \n\n ulangi lagi?")
@@ -208,17 +208,17 @@ M - lihat opsi \t\t Q - keluar
 			pass
 		elif opsi.lower() == 'p': # ubah data pegawai
 			this_menu = getdata.Ubah('data/report.db','pegawai')
-			this_menu.column = ("nopeg","noakun","nokartu","nama","titel","departemen")
+			this_menu.column = ['nopeg','noakun','nokartu','nama','titel','departemen']
 			this_menu.menu()
 			opsi_input()
 		elif opsi.lower() == 'j': # ubah data jadwal
 			this_menu = getdata.Ubah('data/report.db','jadwal')
-			this_menu.column = ('nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`')
+			this_menu.column = ['nama','`Jam Masuk`','`Jam Keluar`','`Telat,`Pulang Cepat`','`Harus CIn`','`Harus COut`','`Normal`','`Akhir Pekan`','`Hari Libur`','`Waktu Real`']
 			this_menu.menu()
 			opsi_input()
 		elif opsi.lower() == 'l': # ubah data liburan
 			this_menu = getdata.Ubah('data/report.db','liburan')
-			this_menu.column = ('tanggal text','hari text')
+			this_menu.column = ['tanggal text','hari text']
 			opsi_input()
 		elif opsi.lower() == 'b': # buat laporan otomatis
 			cls()
