@@ -5,78 +5,79 @@ Output
 
 import json
 import csv
-import string
+import os
 import sqlite3 as db
 from openpyxl import Workbook
-import os
 
-"""mencari home direktori"""
+#mencari home direktori
 def home():
-	if os.name == 'nt':
-		try:
-			return os.path(os.environ["HOMEPATH"],"My Documents")
-		except Exception:
-			return os.environ["HOMEDRIVE"]
-	else:
-		return os.path(os.environ["HOME"],"user")
+    """cari alamat HOME"""
+    if os.name == 'nt':
+        try:
+            result = os.path.join(os.environ["HOMEPATH"], "My Documents")
+        except Exception:
+            result = os.environ["HOMEDRIVE"]
+    else:
+        result = os.path.join(os.environ["HOME"], "user")
+    return result
 
-"""fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text"""
+#fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text
 
 def pt_screen(buffer):
-	"""output ke layar"""
-	print(buffer)
-		
+    """output ke layar"""
+    print(buffer)
 
-def pt_excell(file_title,buffer):
-	"""output ke excell"""
+def pt_excell(file_title, buffer):
+    """output ke excell"""
 
-	"""membaca data header dari judul.json"""
-	with open('data/judul.json','r') as head_data:
-		header = list(json.load(head_data).keys())
+    #membaca data header dari judul.json
+    with open('data/judul.json', 'r') as head_data:
+        header = list(json.load(head_data).keys())
 
-	book = Workbook()
-	sheet = book.active
-	sheet.title = file_title
+    book = Workbook()
+    sheet = book.active
+    sheet.title = file_title
 
-	"""header untuk mengisi baris pertama"""
-	for i in range(len(header)):
-		sheet.cell(column=i+1,row=1, value=header[i])
+    #header untuk mengisi baris pertama
+    for i in range(len(header)):
+        sheet.cell(column=i + 1, row=1, value=header[i])
 
-	"""isi sheet dari buffer"""
-	for rows in range(len(buffer)):
-		for cols in range(len((buffer[rows]))):
-			sheet.cell(column=cols+1,row=rows+2,value=buffer[rows][str(cols)])
-		
-	"""save ke excell"""
-	book.save('{}.xlsx'.format(home()+file_title))
-	book.close()
-	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.xlsx ')
+    #isi sheet dari buffer
+    for rows in range(len(buffer)):
+        for cols in range(len(buffer[rows])):
+            sheet.cell(column=cols + 1, row=rows+2, value=buffer[rows][str(cols)])
 
-def pt_json(file_title,buffer):
-	"""output ke json"""
-	with open('{}.json'.format(home()+file_title),'w') as jsonfile:
-		json.dumps(buffer)
-	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.json ')
+    #save ke excell
+    book.save('{}.xlsx'.format(home() + file_title))
+    book.close()
+    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.xlsx ')
 
-def pt_csv(file_title,buffer):
-	"""output ke csv"""
-	with open(f'{home()+file_title}.csv', 'w', newline='') as csvfile:
-		x = csv.writer(csvfile, delimiter=',',quotechar='"')
-		for i in buffer:
-			x.writerow(i)
-	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.csv ')
+def pt_json(file_title, buffer):
+    """output ke json"""
+    with open('{}.json'.format(home() + file_title), 'w') as jsonfile:
+        data = json.dumps(buffer)
+        jsonfile.write(data)
+    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.json ')
 
-def pt_txt(file_title,buffer):
-	"""output ke text"""
-	with open('{}.txt'.format(home()+file_title), 'w') as txtfile:
-			txtfile.write(json.dumps(buffer))
-	print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.txt ')
+def pt_csv(file_title, buffer):
+    """output ke csv"""
+    with open(f'{home()+file_title}.csv', 'w', newline='') as csvfile:
+        x = csv.writer(csvfile, delimiter=',', quotechar='"')
+        for i in buffer:
+            x.writerow(i)
+    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.csv ')
+
+def pt_txt(file_title, buffer):
+    """output ke text"""
+    with open('{}.txt'.format(home() + file_title), 'w') as txtfile:
+        txtfile.write(json.dumps(buffer))
+    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.txt ')
 
 def pt_db(buffer):
-	"""simpan ke database"""
-	conn = db.connect("data/report.db")
-	for rows in buffer:
-		conn.execute(f'''insert into laporan(
+    """simpan ke database"""
+    conn = db.connect("data/report.db")
+    for rows in buffer:
+        conn.execute(f'''insert into laporan(
 `NoPeg`
 ,`No. Akun`
 ,`No.`
@@ -135,11 +136,12 @@ def pt_db(buffer):
 ,"{rows['26']}"
 ,"{rows['27']}"
 ,"{rows['28']}");''')
-	conn.commit()
-	conn.close()
+    conn.commit()
+    conn.close()
 
 def main():
-	print("not ready yet")
+    "modul utama"
+    print("not ready yet")
 
 if __name__ == '__main__':
-	main()
+    main()
