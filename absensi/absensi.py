@@ -7,9 +7,9 @@ import os
 import sys
 from datetime import datetime as dt
 import sqlite3 as db
-import absensi.proses as proses
-import absensi.output as output
-import absensi.getdata as getdata
+import proses
+import output
+import getdata
 
 __author__ = "bringsik100"
 __version__ = "0.1.3b"
