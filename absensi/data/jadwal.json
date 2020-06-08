@@ -1,35 +1,35 @@
 {
-	"0": {
-		"name": "libur",
-		"hour start":"00:00",
-		"hour end":"00:00",
-		"late in":"00:00",
-		"early out":"00:00",
-		"checkin min":"00:00",
-		"checkin max":"00:00",
-		"checkout min":"00:00",
-		"checkout max":"00:00"
-	},
-	"1": {
-		"name": "Senin-Jumat",
-		"hour start":"08:00",
-		"hour end":"16:00",
-		"late in":"00:10",
-		"early out":"00:05",
-		"checkin min": "06:00",
-		"checkin max": "09:00",
-		"checkout min":"15:00",
-		"checkout max":"23:59"
-		},
-	"2": {
-		"name":"Sabtu-Minggu",
-		"hour start":"08:00",
-		"hour end":"13:00",
-		"late in":"00:10",
-		"early out":"00:05",
-		"checkin min":"06:00",
-		"checkin max":"09:00",
-		"checkout min":"15:00",
-		"checkout max":"23:59"
-		}
-	}
+  "0": {
+    "name": "libur",
+    "hour start":"00:00",
+    "hour end":"00:00",
+    "late in":"00:00",
+    "early out":"00:00",
+    "checkin min":"00:00",
+    "checkin max":"00:00",
+    "checkout min":"00:00",
+    "checkout max":"00:00"
+  },
+  "1": {
+    "name": "Senin-Jumat",
+    "hour start":"08:00",
+    "hour end":"16:00",
+    "late in":"00:10",
+    "early out":"00:05",
+    "checkin min": "06:00",
+    "checkin max": "09:00",
+    "checkout min":"15:00",
+    "checkout max":"23:59"
+    },
+  "2": {
+    "name":"Sabtu-Minggu",
+    "hour start":"08:00",
+    "hour end":"13:00",
+    "late in":"00:10",
+    "early out":"00:05",
+    "checkin min":"06:00",
+    "checkin max":"09:00",
+    "checkout min":"15:00",
+    "checkout max":"23:59"
+    }
+  }

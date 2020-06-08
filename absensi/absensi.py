@@ -7,6 +7,7 @@ import os
 import sys
 from datetime import datetime as dt
 import sqlite3 as db
+sys.path.append(os.path.join(os.environ["HOME"], "project", "absensi", "absensi", "absensi"))
 import proses
 import output
 import getdata

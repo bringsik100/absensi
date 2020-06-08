@@ -1,58 +1,58 @@
 {
-	"1": {
-		"nopeg": "1",
-		"akun": "4",
-		"nomor": "004",
-		"nama": "Surya Adi",
-		"dpt": "SSI"
-	},
-	"2": {
-		"nopeg": "2",
-		"akun": "5",
-		"nomor": "005",
-		"nama": "Dwi Yan Apriliandi",
-		"dpt": "SSI"
-	},
-	"3": {
-		"nopeg": "3",
-		"akun": "6",
-		"nomor": "006",
-		"nama": "Suhariyono",
-		"dpt": "SSI"
-	},
-	"4": {
-		"nopeg": "4",
-		"akun": "7",
-		"nomor": "007",
-		"nama": "Heru",
-		"dpt": "SSI"
-	},
-	"5": {
-		"nopeg": "5",
-		"akun": "11",
-		"nomor": "011",
-		"nama": "Syamsul Arifin",
-		"dpt": "SSI"
-	},
-	"6": {
-		"nopeg": "6",
-		"akun": "3",
-		"nomor": "003",
-		"nama": "Siswo Wahyudi",
-		"dpt": "SSI"
-	},
-	"7": {
-		"nopeg": "7",
-		"akun": "8",
-		"nomor": "008",
-		"nama": "Roni",
-		"dpt": "SSI"
-	},
-	"8": {
-		"nopeg": "8",
-		"akun": "9",
-		"nomor": "009",
-		"nama": "Ahmad Roni",
-		"dpt": "SSI"
-	}
+  "1": {
+    "nopeg": "1",
+    "akun": "1",
+    "nomor": "001",
+    "nama": "A",
+    "dpt": "Animal"
+  },
+  "2": {
+    "nopeg": "2",
+    "akun": "2",
+    "nomor": "002",
+    "nama": "B",
+    "dpt": "Animal"
+  },
+  "3": {
+    "nopeg": "3",
+    "akun": "3",
+    "nomor": "003",
+    "nama": "C",
+    "dpt": "Animal"
+  },
+  "4": {
+    "nopeg": "4",
+    "akun": "4",
+    "nomor": "004",
+    "nama": "D",
+    "dpt": "Animal"
+  },
+  "5": {
+    "nopeg": "5",
+    "akun": "5",
+    "nomor": "005",
+    "nama": "E",
+    "dpt": "Animal"
+  },
+  "6": {
+    "nopeg": "6",
+    "akun": "6",
+    "nomor": "006",
+    "nama": "F",
+    "dpt": "Animal"
+  },
+  "7": {
+    "nopeg": "7",
+    "akun": "7",
+    "nomor": "007",
+    "nama": "G",
+    "dpt": "Animal"
+  },
+  "8": {
+    "nopeg": "8",
+    "akun": "8",
+    "nomor": "008",
+    "nama": "H",
+    "dpt": "Animal"
+  }
 }

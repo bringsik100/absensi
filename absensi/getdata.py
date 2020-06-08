@@ -17,13 +17,14 @@ class DataBase:
         print('koneksi berhasil')
 
     def close(self):
+        """close connection"""
         self.conn.close()
 
 class CreateTable(DataBase):
     """objek pembuat tabel"""
 
     def create(self, table, *column):
-        ###buat kolom tabel###
+        """buat kolom tabel"""
         self.table = table
         self.column = column
         ###metode utama###
@@ -103,7 +104,7 @@ pilih opsi
                     self.curs.execute(f'update {self.table} set {self.kwargs} where ID = {self.row};')
                     print(f'mengubah data di tabel {self.table } berhasil \n')
                 except Exception:
-                    print(f'menngubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+                    print(f'mengubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
             self.menu()
         elif self.opsi == '4': #hapus
             def delrow(self, row_id):
@@ -137,7 +138,7 @@ def tambah_pegawai():
     q5 = input('departemen :\t')
     ubah_pegawai.insert(q0, q1, q2, q3, q4, q5)
 
-def ubah_pegawai():
+def update_pegawai():
     """ubah data pegawai"""
     ubah_pegawai = Ubah('data/report.db', 'pegawai')
     ubah_pegawai.column = ['nopeg', 'noakun', 'nokartu', 'nama', 'titel', 'departemen']
@@ -151,7 +152,6 @@ def hapus_pegawai():
     ubah_pegawai.column = ['nopeg', 'noakun', 'nokartu', 'nama', 'titel', 'departemen']
     row = input('masukkan baris data yang akan dihapus :\t')
     hapus = delrow(row)
-
 
 ###sunting data jadwal###
 ubah_jadwal = Ubah('data/report.db', 'jadwal')
@@ -176,7 +176,7 @@ def tambah_jadwal():
     q10 = input('Waktu Real :\t')
     ubah_jadwal.inserts(q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10)
 
-def ubah_jadwal():
+def update_jadwal():
     """ubah data jadwal"""
     row = input('masukkan nomor baris jadwal yang akan dirubah :\t')
     kwargs = input('masukkan kolom dan data jadwal yang akan dirubah :\t')
@@ -202,7 +202,7 @@ def tambah_libur(self):
     q1 = input('hari :\t')
     ubah_libur.inserts(q0, q1)
 
-def ubah_libur():
+def update_libur():
     """ubah data libur"""
     row = input('masukkan baris libur yang akan dirubah :\t')
     kwargs = input('masukkan nilai libur yang akan dirubah :\t')
@@ -255,7 +255,7 @@ def tambah_laporan():
     q28 = input('`Libur Lembur` : ')
     ubah_laporan.inserts(q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20, q21, q22, q23, q24, q25, q26, q27, q28)
 
-def ubah_laporan():
+def udate_laporan():
     """ubah data laporan"""
     row = input('masukkan baris laporan yang akan dirubah :\t')
     kwargs = input('masukkan nilai laporan yang akan dirubah :\t')
