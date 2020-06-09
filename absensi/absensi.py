@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""
-absensi
-"""
+"""absensi"""
 
 import os
 import sys
 from datetime import datetime as dt
 import sqlite3 as db
-sys.path.append(os.path.join(os.environ["HOME"], "project", "absensi", "absensi", "absensi"))
+sys.path.append(os.path.join(os.environ["HOME"], "storage", "emulated", "0", "project", "absensi", "absensi", "absensi"))
 import proses
 import output
 import getdata
@@ -29,17 +27,17 @@ def user_sql():
     try:
         conn.execute(sql)
     except Exception: #Exception too general
-        print(f'gagal mengeksekusi "{sql}" karena :\n{sys.exc_info()}\n')
+        print('gagal mengeksekusi "%s" karena :\n%a\n' % (sql, sys.exc_info()))
 
 def view(nama_tabel):
     '''menampilkan isi tabel'''
     try:
         cnxn
         curs = cnxn.cursor
-        rows = curs.execute(f'select * from {nama_tabel};').fetchall()
+        rows = curs.execute('select * from %s;' % (nama_tabel)).fetchall()
         print(rows)
     except Exception:
-        print(f'gagal menampilkan isi tabel karena :\n{sys.exc_info()}\n')
+        print('gagal menampilkan isi tabel karena :\n%a\n' % (sys.exc_info()))
 
 def buat():
     """modul untuk mengisi absen otomatis"""
@@ -62,12 +60,12 @@ DD = 2 angka tanggal
     proses.process(awal, akhir, hasil)
     #otomatis menyimpan ke database
     try:
-        output.pt_db(hasil)
+        result = output.pt_db(hasil)
     except Exception:
-        print(f"gagal menyimpan ke database karena : \
-        \n{Exception}\nlaporan dari system : \
-        \n{sys.exc_info()}")
-    return hasil
+        result = "gagal menyimpan ke database karena : \
+        \n%a\nlaporan dari system : \
+        \n%a" % (Exception, sys.exc_info())
+    return result
 
 def cetak():
     """memproses data dari penampung untuk di cetak ke layar atau berkas"""
@@ -126,7 +124,7 @@ pilih format output dari 5 opsi:
             output.pt_txt(judul_opsi, hasil)
     else:
         #opsi diluar batas
-        print("\n"+"pilihan anda tidak ada dalam daftar \n\n ulangi lagi?")
+        print("\npilihan anda tidak ada dalam daftar \n\n ulangi lagi?")
 
         answer = input("\n\njawab Y atau N: ")
         if answer.lower() == 'y':
@@ -229,7 +227,7 @@ Q - keluar
             cls()
             opsi_input()
         else: # opsi tidak dikenali
-            print(f'opsi {opsi} tidak ditemukan, ulangi?\n')
+            print('opsi %s tidak ditemukan, ulangi?\n' % opsi)
             ulang()
 
     opsi_input()

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-Proses
-"""
+"""Proses"""
 
 import json
 from datetime import datetime as dt

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-Output
-"""
+"""Output"""
 
 import json
 import csv
@@ -48,30 +46,30 @@ def pt_excell(file_title, buffer):
             sheet.cell(column=cols + 1, row=rows+2, value=buffer[rows][str(cols)])
 
     #save ke excell
-    book.save('{}.xlsx'.format(home() + file_title))
+    book.save('%s.xlsx' % os.path.join(home(), file_title))
     book.close()
-    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.xlsx ')
+    print('%s berhasil dicetak ke %s.xlsx ' % (file_title, os.path.join(home(), file_title)))
 
 def pt_json(file_title, buffer):
     """output ke json"""
-    with open('{}.json'.format(home() + file_title), 'w') as jsonfile:
+    with open('%s.json' % (os.path.join(home(), file_title)), 'w') as jsonfile:
         data = json.dumps(buffer)
         jsonfile.write(data)
-    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.json ')
+    print('%s berhasil dicetak ke %s.json ' % (file_title, os.path.join(home(), file_title)))
 
 def pt_csv(file_title, buffer):
     """output ke csv"""
-    with open(f'{home()+file_title}.csv', 'w', newline='') as csvfile:
+    with open('%s.csv' % (os.path.join(home(), file_title)), 'w', newline='') as csvfile:
         x = csv.writer(csvfile, delimiter=',', quotechar='"')
         for i in buffer:
             x.writerow(i)
-    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.csv ')
+    print('%s berhasil dicetak ke %s.csv ' % (file_title, os.path.join(home(), file_title)))
 
 def pt_txt(file_title, buffer):
     """output ke text"""
-    with open('{}.txt'.format(home() + file_title), 'w') as txtfile:
+    with open('%s.txt' % (os.path.join(home(), file_title)), 'w') as txtfile:
         txtfile.write(json.dumps(buffer))
-    print(f'{file_title} berhasil dicetak ke {home()}/{file_title}.txt ')
+    print('%s berhasil dicetak ke %s.txt ' % (file_title, os.path.join(home(), file_title)))
 
 def pt_db(buffer):
     """simpan ke database"""
