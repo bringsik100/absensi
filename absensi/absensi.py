@@ -5,10 +5,10 @@ import os
 import sys
 from datetime import datetime as dt
 import sqlite3 as db
-sys.path.append(os.path.join(os.environ["HOME"], "storage", "shared", "project", "absensi", "absensi", "absensi"))
-import proses
-import output
-import getdata
+#sys.path.append(os.getcwd())
+import absensi.proses
+import absensi.output
+import absensi.getdata
 
 __author__ = "bringsik100"
 __version__ = "0.1.3b"
@@ -17,7 +17,7 @@ __docstring__ = "modul utama"
 
 #modul database
 
-cnxn = getdata.DataBase('data/reporpt.db')
+cnxn = getdata.DataBase('data/report.db')
 conn = cnxn
 
 def user_sql():

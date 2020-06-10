@@ -12,7 +12,7 @@ class DataBase:
     """objek database"""
     def __init__(self, dbname=None):
         self.dbname = dbname
-        self.conn = db.connect(f'{self.dbname}')
+        self.conn = db.connect('%s' % self.dbname)
         self.cursor = self.conn.cursor()
         print('koneksi berhasil')
 
