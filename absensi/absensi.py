@@ -60,7 +60,7 @@ DD = 2 angka tanggal
     proses.process(awal, akhir, hasil)
     #otomatis menyimpan ke database
     try:
-        result = output.pt_db(hasil)
+        output.pt_db(hasil)
     except Exception:
         result = "gagal menyimpan ke database karena : \
         \n%a\nlaporan dari system : \
