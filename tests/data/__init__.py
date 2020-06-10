@@ -1,1 +1,1 @@
-#init.py
+#!usr/bin/env python
