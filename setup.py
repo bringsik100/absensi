@@ -21,7 +21,7 @@ except VersionConflict:
 setup(name='Absensi',
       version='0.1.3',
       description='skrip python untuk membuat laporan berformat excel yang tampilannya sama seperti keluaran dari aplikasi attendance manager',
-      long_description=file: README.rs,
+      long_description=file::README.rst,
       classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'License :: OSI Approved :: MIT License',
