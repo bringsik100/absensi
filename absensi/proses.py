@@ -94,32 +94,31 @@ def process(start, end, buffer):
     #ambil library yang dibutuhkan
     employee = get_data('data/pegawai.json')
     schedule = get_data('data/jadwal.json')
-    subdata = get_data('data/judul.json')
+    #subdata = get_data('data/judul.json')
     holiday = [dt.strptime(x, '%Y-%m-%d') for x in list(get_data('data/libur.json').keys())]
 
     #daftar tanggal
     delta = end - start
 
     #looping pegawai
-    for x in range(len(employee)):
-        x = x + 1 #variabel untuk data pegawai
+    for y in employee:
         #looping tanggal
         for day in range(delta.days+1):
             #fungsi untuk mengisi waktu
             data = {}
             thisday = start + td(days=day)
 
-            data["0"] = employee[str(x)]['nopeg'] #nomor pegawai
-            data["1"] = employee[str(x)]['akun'] #nomor akun
-            data["2"] = employee[str(x)]['nomor'] #nomor induk
-            data["3"] = employee[str(x)]['nama'] #nama pegawai
+            data["0"] = employee[y]['nopeg'] #nomor pegawai
+            data["1"] = employee[y]['akun'] #nomor akun
+            data["2"] = employee[y]['nomor'] #nomor induk
+            data["3"] = employee[y]['nama'] #nama pegawai
             data["4"] = ' ' #masuk otomatis (biarkan kosong)
             data["5"] = thisday.strftime('%Y-%m-%d') #tanggal
             data["12"] = '1' #waktu real
             data["19"] = ' ' #status
             data["20"] = ' ' #harus check in
             data["21"] = ' ' #harus check out
-            data["22"] = employee[str(x)]['dpt'] #departemen
+            data["22"] = employee[y]['dpt'] #departemen
 
             if not thisday in holiday:
                 if thisday.weekday() == 6:

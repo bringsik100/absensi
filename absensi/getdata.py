@@ -12,9 +12,8 @@ class DataBase:
     """objek database"""
     def __init__(self, dbname=None):
         self.dbname = dbname
-        self.conn = db.connect('%s' % self.dbname)
+        self.conn = db.connect(self.dbname)
         self.cursor = self.conn.cursor()
-        print('koneksi berhasil')
 
     def close(self):
         """close connection"""
@@ -29,11 +28,11 @@ class CreateTable(DataBase):
         self.column = column
         ###metode utama###
         try:
-            self.cursor.execute(f'create table if not exists {self.table}{self.column};')
+            self.cursor.execute('create table if not exists %s %s;' % (self.table, self.column))
             self.conn.commit()
-            print(f'buat data {self.table} berhasil \n')
+            print('buat data %s berhasil \n' % self.table)
         except Error:
-            print(f'buat tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+            print('buat tabel %s gagal \n %a \n error = %a\n' % (self.table, sys.exc_info(), Error))
 
 def recover():
     """modul pembuat tabel"""
@@ -62,7 +61,41 @@ class Ubah:
         self.curs = self.conn.cursor()
         self.table = table
         self.column = None
-        self.rows = self.curs.execute(f'select * from {self.table};').fetchall()
+        self.rows = self.curs.execute('select * from %s;' % self.table).fetchall()
+
+    def view(self):
+        """fungsi untuk melihat data"""
+        for row in self.rows:
+            print(row)
+
+    def inserts(self):
+        """fungsi untuk menambah data"""
+        self.values = input('==>')
+        try:
+            self.curs.execute('insert into %s %s values %s;' % (self.table, self.column, self.values))
+            print('menambahkan data ke %s berhasil \n' % self.table)
+        except Exception:
+            print('buat tabel %s gagal \n %a \n error = %a\n' % (self.table, sys.exc_info(), Error))
+
+    def updates(self, row, *kwargs):
+        """fungsi untuk mengubah data"""
+        self.row = row
+        self.kwargs = kwargs
+        try:
+            self.curs.execute('update %s set %s where ID = %s;' % (self.table, self.kwargs, self.row))
+            print('menambahkan data ke %s berhasil \n' % self.table)
+        except Exception:
+            print('buat tabel %s gagal \n %a \n error = %a\n' % (self.table, sys.exc_info(), Error))
+
+    def delrow(self, row_id):
+        """fungsi untuk menghapus data"""
+        self.row_id = input('==>')
+        try:
+            self.curs.execute('delete from %s where ID = %s' % (self.table, row_id))
+            self.conn.commit()
+            print('menambahkan data ke %s berhasil \n' % self.table)
+        except Exception:
+            print('buat tabel %s gagal \n %a \n error = %a\n' % (self.table, sys.exc_info(), Error))
 
     def menu(self):
         """tampilan menu"""
@@ -78,44 +111,16 @@ pilih opsi
         if self.opsi == '0':
             pass
         elif self.opsi == '1': #lihat
-            def view():
-                """fungsi untuk melihat data"""
-                for row in self.rows:
-                    print(row)
-            view()
+            self.view()
             self.menu()
         elif self.opsi == '2': #tambah
-            def inserts():
-                """fungsi untuk menambah data"""
-                self.values = input('==>')
-                try:
-                    self.curs.execute(f'insert into {self.table}{self.column} values {self.values};')
-                    print(f'menambahkan data ke {self.table } berhasil \n')
-                except Exception:
-                    print(f'menambahkan data ke tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
-            inserts()
+            self.inserts()
             self.menu()
         elif self.opsi == '3': #ubah
-            def updates(self, row, *kwargs):
-                """fungsi untuk mengubah data"""
-                self.row = input('==>')
-                self.kwargs = input('==>')
-                try:
-                    self.curs.execute(f'update {self.table} set {self.kwargs} where ID = {self.row};')
-                    print(f'mengubah data di tabel {self.table } berhasil \n')
-                except Exception:
-                    print(f'mengubah data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+            self.updates()
             self.menu()
         elif self.opsi == '4': #hapus
-            def delrow(self, row_id):
-                """fungsi untuk menghapus data"""
-                self.row_id = input('==>')
-                try:
-                    self.curs.execute(f'delete from {self.table} where ID = {row_id}')
-                    self.conn.commit()
-                    print(f'menghapus data di tabel {self.table } berhasil \n')
-                except Exception:
-                    print(f'menghapus data di tabel {self.table} gagal \n {sys.exc_info()} \n error = {Error}\n')
+            self.delrow()
             self.menu()
         else:
             self.menu()
@@ -151,7 +156,7 @@ def hapus_pegawai():
     ubah_pegawai = Ubah('data/report.db', 'pegawai')
     ubah_pegawai.column = ['nopeg', 'noakun', 'nokartu', 'nama', 'titel', 'departemen']
     row = input('masukkan baris data yang akan dihapus :\t')
-    hapus = delrow(row)
+    ubah_pegawai.delrow(row)
 
 ###sunting data jadwal###
 ubah_jadwal = Ubah('data/report.db', 'jadwal')
@@ -185,7 +190,7 @@ def update_jadwal():
 def hapus_jadwal():
     """ hapus data jadwal"""
     row = input('masukkan baris data yang akan dihapus :\t')
-    hapus = delrow(row)
+    ubah_jadwal.delrow(row)
 
 
 ###sunting data libur###
@@ -211,7 +216,7 @@ def update_libur():
 def hapus_libur():
     """ hapus data libur"""
     row = input('masukkan baris data yang akan dihapus :\t')
-    hapus = delrow(row)
+    ubah_libur.delrow(row)
 
 
 ###sunting data laporan###
@@ -264,11 +269,11 @@ def udate_laporan():
 def hapus_laporan():
     """ hapus data laporan"""
     row = input('masukkan baris data yang akan dihapus :\t')
-    hapus = delrow(row)
+    ubah_laporan.delrow(row)
 
 def main():
     """modul utama"""
-    pass
+    print("Not Ready")
 
 if __name__ == '__main__':
     main()

@@ -6,9 +6,9 @@ import sys
 from datetime import datetime as dt
 import sqlite3 as db
 #sys.path.append(os.getcwd())
-import absensi.proses
-import absensi.output
-import absensi.getdata
+import proses
+import output
+import getdata
 
 __author__ = "bringsik100"
 __version__ = "0.1.3b"
@@ -17,23 +17,21 @@ __docstring__ = "modul utama"
 
 #modul database
 
-cnxn = getdata.DataBase('data/report.db')
-conn = cnxn
+conn = db.connect('data/report.db')
+curs = conn.cursor()
 
 def user_sql():
     '''modul untuk menjalankan perintah SQL'''
     print(" masukkan perintah SQL disini\t:\n ;")
     sql = str(input())
     try:
-        conn.execute(sql)
+        curs.execute(sql)
     except Exception: #Exception too general
         print('gagal mengeksekusi "%s" karena :\n%a\n' % (sql, sys.exc_info()))
 
 def view(nama_tabel):
     '''menampilkan isi tabel'''
     try:
-        cnxn
-        curs = cnxn.cursor
         rows = curs.execute('select * from %s;' % (nama_tabel)).fetchall()
         print(rows)
     except Exception:
@@ -62,14 +60,13 @@ DD = 2 angka tanggal
     try:
         output.pt_db(hasil)
     except Exception:
-        result = "gagal menyimpan ke database karena : \
+        print("gagal menyimpan ke database karena : \
         \n%a\nlaporan dari system : \
-        \n%a" % (Exception, sys.exc_info())
-    return result
+        \n%a" % (Exception, sys.exc_info()))
 
 def cetak():
     """memproses data dari penampung untuk di cetak ke layar atau berkas"""
-    rows = cnxn.conn.execute('select * from laporan')
+    rows = curs.execute('select * from laporan')
     hasil = rows.fetchall()
     print("""
 pilih format output dari 5 opsi:
