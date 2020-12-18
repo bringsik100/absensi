@@ -60,3 +60,5 @@ Version 0.1.2
 - 2020-05-10
 - sudah pakai database sqlite
 - modul utama dan getdata belum beres
+- 2020-12-18
+- database amburadul, mungkin kembali pakai text
