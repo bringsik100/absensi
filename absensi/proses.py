@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Proses"""
+"""
+modul memproses input dari data
+
+untuk sementara input data masih campur antara text dan database
+"""
 
 import json
 from datetime import datetime as dt
@@ -91,7 +95,7 @@ def process(start, end, buffer):
     #end = tanggal akhir
     #buffer berfungsi sebagai penampung data
 
-    #ambil library yang dibutuhkan
+    #ambil data dari sumber data
     employee = get_data('data/pegawai.json')
     schedule = get_data('data/jadwal.json')
     #subdata = get_data('data/judul.json')

@@ -1,0 +1,14 @@
+************* Module absensi.absensi
+absensi/absensi.py:11:0: E0401: Unable to import 'getdata' (import-error)
+absensi/absensi.py:29:11: W0703: Catching too general exception Exception (broad-except)
+absensi/absensi.py:37:11: W0703: Catching too general exception Exception (broad-except)
+absensi/absensi.py:62:11: W0703: Catching too general exception Exception (broad-except)
+absensi/absensi.py:67:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+absensi/absensi.py:67:0: R0912: Too many branches (15/12) (too-many-branches)
+absensi/absensi.py:137:4: W0104: Statement seems to have no effect (pointless-statement)
+absensi/absensi.py:169:4: R0912: Too many branches (13/12) (too-many-branches)
+absensi/absensi.py:146:0: R0915: Too many statements (54/50) (too-many-statements)
+
+------------------------------------------------------------------
+Your code has been rated at 9.06/10 (previous run: 9.06/10, +0.00)
+

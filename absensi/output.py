@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Output"""
+"""
+modul untuk mengatur keluaran / output
+"""
 
 import json
 import csv
