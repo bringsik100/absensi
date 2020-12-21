@@ -30,6 +30,7 @@ tags
 
 # Unittest and coverage
 htmlcov/*
+tests/*
 .coverage
 .coveragerc
 .tox
