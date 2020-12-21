@@ -3,56 +3,56 @@
     "nopeg": "1",
     "akun": "1",
     "nomor": "001",
-    "nama": "A",
-    "dpt": "Animal"
+    "nama": "Pegawai A",
+    "dpt": "Pegawai"
   },
   "2": {
     "nopeg": "2",
     "akun": "2",
     "nomor": "002",
-    "nama": "B",
-    "dpt": "Animal"
+    "nama": "Pegawai B",
+    "dpt": "Pegawai"
   },
   "3": {
     "nopeg": "3",
     "akun": "3",
     "nomor": "003",
-    "nama": "C",
-    "dpt": "Animal"
+    "nama": "Pegawai C",
+    "dpt": "Pegawai"
   },
   "4": {
     "nopeg": "4",
     "akun": "4",
     "nomor": "004",
-    "nama": "D",
-    "dpt": "Animal"
+    "nama": "Pegawai D",
+    "dpt": "Pegawai"
   },
   "5": {
     "nopeg": "5",
     "akun": "5",
     "nomor": "005",
-    "nama": "E",
-    "dpt": "Animal"
+    "nama": "Pegawai E",
+    "dpt": "Pegawai"
   },
   "6": {
     "nopeg": "6",
     "akun": "6",
     "nomor": "006",
-    "nama": "F",
-    "dpt": "Animal"
+    "nama": "Pegawai F",
+    "dpt": "Pegawai"
   },
   "7": {
     "nopeg": "7",
     "akun": "7",
     "nomor": "007",
-    "nama": "G",
-    "dpt": "Animal"
+    "nama": "Pegawai G",
+    "dpt": "Pegawai"
   },
   "8": {
     "nopeg": "8",
     "akun": "8",
     "nomor": "008",
-    "nama": "H",
-    "dpt": "Animal"
+    "nama": "Pegawai H",
+    "dpt": "Pegawai"
   }
 }
