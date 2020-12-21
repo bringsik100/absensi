@@ -10,6 +10,7 @@ from datetime import datetime as dt
 from datetime import timedelta as td
 from random import randint as ri
 
+
 def get_data(source):
     """fungsi ambil data pegawai, jadwal, judul, liburan"""
     with open(source, 'r') as srce:
@@ -89,17 +90,17 @@ def get_overtype(hour_out, check_out):
 
     return result
 
+#ambil data dari sumber data
+    employee = get_data('data/pegawai.json')
+    schedule = get_data('data/jadwal.json')
+    #subdata = get_data('data/judul.json')
+    holiday = [dt.strptime(x, '%Y-%m-%d') for x in list(get_data('data/libur.json').keys())]
+
 def process(start, end, buffer):
     """fungsi untuk memproses pegawai tanggal waktu dan input ke buffer"""
     #start = tanggal mulai
     #end = tanggal akhir
     #buffer berfungsi sebagai penampung data
-
-    #ambil data dari sumber data
-    employee = get_data('data/pegawai.json')
-    schedule = get_data('data/jadwal.json')
-    #subdata = get_data('data/judul.json')
-    holiday = [dt.strptime(x, '%Y-%m-%d') for x in list(get_data('data/libur.json').keys())]
 
     #daftar tanggal
     delta = end - start
