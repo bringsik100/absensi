@@ -13,21 +13,30 @@ import getdata
 __author__ = "bringsik100"
 __version__ = "0.1.3b"
 __license__ = "MIT"
-__docstring__ = "modul utama"
+__docstring__ = """
+modul utama
+
+sementara masih kacau
+
+modul getdata belum beres dan mendesak untuk diperbaiki.
+
+"""
 
 #modul database
 
 conn = db.connect('data/report.db')
 curs = conn.cursor()
 
+
 def user_sql():
-    '''modul untuk menjalankan perintah SQL'''
+    '''modul untuk menjalankan perintah SQL secara manual (hard code)'''
     print(" masukkan perintah SQL disini\t:\n ;")
     sql = str(input())
     try:
         curs.execute(sql)
     except Exception: #Exception too general
         print('gagal mengeksekusi "%s" karena :\n%a\n' % (sql, sys.exc_info()))
+
 
 def view(nama_tabel):
     '''menampilkan isi tabel'''
@@ -37,8 +46,13 @@ def view(nama_tabel):
     except Exception:
         print('gagal menampilkan isi tabel karena :\n%a\n' % (sys.exc_info()))
 
+
 def buat():
-    """modul untuk mengisi absen otomatis"""
+    """
+    pengisi absen otomatis sesuai masukan dari pengguna
+
+    data tanggal awal dan akhir diisi manual oleh user, setelah itu proses berjalan secara otomatis
+    """
     cls()
     print("""
 metode pengisian :
@@ -53,7 +67,7 @@ DD = 2 angka tanggal
     akhir = proses.get_input('masukkan tanggal akhir absensi: ')
     hasil = []
 
-    #main  proses
+    #main proses
     # proses ada di dalam modul  proses
     proses.process(awal, akhir, hasil)
     #otomatis menyimpan ke database
@@ -63,6 +77,7 @@ DD = 2 angka tanggal
         print("gagal menyimpan ke database karena : \
         \n%a\nlaporan dari system : \
         \n%a" % (Exception, sys.exc_info()))
+
 
 def cetak():
     """memproses data dari penampung untuk di cetak ke layar atau berkas"""
@@ -127,12 +142,14 @@ pilih format output dari 5 opsi:
         if answer.lower() == 'y':
             return cetak()
 
+
 def cls():
-    """modul untuk membersihkan layar"""
+    """perintah untuk membersihkan layar"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def keluar():
-    """modul untuk keluar"""
+    """peritah untuk keluar dari program"""
     print('Terima Kasih')
     sys.exit
 
