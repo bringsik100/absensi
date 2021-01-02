@@ -14,4 +14,3 @@ ATTPARAM = (`PARANAME`, `PARATYPE`, `PARAVALUE`);
 
 SystemLog = (`ID`, `Operator`, `LogTime`, `MachineAlias`, `LogTag`, `LogDescr`);
 
-

@@ -9,6 +9,7 @@ import os
 import sqlite3 as db
 from openpyxl import Workbook
 
+
 #mencari home direktori
 def home():
     """cari alamat HOME"""
@@ -21,7 +22,8 @@ def home():
         result = os.path.join(os.environ["HOME"], "user")
     return result
 
-#fungsi ouput dengan 5 pilihan : layar, excell, JSON, csv, text
+#fungsi ouput dengan 5 pilihan : layar
+#, excell, JSON, csv, text
 
 def pt_screen(buffer):
     """output ke layar"""
@@ -140,7 +142,7 @@ def pt_db(buffer):
     conn.close()
 
 def main():
-    "modul utama"
+    "modul output"
     print("not ready yet")
 
 if __name__ == '__main__':
