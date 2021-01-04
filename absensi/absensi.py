@@ -149,7 +149,7 @@ def cls():
 
 
 def keluar():
-    """peritah untuk keluar dari program"""
+    """perintah untuk keluar dari program"""
     print('Terima Kasih')
     sys.exit
 
